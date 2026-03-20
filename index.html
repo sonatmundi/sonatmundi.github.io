@@ -101,7 +101,7 @@
     height: 52px;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 0 8px rgba(255,180,0,0.3));
+    mix-blend-mode: screen;
   }
 
   .nav-brand-text {
@@ -167,12 +167,12 @@
   }
 
   .hero-logo-img {
-    width: min(520px, 80vw);
+    width: min(620px, 85vw);
     height: auto;
     object-fit: contain;
     animation: fade-up 1.2s ease 0.1s forwards;
     opacity: 0;
-    filter: drop-shadow(0 0 30px rgba(255,180,0,0.25)) drop-shadow(0 0 60px rgba(100,80,255,0.15));
+    mix-blend-mode: screen;
   }
 
   .hero-divider {
@@ -651,7 +651,7 @@
 <!-- Nav -->
 <nav>
   <a href="#" class="nav-brand">
-    <img src="sonat_mundi-logo1.jpg" alt="Sonat Mundi" class="nav-logo-img">
+    <img src="sonat_mundi-logo_png.png" alt="Sonat Mundi" class="nav-logo-img">
     <div class="nav-brand-text">
       <span class="nav-brand-name">Sonat Mundi</span>
       <span class="nav-tagline">Omnia Resonant</span>
@@ -668,7 +668,7 @@
 <!-- Hero -->
 <section class="hero">
   <p class="hero-eyebrow">United Colours of Sound</p>
-  <img src="sonat_mundi-logo1.jpg" alt="Sonat Mundi" class="hero-logo-img">
+  <img src="sonat_mundi-logo_png.png" alt="Sonat Mundi" class="hero-logo-img">
   <div class="hero-divider"></div>
   <p class="hero-tagline">Omnia Resonant</p>
   <p class="hero-sub">All things resonate</p>
@@ -812,7 +812,7 @@
     <ul>
       <li><a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a></li>
       <li><a href="https://instagram.com/sonatmundi" target="_blank">Instagram</a></li>
-      <li><a href="mailto:info@sonatmundi.com">info@sonatmundi.com</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#cda4a3aba28dbea2a3acb9a0b8a3a9a4e3aea2a0"><span class="__cf_email__" data-cfemail="462f2820290635292827322b3328222f6825292b">[email&#160;protected]</span></a></li>
       <li><a href="https://sonatmundi.com">sonatmundi.com</a></li>
     </ul>
   </div>
@@ -823,7 +823,7 @@
 </footer>
 
 <!-- Banner Script -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const cv = document.getElementById('smC');
   const cx = cv.getContext('2d');
   const W = 1400, H = 520;
@@ -908,16 +908,4 @@
       const grad = cx.createLinearGradient(bx,0,bx+totalW,0);
       grad.addColorStop(0,'rgba(255,255,255,0)');
       grad.addColorStop(0.3,'rgba(255,255,255,0.8)');
-      grad.addColorStop(0.7,'rgba(255,255,255,0.8)');
-      grad.addColorStop(1,'rgba(255,255,255,0)');
-      cx.fillStyle = grad;
-      cx.fillRect(bx, midY-1, totalW, 2);
-    });
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-</script>
-
-</body>
-</html>
+      grad.ad
