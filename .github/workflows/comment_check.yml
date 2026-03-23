@@ -5,6 +5,9 @@ on:
     - cron: '0 8 * * *'   # Every day at 08:00 UTC (11:00 TR)
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   check-comments:
     runs-on: ubuntu-latest
@@ -40,7 +43,7 @@ jobs:
       - name: Generate draft summary
         if: always()
         run: |
-          echo "=== YORUM TASLAK ÖZETİ ===" > /tmp/draft_summary.txt
+          echo "=== YORUM TASLAK OZETI ===" > /tmp/draft_summary.txt
           echo "" >> /tmp/draft_summary.txt
           for f in growth/drafts/*.json; do
             if [ -f "$f" ]; then
@@ -70,29 +73,29 @@ jobs:
 
       - name: Send email notification
         if: always()
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v4
         with:
           server_address: smtp.gmail.com
           server_port: 587
-          username: ${{ secrets.GMAIL_USER }}
+          username: ${{ secrets.GMAIL_ADDRESS }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "💬 Sonat Mundi — Yeni Yorumlar (${{ steps.comments.outputs.draft_count }} taslak yanıt bekliyor)"
+          subject: "Sonat Mundi — Yeni Yorumlar (${{ steps.comments.outputs.draft_count }} taslak yanit bekliyor)"
           to: sjrkocaman@gmail.com
-          from: ${{ secrets.GMAIL_USER }}
+          from: Sonat Mundi <unitedcoloursofsound@gmail.com>
           body: |
-            Sonat Mundi — Günlük Yorum Kontrolü
+            Sonat Mundi — Gunluk Yorum Kontrolu
             =====================================
             Durum: ${{ job.status }}
-            Bekleyen taslak yanıt sayısı: ${{ steps.comments.outputs.draft_count }}
+            Bekleyen taslak yanit sayisi: ${{ steps.comments.outputs.draft_count }}
 
-            Taslakları onaylamak için:
+            Taslaklari onaylamak icin:
               python -m growth.comment_manager list
               python -m growth.comment_manager approve DRAFT_ID
 
-            Veya tümünü onayla:
+            Veya tumunu onayla:
               python -m growth.comment_manager approve --all
 
             Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Detaylı taslaklar ekte.
+            Detayli taslaklar ekte.
           attachments: /tmp/draft_summary.txt

@@ -5,6 +5,9 @@ on:
     - cron: '0 7 * * 3'   # Every Wednesday at 07:00 UTC (10:00 TR)
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   trending:
     runs-on: ubuntu-latest
@@ -42,23 +45,23 @@ jobs:
 
       - name: Send email notification
         if: always()
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v4
         with:
           server_address: smtp.gmail.com
           server_port: 587
-          username: ${{ secrets.GMAIL_USER }}
+          username: ${{ secrets.GMAIL_ADDRESS }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "📈 Sonat Mundi — Haftalık Trend Analizi (${{ job.status }})"
+          subject: "Sonat Mundi — Haftalik Trend Analizi (${{ job.status }})"
           to: sjrkocaman@gmail.com
-          from: ${{ secrets.GMAIL_USER }}
+          from: Sonat Mundi <unitedcoloursofsound@gmail.com>
           body: |
-            Sonat Mundi — Haftalık Trend Analizi
+            Sonat Mundi — Haftalik Trend Analizi
             =====================================
             Durum: ${{ job.status }}
             Tarih: ${{ github.event.repository.updated_at }}
 
-            Trend raporu ve rakip analizi tamamlandı.
-            Detaylı rapor artifacts bölümünden indirilebilir.
+            Trend raporu ve rakip analizi tamamlandi.
+            Detayli rapor artifacts bolumunden indirilebilir.
 
             Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           attachments: growth/reports/trending_*.json
