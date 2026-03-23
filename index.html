@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonat Mundi — Omnia Resonant</title>
+<meta name="description" content="Sonat Mundi — United Colours of Sound. Immersive soundscapes inspired by world music, human emotions, healing frequencies and the poetry of everyday life.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050508;
+    --deep: #090912;
+    --gold: #c9a84c;
+    --gold-dim: #8a6a20;
+    --gold-pale: #f0dca0;
+    --white: #f5f0e8;
+    --muted: #7a7060;
+    --teal: #2a8a7a;
+    --purple: #5a3a8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.08em;
+    overflow-x: hidden;
+  }
+
+  /* ── ANIMATED BACKGROUND ── */
+  .bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .wave {
+    position: absolute;
+    width: 200%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    opacity: 0;
+    animation: wave-drift 12s ease-in-out infinite;
+  }
+  .wave:nth-child(1) { top: 20%; animation-delay: 0s; animation-duration: 14s; }
+  .wave:nth-child(2) { top: 40%; animation-delay: 3s; animation-duration: 18s; opacity: 0; }
+  .wave:nth-child(3) { top: 60%; animation-delay: 6s; animation-duration: 16s; }
+  .wave:nth-child(4) { top: 75%; animation-delay: 9s; animation-duration: 20s; }
+
+  @keyframes wave-drift {
+    0% { transform: translateX(-50%) scaleY(1); opacity: 0; }
+    20% { opacity: 0.4; }
+    50% { transform: translateX(0%) scaleY(3); opacity: 0.2; }
+    80% { opacity: 0.4; }
+    100% { transform: translateX(-50%) scaleY(1); opacity: 0; }
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: orb-pulse 20s ease-in-out infinite;
+  }
+  .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(90,58,138,0.15), transparent); top: -200px; right: -200px; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(42,138,122,0.1), transparent); bottom: 20%; left: -100px; animation-delay: 7s; }
+  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(201,168,76,0.08), transparent); top: 50%; right: 10%; animation-delay: 14s; }
+
+  @keyframes orb-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 12px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(5,5,8,0.92), transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    mix-blend-mode: screen;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .nav-brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .nav-tagline {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fade-up 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-logo-img {
+    width: min(780px, 92vw);
+    height: auto;
+    object-fit: contain;
+    animation: fade-up 1.2s ease 0.1s forwards;
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    margin: 32px auto;
+    animation: fade-up 1.2s ease 0.4s forwards;
+    opacity: 0;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    animation: fade-up 1.2s ease 0.6s forwards;
+    opacity: 0;
+  }
+
+  .hero-sub {
+    margin-top: 16px;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    animation: fade-up 1.2s ease 0.8s forwards;
+    opacity: 0;
+  }
+
+  .hero-cta {
+    margin-top: 52px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    animation: fade-up 1.2s ease 1s forwards;
+    opacity: 0;
+  }
+
+  .btn-primary {
+    padding: 14px 40px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    transition: all 0.4s;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: var(--gold); color: var(--black); }
+
+  .btn-secondary {
+    padding: 14px 40px;
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    transition: all 0.4s;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover { border-color: var(--white); color: var(--white); }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fade-up 1.2s ease 1.4s forwards;
+    opacity: 0;
+  }
+
+  .scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ── BANNER ── */
+  .banner-section {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+
+  #smC { display: block; width: 100%; height: auto; }
+
+  .banner-over {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .banner-title {
+    font-family: 'Arial Black', 'Arial', sans-serif;
+    font-size: clamp(32px, 8.5vw, 96px);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    background: linear-gradient(90deg,
+      #ff0000 0%, #ff6600 14%, #ffcc00 28%, #33ff33 42%,
+      #00ccff 57%, #6633ff 71%, #ff33cc 85%, #ff0000 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter:
+      drop-shadow(0 0 12px rgba(255,100,100,0.9))
+      drop-shadow(0 0 24px rgba(100,255,100,0.7))
+      drop-shadow(3px 4px 0px rgba(0,0,0,1))
+      drop-shadow(6px 8px 16px rgba(0,0,0,0.9));
+    line-height: 1;
+  }
+
+  .banner-sub {
+    font-family: 'Arial Black', 'Arial', sans-serif;
+    font-size: clamp(8px, 1.2vw, 14px);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    background: linear-gradient(90deg,
+      #ff0000 0%, #ff9900 20%, #ffff00 38%,
+      #00ff88 55%, #00ccff 72%, #cc44ff 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.6)) drop-shadow(2px 3px 6px rgba(0,0,0,1));
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 120px 48px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .section-body {
+    font-size: 13px;
+    line-height: 2;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-visual {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: ring-rotate 20s linear infinite;
+  }
+
+  .ring-1 { width: 300px; height: 300px; border-color: rgba(201,168,76,0.2); animation-duration: 25s; }
+  .ring-2 { width: 220px; height: 220px; border-color: rgba(90,58,138,0.3); animation-duration: 18s; animation-direction: reverse; }
+  .ring-3 { width: 140px; height: 140px; border-color: rgba(42,138,122,0.3); animation-duration: 12s; }
+
+  @keyframes ring-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .about-center {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    font-style: italic;
+    text-align: center;
+    z-index: 1;
+  }
+
+  /* ── SERIES ── */
+  .series-section {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .series-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 80px;
+  }
+
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .series-card {
+    padding: 60px 40px;
+    border: 1px solid rgba(201,168,76,0.08);
+    cursor: pointer;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .series-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .series-card:nth-child(1)::before { background: linear-gradient(135deg, rgba(90,58,138,0.2), transparent); }
+  .series-card:nth-child(2)::before { background: linear-gradient(135deg, rgba(42,138,122,0.2), transparent); }
+  .series-card:nth-child(3)::before { background: linear-gradient(135deg, rgba(201,168,76,0.15), transparent); }
+  .series-card:nth-child(4)::before { background: linear-gradient(135deg, rgba(138,42,90,0.2), transparent); }
+
+  .series-card:hover::before { opacity: 1; }
+  .series-card:hover { border-color: rgba(201,168,76,0.3); }
+
+  .series-icon { font-size: 32px; margin-bottom: 24px; display: block; }
+
+  .series-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .series-desc { font-size: 11px; line-height: 1.8; color: var(--muted); letter-spacing: 0.1em; }
+
+  .series-count {
+    margin-top: 32px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── YOUTUBE ── */
+  .youtube-section { max-width: 900px; margin: 0 auto; text-align: center; }
+
+  .video-placeholder {
+    margin-top: 48px;
+    aspect-ratio: 16/9;
+    background: var(--deep);
+    border: 1px solid rgba(201,168,76,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    text-decoration: none;
+  }
+
+  .video-placeholder:hover { border-color: rgba(201,168,76,0.4); }
+
+  .play-icon {
+    width: 64px; height: 64px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .video-placeholder:hover .play-icon { background: var(--gold); border-color: var(--gold); }
+  .play-icon svg { fill: var(--gold); transition: fill 0.3s; }
+  .video-placeholder:hover .play-icon svg { fill: var(--black); }
+
+  .video-label { font-size: 11px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+
+  /* ── PHILOSOPHY ── */
+  .philosophy { text-align: center; max-width: 800px; margin: 0 auto; }
+
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--white);
+    margin: 40px 0;
+  }
+
+  .philosophy-quote em { color: var(--gold); font-style: normal; }
+
+  .frequencies {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 60px;
+  }
+
+  .freq-pill {
+    padding: 8px 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 80px 48px 40px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-brand .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+  }
+
+  .footer-brand .tagline {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+
+  .footer-links h4 {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-copy {
+    grid-column: 1 / -1;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy p { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); }
+
+  .gold-line { width: 60px; height: 1px; background: var(--gold-dim); margin: 32px 0; }
+  .center .gold-line { margin: 32px auto; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 10px 24px; }
+    .nav-links { display: none; }
+    .nav-logo-img { height: 40px; }
+    section { padding: 80px 24px; }
+    .about { grid-template-columns: 1fr; }
+    .about-visual { height: 250px; }
+    .series-grid { grid-template-columns: 1fr 1fr; }
+    footer { grid-template-columns: 1fr; }
+    .footer-copy { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  @media (max-width: 600px) {
+    .series-grid { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-logo-img { width: 90vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-canvas">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-brand">
+    <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="nav-logo-img">
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">Sonat Mundi</span>
+      <span class="nav-tagline">Omnia Resonant</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#series">Series</a></li>
+    <li><a href="#listen">Listen</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <p class="hero-eyebrow">United Colours of Sound</p>
+  <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="hero-logo-img">
+  <div class="hero-divider"></div>
+  <p class="hero-tagline">Omnia Resonant</p>
+  <p class="hero-sub">All things resonate</p>
+  <div class="hero-cta">
+    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="btn-primary">Listen on YouTube</a>
+    <a href="#series" class="btn-secondary">Explore Series</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Banner -->
+<div class="banner-section">
+  <canvas id="smC"></canvas>
+  <div class="banner-over">
+    <div class="banner-title">SONAT MUNDI</div>
+    <div class="banner-sub">United Colours of Sound &nbsp;·&nbsp; Omnia Resonant &nbsp;·&nbsp; Ancient Sounds · Modern Soul</div>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="about">
+    <div class="about-visual">
+      <div class="about-ring ring-1"></div>
+      <div class="about-ring ring-2"></div>
+      <div class="about-ring ring-3"></div>
+      <div class="about-center">∞</div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">Who we are</p>
+      <h2 class="section-title">Ancient Sounds.<br>Modern Soul.</h2>
+      <div class="gold-line"></div>
+      <p class="section-body">
+        Sonat Mundi creates immersive soundscapes inspired by world music traditions, human emotions, healing frequencies and the poetry of everyday life.
+        <br><br>
+        Every sound we produce is a small universe — waiting for you to step inside. We travel through 195 nations, every emotion, every frequency, every moment of the human experience.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Series -->
+<section id="series" class="series-section">
+  <div class="series-header center">
+    <p class="section-label">Our Universe</p>
+    <h2 class="section-title">Four Worlds.<br>Infinite Sound.</h2>
+  </div>
+  <div class="series-grid">
+    <div class="series-card">
+      <span class="series-icon">🌍</span>
+      <div class="series-name">Sounds of World</div>
+      <p class="series-desc">A sonic journey through 195 nations — every culture, every tradition, every instrument. Turkey · Japan · Persia · India · Africa · Bali · Nordic · Andes · Silk Road...</p>
+      <p class="series-count">Vol. 1 — Ancient Silk Road · Available Now</p>
+    </div>
+    <div class="series-card">
+      <span class="series-icon">🎭</span>
+      <div class="series-name">Sounds of Emotions</div>
+      <p class="series-desc">Music that feels what words cannot say. Joy · Melancholy · Serenity · Passion · Wonder · Nostalgia · Euphoria · Stillness · Longing · Liberation...</p>
+      <p class="series-count">Coming Soon</p>
+    </div>
+    <div class="series-card">
+      <span class="series-icon">🎯</span>
+      <div class="series-name">Sounds of Concepts</div>
+      <p class="series-desc">The perfect sonic backdrop for every moment of your life. Study · Sleep · Meditation · Yoga · Healing · Creativity · Driving · Dining · Morning Rituals...</p>
+      <p class="series-count">Vol. 1 — Study Music · Available Now</p>
+    </div>
+    <div class="series-card">
+      <span class="series-icon">✨</span>
+      <div class="series-name">Sounds of Frequencies</div>
+      <p class="series-desc">Ancient healing tones for modern souls. 174 Hz · 285 Hz · 432 Hz · 528 Hz · 639 Hz · 741 Hz · 852 Hz · 963 Hz · Solfeggio · Binaural · Schumann Resonance...</p>
+      <p class="series-count">Coming Soon</p>
+    </div>
+  </div>
+</section>
+
+<!-- Listen -->
+<section id="listen">
+  <div class="youtube-section">
+    <p class="section-label" style="text-align:center">Now Playing</p>
+    <h2 class="section-title" style="text-align:center">Listen & Journey</h2>
+    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="video-placeholder">
+      <div class="play-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <p class="video-label">Watch on YouTube — @UnitedColoursofSound</p>
+    </a>
+  </div>
+</section>
+
+<!-- Philosophy -->
+<section id="philosophy" class="series-section">
+  <div class="philosophy center">
+    <p class="section-label">Our Philosophy</p>
+    <div class="gold-line"></div>
+    <p class="philosophy-quote">
+      "Sound is not merely what the ear hears.<br>
+      It is what the <em>soul</em> remembers."
+    </p>
+    <p class="section-body" style="margin: 0 auto; text-align: center;">
+      We believe that every frequency carries memory. Every melody holds a door. And every moment of stillness is an invitation to listen — not to music, but to the world itself.
+    </p>
+    <div class="frequencies">
+      <span class="freq-pill">174 Hz</span>
+      <span class="freq-pill">285 Hz</span>
+      <span class="freq-pill">396 Hz</span>
+      <span class="freq-pill">432 Hz</span>
+      <span class="freq-pill">528 Hz</span>
+      <span class="freq-pill">639 Hz</span>
+      <span class="freq-pill">741 Hz</span>
+      <span class="freq-pill">852 Hz</span>
+      <span class="freq-pill">963 Hz</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+  <div class="footer-brand">
+    <div class="logo">Sonat Mundi</div>
+    <div class="tagline">Omnia Resonant</div>
+    <div class="gold-line" style="margin-top:24px"></div>
+    <p style="font-size:11px; color:var(--muted); line-height:1.8;">
+      United Colours of Sound<br>
+      Ancient Sounds · Modern Soul
+    </p>
+  </div>
+  <div class="footer-links">
+    <h4>Series</h4>
+    <ul>
+      <li><a href="#">Sounds of World</a></li>
+      <li><a href="#">Sounds of Emotions</a></li>
+      <li><a href="#">Sounds of Concepts</a></li>
+      <li><a href="#">Sounds of Frequencies</a></li>
+    </ul>
+  </div>
+  <div class="footer-links">
+    <h4>Follow</h4>
+    <ul>
+      <li><a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a></li>
+      <li><a href="https://instagram.com/sonatmundi" target="_blank">Instagram</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#cda4a3aba28dbea2a3acb9a0b8a3a9a4e3aea2a0"><span class="__cf_email__" data-cfemail="462f2820290635292827322b3328222f6825292b">[email&#160;protected]</span></a></li>
+      <li><a href="https://sonatmundi.com">sonatmundi.com</a></li>
+    </ul>
+  </div>
+  <div class="footer-copy">
+    <p>© 2026 Sonat Mundi — United Colours of Sound</p>
+    <p>Omnia Resonant — All things resonate.</p>
+  </div>
+</footer>
+
+<!-- Banner Script -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const cv = document.getElementById('smC');
+  const cx = cv.getContext('2d');
+  const W = 1400, H = 520;
+  cv.width = W; cv.height = H;
+
+  const stars = Array.from({length:280}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    r: Math.random()*1.1+0.2,
+    a: Math.random()*0.6+0.15,
+    tw: Math.random()*Math.PI*2
+  }));
+
+  const waveParams = [
+    {col:'rgba(80,200,120,',  fy:0.9, px:0.0, amp:95,  spd:0.009},
+    {col:'rgba(60,160,255,',  fy:1.1, px:0.5, amp:85,  spd:0.007},
+    {col:'rgba(160,80,255,',  fy:1.3, px:1.0, amp:100, spd:0.006},
+    {col:'rgba(220,60,80,',   fy:0.8, px:1.5, amp:90,  spd:0.008},
+    {col:'rgba(255,140,40,',  fy:1.5, px:2.0, amp:80,  spd:0.010},
+    {col:'rgba(100,220,200,', fy:1.7, px:0.8, amp:75,  spd:0.005},
+    {col:'rgba(255,80,160,',  fy:2.0, px:1.2, amp:70,  spd:0.007},
+    {col:'rgba(200,200,80,',  fy:1.2, px:2.5, amp:65,  spd:0.006},
+    {col:'rgba(80,120,255,',  fy:2.2, px:0.3, amp:60,  spd:0.009},
+    {col:'rgba(180,60,220,',  fy:0.7, px:1.8, amp:55,  spd:0.008},
+    {col:'rgba(60,220,100,',  fy:2.5, px:0.6, amp:50,  spd:0.005},
+    {col:'rgba(255,200,60,',  fy:1.8, px:2.2, amp:45,  spd:0.007},
+  ];
+
+  const BARS = 28;
+  const barH = Array.from({length:BARS}, (_,i) => ({h:20+Math.sin(i*0.9)*50+Math.random()*40, t:0, v:0}));
+  function rndT(){ return 12+Math.random()*110; }
+  barH.forEach(b => b.t = rndT());
+
+  let frame = 0;
+  function draw(){
+    frame++;
+    cx.clearRect(0,0,W,H);
+    cx.fillStyle = '#000';
+    cx.fillRect(0,0,W,H);
+
+    stars.forEach(s => {
+      s.tw += 0.012;
+      const a = s.a*(0.4+0.6*Math.abs(Math.sin(s.tw)));
+      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle = `rgba(255,255,255,${a})`; cx.fill();
+    });
+
+    const midX = W/2, midY = H/2;
+
+    for(let r=28; r<=300; r+=20){
+      cx.beginPath(); cx.arc(midX,midY,r,0,Math.PI*2);
+      cx.strokeStyle = `rgba(210,190,140,${Math.max(0.01, 0.10-r*0.00025)})`;
+      cx.lineWidth = 0.8; cx.stroke();
+    }
+
+    const zoneW = 680;
+    waveParams.forEach((w,wi) => {
+      const phase = frame*w.spd + wi*0.4;
+      cx.beginPath();
+      for(let i=0; i<=400; i++){
+        const frac = i/400;
+        const t2 = frac*Math.PI*4;
+        const x = midX + (zoneW/2)*Math.sin(t2*0.5 + phase*0.4 + wi*0.3);
+        const y = midY + w.amp*Math.sin(t2*w.fy + w.px + phase);
+        i===0 ? cx.moveTo(x,y) : cx.lineTo(x,y);
+      }
+      cx.strokeStyle = w.col+(0.20+0.08*Math.sin(frame*0.015+wi))+')';
+      cx.lineWidth = 1.0; cx.stroke();
+    });
+
+    const BW=5, BG=4, totalW=BARS*(BW+BG);
+    if(frame%7===0) barH.forEach(b => b.t=rndT());
+    barH.forEach(b => { b.v += (b.t-b.h)*0.12; b.h += b.v; b.v *= 0.78; });
+
+    [38, W-38-totalW].forEach(bx => {
+      barH.forEach((b,i) => {
+        const x = bx+i*(BW+BG), bh = Math.max(5,b.h), frac = bh/120;
+        cx.fillStyle = `rgba(${Math.floor(210+45*frac)},${Math.floor(180+75*frac)},${Math.floor(80+175*frac)},0.85)`;
+        cx.fillRect(x, midY-bh/2, BW, bh/2);
+        cx.fillStyle = `rgba(${Math.floor(210+45*frac)},${Math.floor(180+75*frac)},${Math.floor(80+175*frac)},0.6)`;
+        cx.fillRect(x, midY, BW, bh/2);
+      });
+      const grad = cx.createLinearGradient(bx,0,bx+totalW,0);
+      grad.addColorStop(0,'rgba(255,255,255,0)');
+      grad.addColorStop(0.3,'rgba(255,255,255,0.8)');
+      grad.ad
