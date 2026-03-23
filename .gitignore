@@ -1,4 +1,5 @@
 # === CREDENTIALS & SECRETS ===
+config.json
 token.json
 credentials.json
 client_secret*.json
@@ -6,6 +7,7 @@ secrets/
 *.key
 *.pem
 .env
+atropic api.txt
 
 # === MEDIA FILES (too large for git) ===
 *.mp3
