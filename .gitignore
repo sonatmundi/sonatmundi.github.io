@@ -1,0 +1,39 @@
+# === CREDENTIALS & SECRETS ===
+token.json
+credentials.json
+client_secret*.json
+secrets/
+*.key
+*.pem
+.env
+
+# === MEDIA FILES (too large for git) ===
+*.mp3
+*.mp4
+*.wav
+*.flac
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.webp
+
+# === Large directories ===
+Sounds/
+yedekler/
+sonatmundi_logos/
+
+# === Python cache ===
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# === IDE ===
+.vscode/
+.idea/
+
+# === OS ===
+Thumbs.db
+.DS_Store
