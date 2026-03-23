@@ -1,0 +1,42 @@
+name: Daily Comment Check
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Every day at 08:00 UTC (11:00 TR)
+  workflow_dispatch:
+
+jobs:
+  check-comments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup credentials
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: |
+          echo "$YOUTUBE_TOKEN" | base64 -d > token.json
+          echo "$YOUTUBE_CREDENTIALS" | base64 -d > credentials.json
+
+      - name: Check comments and draft replies
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: python -m growth.comment_manager check
+
+      - name: Upload drafts as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: comment-drafts-${{ github.run_number }}
+          path: growth/drafts/
+          retention-days: 30
