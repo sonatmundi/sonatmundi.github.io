@@ -39,3 +39,26 @@ jobs:
           name: trending-report-${{ github.run_number }}
           path: growth/reports/
           retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "📈 Sonat Mundi — Haftalık Trend Analizi (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: ${{ secrets.GMAIL_USER }}
+          body: |
+            Sonat Mundi — Haftalık Trend Analizi
+            =====================================
+            Durum: ${{ job.status }}
+            Tarih: ${{ github.event.repository.updated_at }}
+
+            Trend raporu ve rakip analizi tamamlandı.
+            Detaylı rapor artifacts bölümünden indirilebilir.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: growth/reports/trending_*.json

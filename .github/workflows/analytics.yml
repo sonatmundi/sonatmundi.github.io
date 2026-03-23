@@ -3,7 +3,7 @@ name: Weekly Analytics Report
 on:
   schedule:
     - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC (09:00 TR)
-  workflow_dispatch:       # Manual trigger
+  workflow_dispatch:
 
 jobs:
   analytics:
@@ -41,3 +41,24 @@ jobs:
           name: weekly-report-${{ github.run_number }}
           path: analytics/reports/
           retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "📊 Sonat Mundi — Haftalık Analytics Raporu (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: ${{ secrets.GMAIL_USER }}
+          body: |
+            Sonat Mundi — Haftalık Analytics Raporu
+            ========================================
+            Durum: ${{ job.status }}
+            Tarih: ${{ github.event.repository.updated_at }}
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Rapor dosyaları artifacts bölümünden indirilebilir.
+          attachments: analytics/reports/*.txt

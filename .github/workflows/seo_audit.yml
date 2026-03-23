@@ -39,3 +39,25 @@ jobs:
           name: seo-audit-${{ github.run_number }}
           path: growth/reports/
           retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "🔍 Sonat Mundi — Haftalık SEO Denetimi (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: ${{ secrets.GMAIL_USER }}
+          body: |
+            Sonat Mundi — Haftalık SEO Denetimi
+            ====================================
+            Durum: ${{ job.status }}
+
+            Tüm videoların SEO analizi tamamlandı.
+            Detaylı rapor ekte ve artifacts bölümünde.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: growth/reports/seo_audit_*.json

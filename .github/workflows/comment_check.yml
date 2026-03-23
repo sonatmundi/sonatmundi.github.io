@@ -27,11 +27,38 @@ jobs:
           echo "$YOUTUBE_CREDENTIALS" | base64 -d > credentials.json
 
       - name: Check comments and draft replies
+        id: comments
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
           YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
-        run: python -m growth.comment_manager check
+        run: |
+          python -m growth.comment_manager check 2>&1 | tee /tmp/comment_output.txt
+          DRAFT_COUNT=$(find growth/drafts -name "*.json" 2>/dev/null | wc -l)
+          echo "draft_count=$DRAFT_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Generate draft summary
+        if: always()
+        run: |
+          echo "=== YORUM TASLAK ÖZETİ ===" > /tmp/draft_summary.txt
+          echo "" >> /tmp/draft_summary.txt
+          for f in growth/drafts/*.json; do
+            if [ -f "$f" ]; then
+              python3 -c "
+          import json, sys
+          with open('$f') as fh:
+              d = json.load(fh)
+          if d.get('status') == 'pending':
+              print(f\"Yazar: @{d['author']}\")
+              print(f\"Yorum: {d['comment_text'][:120]}\")
+              print(f\"Taslak Yanit: {d['draft_reply']}\")
+              print(f\"Oncelik: {d['priority']} | Duygu: {d['sentiment']}\")
+              print(f\"Draft ID: {d['draft_id']}\")
+              print('---')
+          "
+            fi
+          done >> /tmp/draft_summary.txt 2>/dev/null
+          cat /tmp/draft_summary.txt
 
       - name: Upload drafts as artifact
         uses: actions/upload-artifact@v4
@@ -40,3 +67,32 @@ jobs:
           name: comment-drafts-${{ github.run_number }}
           path: growth/drafts/
           retention-days: 30
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "💬 Sonat Mundi — Yeni Yorumlar (${{ steps.comments.outputs.draft_count }} taslak yanıt bekliyor)"
+          to: sjrkocaman@gmail.com
+          from: ${{ secrets.GMAIL_USER }}
+          body: |
+            Sonat Mundi — Günlük Yorum Kontrolü
+            =====================================
+            Durum: ${{ job.status }}
+            Bekleyen taslak yanıt sayısı: ${{ steps.comments.outputs.draft_count }}
+
+            Taslakları onaylamak için:
+              python -m growth.comment_manager list
+              python -m growth.comment_manager approve DRAFT_ID
+
+            Veya tümünü onayla:
+              python -m growth.comment_manager approve --all
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Detaylı taslaklar ekte.
+          attachments: /tmp/draft_summary.txt
