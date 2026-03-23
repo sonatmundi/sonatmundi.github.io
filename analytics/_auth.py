@@ -11,10 +11,11 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
-TOKEN_PATH  = r"D:\Yedekler\UCS\token.json"
-CREDS_PATH  = r"D:\Yedekler\UCS\credentials.json"
+_BASE_DIR   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+TOKEN_PATH  = os.path.join(_BASE_DIR, "token.json")
+CREDS_PATH  = os.path.join(_BASE_DIR, "credentials.json")
 CHANNEL_ID  = "UCVFOpInPEdxJQF_FmnoKSMQ"
-REPORTS_DIR = r"D:\Yedekler\UCS\analytics\reports"
+REPORTS_DIR = os.path.join(_BASE_DIR, "analytics", "reports")
 
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.readonly",

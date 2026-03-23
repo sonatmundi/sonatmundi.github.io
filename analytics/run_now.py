@@ -109,7 +109,8 @@ def main():
         print(f"  {status}  {short:<20}  {path}")
     print(SEP)
     print(f"  {ok_count}/{len(results)} reports completed  │  Total: {total_elapsed:.1f}s")
-    print(f"  Reports folder: D:\\Yedekler\\UCS\\analytics\\reports\\")
+    reports_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports")
+    print(f"  Reports folder: {reports_dir}")
     print(THICK)
 
     if ok_count < len(results):
