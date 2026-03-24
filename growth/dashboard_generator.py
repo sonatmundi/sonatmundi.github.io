@@ -413,8 +413,11 @@ tr:hover td{{background:rgba(212,168,83,.05)}}
     return html
 
 
-def send_email(html_content, subject=None):
-    """Send the dashboard via Gmail SMTP."""
+def send_email(html_content, html_file_path=None, subject=None):
+    """Send the dashboard via Gmail SMTP — HTML body + .html file attachment."""
+    from email.mime.base import MIMEBase
+    from email import encoders
+
     gmail_user = os.environ.get("GMAIL_ADDRESS", "")
     gmail_pass = os.environ.get("GMAIL_APP_PASSWORD", "")
     to_email = "sjrkocaman@gmail.com"
@@ -426,17 +429,25 @@ def send_email(html_content, subject=None):
     if not subject:
         subject = f"Sonat Mundi Dashboard — {datetime.now().strftime('%d %b %Y')}"
 
-    msg = MIMEMultipart("alternative")
+    msg = MIMEMultipart("mixed")
     msg["Subject"] = subject
     msg["From"] = f"Sonat Mundi <{gmail_user}>"
     msg["To"] = to_email
 
-    # Plain text fallback
-    text_part = MIMEText("Dashboard HTML raporu ekte. HTML destekleyen mail istemcisinde goruntuleyiniz.", "plain", "utf-8")
+    # HTML body (renders directly in email client)
     html_part = MIMEText(html_content, "html", "utf-8")
-
-    msg.attach(text_part)
     msg.attach(html_part)
+
+    # Attach the .html file for download
+    if html_file_path and os.path.exists(html_file_path):
+        filename = os.path.basename(html_file_path)
+        attachment = MIMEBase("text", "html")
+        with open(html_file_path, "r", encoding="utf-8") as f:
+            attachment.set_payload(f.read().encode("utf-8"))
+        encoders.encode_base64(attachment)
+        attachment.add_header("Content-Disposition", "attachment", filename=filename)
+        msg.attach(attachment)
+        print(f"Attached: {filename}")
 
     try:
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
@@ -485,7 +496,7 @@ def main():
     print(f"Dashboard saved: {path}")
 
     if args.email:
-        send_email(html)
+        send_email(html, html_file_path=path)
 
 
 if __name__ == "__main__":
