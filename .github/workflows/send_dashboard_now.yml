@@ -1,0 +1,60 @@
+name: Send Dashboard Now
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Send existing dashboard via email
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python3 << 'PYEOF'
+          import smtplib, os
+          from email.mime.multipart import MIMEMultipart
+          from email.mime.text import MIMEText
+          from email.mime.base import MIMEBase
+          from email import encoders
+
+          gmail_user = os.environ["GMAIL_ADDRESS"]
+          gmail_pass = os.environ["GMAIL_APP_PASSWORD"]
+
+          # Read the dashboard HTML from repo
+          with open("growth/reports/sonat_mundi_dashboard_2026-03-24.html", "r") as f:
+              html = f.read()
+
+          msg = MIMEMultipart("mixed")
+          msg["Subject"] = "Sonat Mundi — Growth Dashboard 24 Mart 2026"
+          msg["From"] = f"Sonat Mundi <{gmail_user}>"
+          msg["To"] = "sjrkocaman@gmail.com"
+
+          # HTML body (renders in email client)
+          html_part = MIMEText(html, "html", "utf-8")
+          msg.attach(html_part)
+
+          # Also attach as downloadable .html file
+          attachment = MIMEBase("text", "html")
+          attachment.set_payload(html.encode("utf-8"))
+          encoders.encode_base64(attachment)
+          attachment.add_header("Content-Disposition", "attachment", filename="sonat_mundi_dashboard_2026-03-24.html")
+          msg.attach(attachment)
+
+          with smtplib.SMTP("smtp.gmail.com", 587) as server:
+              server.starttls()
+              server.login(gmail_user, gmail_pass)
+              server.sendmail(gmail_user, "sjrkocaman@gmail.com", msg.as_string())
+
+          print("Email sent with HTML body + attachment!")
+          PYEOF
