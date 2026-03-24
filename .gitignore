@@ -1,4 +1,4 @@
-# === CREDENTIALS & SECRETS ===
+# === CREDENTIALS & SECRETS (NEVER COMMIT) ===
 config.json
 token.json
 credentials.json
@@ -6,8 +6,17 @@ client_secret*.json
 secrets/
 *.key
 *.pem
+*.p12
+*.pfx
 .env
+.env.*
 atropic api.txt
+
+# Catch any file with "secret", "credential", "token", "password" in name
+*secret*
+*credential*
+*password*
+*token*.json
 
 # === MEDIA FILES (too large for git) ===
 *.mp3
@@ -26,6 +35,10 @@ Sounds/
 yedekler/
 sonatmundi_logos/
 
+# === Generated reports (contain channel data) ===
+analytics/reports/
+growth/drafts/
+
 # === Python cache ===
 __pycache__/
 *.pyc
@@ -39,3 +52,4 @@ __pycache__/
 # === OS ===
 Thumbs.db
 .DS_Store
+desktop.ini

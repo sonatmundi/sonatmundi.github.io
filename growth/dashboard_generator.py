@@ -113,7 +113,10 @@ Videos: {json.dumps(video_data, ensure_ascii=False)}"""}],
     start = text.find("[")
     end = text.rfind("]") + 1
     if start >= 0 and end > start:
-        return json.loads(text[start:end])
+        try:
+            return json.loads(text[start:end])
+        except json.JSONDecodeError:
+            print("Warning: Failed to parse SEO audit JSON")
     return []
 
 
@@ -129,7 +132,10 @@ Return JSON: {"topics": [{"title":"...","why":"..."}], "keywords": ["kw1","kw2",
     start = text.find("{")
     end = text.rfind("}") + 1
     if start >= 0 and end > start:
-        return json.loads(text[start:end])
+        try:
+            return json.loads(text[start:end])
+        except json.JSONDecodeError:
+            print("Warning: Failed to parse trending JSON")
     return {"topics": [], "keywords": []}
 
 

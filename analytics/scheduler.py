@@ -59,8 +59,8 @@ TASK_DEFS = [
 ]
 
 
-def run(cmd):
-    return subprocess.run(cmd, capture_output=True, text=True, shell=True)
+def run(cmd_list):
+    return subprocess.run(cmd_list, capture_output=True, text=True)
 
 
 def register_tasks():
@@ -76,19 +76,21 @@ def register_tasks():
         tr = f'"{PYTHON}" "{t["script"]}"'
 
         if t["schedule"] == "WEEKLY":
-            cmd = (
-                f'schtasks /create /tn "{t["name"]}" '
-                f'/tr {tr} '
-                f'/sc WEEKLY /d {t["day"]} /st {t["time"]} '
-                f'/f'
-            )
+            cmd = [
+                "schtasks", "/create",
+                "/tn", t["name"],
+                "/tr", tr,
+                "/sc", "WEEKLY", "/d", t["day"], "/st", t["time"],
+                "/f",
+            ]
         else:  # MONTHLY
-            cmd = (
-                f'schtasks /create /tn "{t["name"]}" '
-                f'/tr {tr} '
-                f'/sc MONTHLY /d {t["day"]} /st {t["time"]} '
-                f'/f'
-            )
+            cmd = [
+                "schtasks", "/create",
+                "/tn", t["name"],
+                "/tr", tr,
+                "/sc", "MONTHLY", "/d", t["day"], "/st", t["time"],
+                "/f",
+            ]
 
         result = run(cmd)
         ok = result.returncode == 0
@@ -120,7 +122,7 @@ def list_tasks():
     print("  CURRENT SONAT MUNDI SCHEDULED TASKS")
     print("=" * 60)
     for t in TASK_DEFS:
-        result = run(f'schtasks /query /tn "{t["name"]}" /fo LIST 2>&1')
+        result = run(["schtasks", "/query", "/tn", t["name"], "/fo", "LIST"])
         if result.returncode == 0:
             # Extract key lines
             for line in result.stdout.splitlines():
@@ -138,7 +140,7 @@ def list_tasks():
 def delete_tasks():
     print("Deleting all Sonat Mundi scheduled tasks...")
     for t in TASK_DEFS:
-        result = run(f'schtasks /delete /tn "{t["name"]}" /f')
+        result = run(["schtasks", "/delete", "/tn", t["name"], "/f"])
         status = "✓ Deleted" if result.returncode == 0 else "✗ Not found"
         print(f"  {status}: {t['name']}")
 

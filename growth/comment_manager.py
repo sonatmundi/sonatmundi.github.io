@@ -136,7 +136,11 @@ Comments:
     start = text.find("[")
     end = text.rfind("]") + 1
     if start >= 0 and end > start:
-        return json.loads(text[start:end])
+        try:
+            return json.loads(text[start:end])
+        except json.JSONDecodeError:
+            print("Warning: Failed to parse AI response as JSON")
+            return []
     return []
 
 
