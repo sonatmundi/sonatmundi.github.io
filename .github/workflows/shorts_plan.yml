@@ -1,0 +1,67 @@
+name: Weekly Shorts Plan
+
+on:
+  schedule:
+    - cron: '0 9 * * 2'   # Every Tuesday at 09:00 UTC (12:00 TR)
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  shorts-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup credentials
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: |
+          echo "$YOUTUBE_TOKEN" | base64 -d > token.json
+          echo "$YOUTUBE_CREDENTIALS" | base64 -d > credentials.json
+
+      - name: Generate Shorts plan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: python -m growth.shorts_generator
+
+      - name: Upload plan
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shorts-plan-${{ github.run_number }}
+          path: growth/reports/shorts_plan_*.json
+          retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "Sonat Mundi — Yeni Shorts Plani (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: Sonat Mundi <unitedcoloursofsound@gmail.com>
+          body: |
+            Sonat Mundi — Haftalik Shorts Icerik Plani
+            ============================================
+            Durum: ${{ job.status }}
+
+            Yeni Shorts onerileri hazir. Raporu indirip
+            lokal makinede FFmpeg ile render edebilirsiniz.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

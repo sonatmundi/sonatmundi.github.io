@@ -1,0 +1,78 @@
+name: Weekly Title & SEO Optimization
+
+on:
+  schedule:
+    - cron: '0 7 * * 4'   # Every Thursday at 07:00 UTC (10:00 TR)
+  workflow_dispatch:
+    inputs:
+      apply_changes:
+        description: 'Apply title changes to YouTube (true/false)'
+        required: false
+        default: 'false'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  title-optimization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup credentials
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: |
+          echo "$YOUTUBE_TOKEN" | base64 -d > token.json
+          echo "$YOUTUBE_CREDENTIALS" | base64 -d > credentials.json
+
+      - name: Run title optimization
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: |
+          if [ "${{ github.event.inputs.apply_changes }}" = "true" ]; then
+            python -m growth.title_optimizer --apply
+          else
+            python -m growth.title_optimizer
+          fi
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: title-optimization-${{ github.run_number }}
+          path: growth/reports/title_optimization_*.json
+          retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "Sonat Mundi — Baslik & SEO Optimizasyonu (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: Sonat Mundi <unitedcoloursofsound@gmail.com>
+          body: |
+            Sonat Mundi — Haftalik Baslik & SEO Optimizasyonu
+            ===================================================
+            Durum: ${{ job.status }}
+            Degisiklik uygulandi mi: ${{ github.event.inputs.apply_changes || 'false' }}
+
+            Tum videolarin baslik ve SEO analizi tamamlandi.
+            Onerileri uygulamak icin workflow'u apply_changes=true ile calistirin.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

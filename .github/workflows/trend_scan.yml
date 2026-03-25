@@ -1,0 +1,69 @@
+name: Weekly Trend Scan
+
+on:
+  schedule:
+    - cron: '0 8 * * 3'   # Every Wednesday at 08:00 UTC (11:00 TR)
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  trend-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup credentials
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: |
+          echo "$YOUTUBE_TOKEN" | base64 -d > token.json
+          echo "$YOUTUBE_CREDENTIALS" | base64 -d > credentials.json
+
+      - name: Run deep trend scan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+        run: python -m growth.trend_scanner
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trend-scan-${{ github.run_number }}
+          path: growth/reports/trend_scan_*.json
+          retention-days: 90
+
+      - name: Send email notification
+        if: always()
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "Sonat Mundi — Trend Taramasi (${{ job.status }})"
+          to: sjrkocaman@gmail.com
+          from: Sonat Mundi <unitedcoloursofsound@gmail.com>
+          body: |
+            Sonat Mundi — Haftalik Trend Taramasi
+            ======================================
+            Durum: ${{ job.status }}
+
+            20 nis anahtar kelimede trend taramasi,
+            rakip kanal analizi ve AI icerik onerileri tamamlandi.
+
+            Rapor artifacts bolumunden indirilebilir.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

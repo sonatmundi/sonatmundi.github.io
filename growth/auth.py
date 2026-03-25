@@ -20,8 +20,10 @@ TOKEN_PATH = os.path.join(BASE_DIR, "token.json")
 CREDS_PATH = os.path.join(BASE_DIR, "credentials.json")
 
 SCOPES = [
+    "https://www.googleapis.com/auth/youtube",                 # full management (playlists, titles, thumbnails)
     "https://www.googleapis.com/auth/youtube.readonly",
-    "https://www.googleapis.com/auth/youtube.force-ssl",      # comments
+    "https://www.googleapis.com/auth/youtube.upload",          # video/thumbnail upload
+    "https://www.googleapis.com/auth/youtube.force-ssl",       # comments
     "https://www.googleapis.com/auth/yt-analytics.readonly",
     "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
 ]
