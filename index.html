@@ -215,14 +215,14 @@
     z-index: 2;
   }
 
-  /* Canvas-based smooth waves behind logo */
+  /* Full-width sound waves across the hero */
   #heroWavesCanvas {
     position: absolute;
+    left: 0;
     top: 0;
-    left: -20%;
-    width: 140%;
+    width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 0;
     pointer-events: none;
   }
 
@@ -1063,8 +1063,8 @@
 <!-- Hero -->
 <section class="hero">
   <p class="hero-eyebrow">United Colours of Sound</p>
+  <canvas id="heroWavesCanvas"></canvas>
   <div class="hero-logo-wrapper">
-    <canvas id="heroWavesCanvas"></canvas>
     <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="hero-logo-img">
   </div>
   <div class="hero-divider"></div>
@@ -1597,83 +1597,104 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ── HERO LOGO WAVES (Canvas) ──
+// ── HERO SOUND WAVES (Full-width Canvas) ──
 (function() {
   const canvas = document.getElementById('heroWavesCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const wrapper = canvas.parentElement;
+  const hero = canvas.closest('.hero');
 
   function resize() {
-    const rect = wrapper.getBoundingClientRect();
-    canvas.width = rect.width * 1.4;
-    canvas.height = rect.height;
+    canvas.width = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
   }
   resize();
   window.addEventListener('resize', resize);
 
+  // Sound waves centered at logo vertical position
+  // Each wave: yOffset from center, amplitude, frequency, phase speed, color, max alpha, line width
   const waves = [
-    { y: 0.20, amp: 0.8, freq: 0.003, speed: 0.008, color: [212,178,85], alpha: 0.12, width: 1.5 },
-    { y: 0.30, amp: 1.2, freq: 0.004, speed: 0.006, color: [212,178,85], alpha: 0.18, width: 2 },
-    { y: 0.38, amp: 1.5, freq: 0.005, speed: 0.010, color: [212,178,85], alpha: 0.25, width: 2.5 },
-    { y: 0.45, amp: 2.0, freq: 0.003, speed: 0.007, color: [212,178,85], alpha: 0.35, width: 3 },
-    { y: 0.50, amp: 2.5, freq: 0.004, speed: 0.009, color: [212,178,85], alpha: 0.40, width: 3.5 },
-    { y: 0.55, amp: 2.0, freq: 0.005, speed: 0.008, color: [122,90,170], alpha: 0.22, width: 3 },
-    { y: 0.62, amp: 1.5, freq: 0.003, speed: 0.011, color: [122,90,170], alpha: 0.16, width: 2.5 },
-    { y: 0.70, amp: 1.2, freq: 0.004, speed: 0.007, color: [58,170,146], alpha: 0.18, width: 2 },
-    { y: 0.78, amp: 0.8, freq: 0.005, speed: 0.009, color: [58,170,146], alpha: 0.12, width: 1.5 },
+    // Gold core waves (densest at center)
+    { dy: -60, amp: 3.0, freq: 0.006, speed: 0.012, color: [212,178,85], alpha: 0.10, lw: 1.0 },
+    { dy: -40, amp: 4.0, freq: 0.004, speed: 0.008, color: [212,178,85], alpha: 0.15, lw: 1.5 },
+    { dy: -22, amp: 5.5, freq: 0.005, speed: 0.010, color: [212,178,85], alpha: 0.22, lw: 2.0 },
+    { dy: -8,  amp: 7.0, freq: 0.003, speed: 0.007, color: [212,178,85], alpha: 0.30, lw: 2.5 },
+    { dy:  0,  amp: 8.0, freq: 0.004, speed: 0.009, color: [212,178,85], alpha: 0.38, lw: 3.0 },
+    { dy:  8,  amp: 7.0, freq: 0.005, speed: 0.011, color: [212,178,85], alpha: 0.30, lw: 2.5 },
+    { dy:  22, amp: 5.5, freq: 0.003, speed: 0.008, color: [212,178,85], alpha: 0.22, lw: 2.0 },
+    { dy:  40, amp: 4.0, freq: 0.006, speed: 0.010, color: [212,178,85], alpha: 0.15, lw: 1.5 },
+    { dy:  60, amp: 3.0, freq: 0.004, speed: 0.012, color: [212,178,85], alpha: 0.10, lw: 1.0 },
+    // Purple accent waves
+    { dy: -35, amp: 4.5, freq: 0.007, speed: 0.006, color: [122,90,170], alpha: 0.12, lw: 1.5 },
+    { dy:  15, amp: 6.0, freq: 0.005, speed: 0.009, color: [122,90,170], alpha: 0.14, lw: 2.0 },
+    { dy:  50, amp: 3.5, freq: 0.006, speed: 0.007, color: [122,90,170], alpha: 0.10, lw: 1.0 },
+    // Teal accent waves
+    { dy: -50, amp: 3.5, freq: 0.005, speed: 0.008, color: [58,170,146], alpha: 0.10, lw: 1.0 },
+    { dy:  30, amp: 5.0, freq: 0.004, speed: 0.010, color: [58,170,146], alpha: 0.12, lw: 1.5 },
+    { dy:  65, amp: 3.0, freq: 0.007, speed: 0.006, color: [58,170,146], alpha: 0.08, lw: 1.0 },
   ];
 
   let t = 0;
 
-  function drawWave(w) {
+  function drawWave(w, centerY) {
     const cw = canvas.width;
-    const ch = canvas.height;
-    const baseY = ch * w.y;
+    const baseY = centerY + w.dy;
 
     ctx.beginPath();
-    for (let x = 0; x <= cw; x++) {
-      // Smooth fade envelope: sine-based so edges are perfectly smooth
+
+    for (let x = 0; x <= cw; x += 2) {
       const frac = x / cw;
-      const envelope = Math.sin(frac * Math.PI); // 0 → 1 → 0 smooth
-      const envSmooth = envelope * envelope; // even smoother (ease in/out)
 
-      const waveY = Math.sin(x * w.freq + t * w.speed * 60) * w.amp * envSmooth;
+      // Ultra-smooth edge fade: raised cosine window (no hard edges ever)
+      // Starts from 0, smoothly rises, stays full in center, smoothly falls to 0
+      const fadeIn = frac < 0.15 ? 0.5 * (1 - Math.cos(Math.PI * frac / 0.15)) : 1;
+      const fadeOut = frac > 0.85 ? 0.5 * (1 - Math.cos(Math.PI * (1 - frac) / 0.15)) : 1;
+      const envelope = fadeIn * fadeOut;
+
+      const wave1 = Math.sin(x * w.freq + t * w.speed * 60);
+      const wave2 = Math.sin(x * w.freq * 1.7 + t * w.speed * 40 + 2.0) * 0.3;
+      const waveY = (wave1 + wave2) * w.amp * envelope;
+
       const y = baseY + waveY;
-
       if (x === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
 
     const [r, g, b] = w.color;
-    const breathe = 0.7 + 0.3 * Math.sin(t * w.speed * 20);
+    // Gentle breathing effect
+    const breathe = 0.75 + 0.25 * Math.sin(t * 0.8 + w.dy * 0.05);
     const alpha = w.alpha * breathe;
 
+    // Draw with glow
     ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
-    ctx.lineWidth = w.width;
-    ctx.shadowColor = `rgba(${r},${g},${b},${alpha * 0.6})`;
-    ctx.shadowBlur = w.width * 4;
+    ctx.lineWidth = w.lw;
+    ctx.shadowColor = `rgba(${r},${g},${b},${alpha * 0.5})`;
+    ctx.shadowBlur = w.lw * 6;
     ctx.stroke();
     ctx.shadowBlur = 0;
   }
 
   function animate() {
     t += 0.016;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cw = canvas.width;
+    const ch = canvas.height;
+    ctx.clearRect(0, 0, cw, ch);
 
-    // Ambient center glow
-    const grd = ctx.createRadialGradient(
-      canvas.width / 2, canvas.height / 2, 0,
-      canvas.width / 2, canvas.height / 2, canvas.width * 0.35
-    );
-    const pulse = 0.6 + 0.4 * Math.sin(t * 0.5);
-    grd.addColorStop(0, `rgba(212,178,85,${0.06 * pulse})`);
-    grd.addColorStop(0.5, `rgba(122,90,170,${0.03 * pulse})`);
+    // Soft ambient glow at center
+    const centerX = cw / 2;
+    const centerY = ch * 0.42; // where the logo sits
+
+    const grd = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, cw * 0.4);
+    const pulse = 0.6 + 0.4 * Math.sin(t * 0.4);
+    grd.addColorStop(0, `rgba(212,178,85,${0.04 * pulse})`);
+    grd.addColorStop(0.4, `rgba(122,90,170,${0.02 * pulse})`);
     grd.addColorStop(1, 'transparent');
     ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, cw, ch);
 
-    waves.forEach(drawWave);
+    // Draw all waves centered on logo
+    waves.forEach(w => drawWave(w, centerY));
+
     requestAnimationFrame(animate);
   }
 
