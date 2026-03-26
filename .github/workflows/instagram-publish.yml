@@ -1,0 +1,108 @@
+name: Instagram Publisher
+
+on:
+  workflow_dispatch:
+    inputs:
+      day:
+        description: 'Hangi gun? (1-9 veya "all")'
+        required: true
+        type: string
+        default: '1'
+      mode:
+        description: 'Mod secimi'
+        required: true
+        type: choice
+        options:
+          - both
+          - posts-only
+          - reels-only
+        default: 'both'
+      dry_run:
+        description: 'Dry-run (gercek yukleme yapma)'
+        required: false
+        type: boolean
+        default: true
+
+  # Cron schedule — varsayilan olarak devre disi.
+  # Etkinlestirmek icin asagidaki satirlarin basindaki # isaretlerini kaldirin.
+  # UYARI: GitHub Actions runner IP'leri degiskendir, Instagram guvenlik
+  # uyarisi tetikleyebilir. Manuel tetikleme (workflow_dispatch) onerilir.
+  #
+  # schedule:
+  #   - cron: '0 9 * * *'  # Her gun 09:00 UTC (12:00 TR)
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install instagrapi Pillow
+
+      - name: Restore Instagram session cache
+        uses: actions/cache@v4
+        with:
+          path: ig_session.json
+          key: instagram-session-${{ secrets.INSTAGRAM_USERNAME }}
+          restore-keys: |
+            instagram-session-
+
+      - name: Run Instagram Publisher
+        env:
+          INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          PUBLISH_DAY: ${{ inputs.day || '1' }}
+          PUBLISH_MODE: ${{ inputs.mode || 'both' }}
+          DRY_RUN: ${{ inputs.dry_run || 'true' }}
+          INSTAGRAM_POSTS_DIR: ${{ github.workspace }}/growth/instagram/posts
+          INSTAGRAM_SESSION_FILE: ${{ github.workspace }}/ig_session.json
+          INSTAGRAM_MEDIA_DIR: ${{ github.workspace }}/media
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python -m growth.instagram_publisher
+
+      - name: Save session artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ig-session-${{ github.run_number }}
+          path: ig_session.json
+          retention-days: 30
+
+      - name: Send email notification on failure
+        if: failure()
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python -c "
+          import smtplib, os
+          from email.mime.text import MIMEText
+          addr = os.environ.get('GMAIL_ADDRESS','')
+          pwd = os.environ.get('GMAIL_APP_PASSWORD','')
+          if not addr or not pwd:
+              print('Email ayarlari yok, bildirim atlanıyor.')
+              exit(0)
+          msg = MIMEText('Instagram Publisher workflow basarisiz oldu.\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}', 'plain', 'utf-8')
+          msg['Subject'] = 'Sonat Mundi Instagram: HATA'
+          msg['From'] = addr
+          msg['To'] = addr
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as s:
+              s.login(addr, pwd)
+              s.send_message(msg)
+          print('Hata bildirimi gonderildi.')
+          "

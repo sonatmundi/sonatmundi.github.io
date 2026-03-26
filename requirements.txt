@@ -4,3 +4,5 @@ google-auth-oauthlib>=1.1.0
 google-auth-httplib2>=0.1.1
 anthropic>=0.39.0
 httplib2>=0.22.0
+instagrapi>=2.1.2
+Pillow>=10.0.0

@@ -18,6 +18,9 @@ atropic api.txt
 *password*
 *token*.json
 
+# === Instagram session ===
+ig_session.json
+
 # === MEDIA FILES (too large for git) ===
 *.mp3
 *.mp4
