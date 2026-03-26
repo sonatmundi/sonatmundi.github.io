@@ -1597,7 +1597,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ── HERO SOUND WAVES (Full-width Canvas) ──
+// ── HERO SOUND WAVES — Matching the Sonat Mundi logo style ──
+// Colorful flowing ribbons (red, gold, green, blue, purple) like the original logo
 (function() {
   const canvas = document.getElementById('heroWavesCanvas');
   if (!canvas) return;
@@ -1611,67 +1612,88 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   resize();
   window.addEventListener('resize', resize);
 
-  // Sound waves centered at logo vertical position
-  // Each wave: yOffset from center, amplitude, frequency, phase speed, color, max alpha, line width
-  const waves = [
-    // Gold core waves (densest at center)
-    { dy: -60, amp: 3.0, freq: 0.006, speed: 0.012, color: [212,178,85], alpha: 0.10, lw: 1.0 },
-    { dy: -40, amp: 4.0, freq: 0.004, speed: 0.008, color: [212,178,85], alpha: 0.15, lw: 1.5 },
-    { dy: -22, amp: 5.5, freq: 0.005, speed: 0.010, color: [212,178,85], alpha: 0.22, lw: 2.0 },
-    { dy: -8,  amp: 7.0, freq: 0.003, speed: 0.007, color: [212,178,85], alpha: 0.30, lw: 2.5 },
-    { dy:  0,  amp: 8.0, freq: 0.004, speed: 0.009, color: [212,178,85], alpha: 0.38, lw: 3.0 },
-    { dy:  8,  amp: 7.0, freq: 0.005, speed: 0.011, color: [212,178,85], alpha: 0.30, lw: 2.5 },
-    { dy:  22, amp: 5.5, freq: 0.003, speed: 0.008, color: [212,178,85], alpha: 0.22, lw: 2.0 },
-    { dy:  40, amp: 4.0, freq: 0.006, speed: 0.010, color: [212,178,85], alpha: 0.15, lw: 1.5 },
-    { dy:  60, amp: 3.0, freq: 0.004, speed: 0.012, color: [212,178,85], alpha: 0.10, lw: 1.0 },
-    // Purple accent waves
-    { dy: -35, amp: 4.5, freq: 0.007, speed: 0.006, color: [122,90,170], alpha: 0.12, lw: 1.5 },
-    { dy:  15, amp: 6.0, freq: 0.005, speed: 0.009, color: [122,90,170], alpha: 0.14, lw: 2.0 },
-    { dy:  50, amp: 3.5, freq: 0.006, speed: 0.007, color: [122,90,170], alpha: 0.10, lw: 1.0 },
-    // Teal accent waves
-    { dy: -50, amp: 3.5, freq: 0.005, speed: 0.008, color: [58,170,146], alpha: 0.10, lw: 1.0 },
-    { dy:  30, amp: 5.0, freq: 0.004, speed: 0.010, color: [58,170,146], alpha: 0.12, lw: 1.5 },
-    { dy:  65, amp: 3.0, freq: 0.007, speed: 0.006, color: [58,170,146], alpha: 0.08, lw: 1.0 },
+  // Ribbon waves matching logo: red, orange/gold, yellow, green, cyan, blue, purple, magenta
+  const ribbons = [
+    // Upper ribbons (flow left to right, slight upward arc)
+    { dy: -18, amp: 28, freq: 0.0025, speed: 0.35, phase: 0.0, colors: ['rgba(255,50,80,0.55)', 'rgba(255,120,40,0.5)', 'rgba(255,50,80,0.0)'], lw: 3.0 },
+    { dy: -10, amp: 24, freq: 0.003,  speed: 0.28, phase: 0.8, colors: ['rgba(255,160,30,0.5)', 'rgba(255,220,50,0.55)', 'rgba(255,160,30,0.0)'], lw: 3.0 },
+    { dy: -3,  amp: 22, freq: 0.0035, speed: 0.32, phase: 1.5, colors: ['rgba(80,220,120,0.5)', 'rgba(50,255,160,0.55)', 'rgba(80,220,120,0.0)'], lw: 3.0 },
+    { dy:  3,  amp: 22, freq: 0.003,  speed: 0.30, phase: 2.2, colors: ['rgba(40,180,255,0.5)', 'rgba(60,220,255,0.55)', 'rgba(40,180,255,0.0)'], lw: 3.0 },
+    { dy:  10, amp: 24, freq: 0.0028, speed: 0.26, phase: 3.0, colors: ['rgba(130,60,255,0.5)', 'rgba(180,80,255,0.55)', 'rgba(130,60,255,0.0)'], lw: 3.0 },
+    { dy:  18, amp: 28, freq: 0.0032, speed: 0.34, phase: 3.8, colors: ['rgba(255,60,180,0.5)', 'rgba(255,100,200,0.5)', 'rgba(255,60,180,0.0)'], lw: 3.0 },
+
+    // Thinner accent ribbons interspersed
+    { dy: -14, amp: 20, freq: 0.004,  speed: 0.40, phase: 0.5, colors: ['rgba(255,100,60,0.3)', 'rgba(255,180,60,0.35)', 'rgba(255,100,60,0.0)'], lw: 1.5 },
+    { dy:  -6, amp: 18, freq: 0.0045, speed: 0.36, phase: 1.2, colors: ['rgba(60,255,140,0.3)', 'rgba(100,255,200,0.35)', 'rgba(60,255,140,0.0)'], lw: 1.5 },
+    { dy:   6, amp: 18, freq: 0.0038, speed: 0.38, phase: 2.8, colors: ['rgba(60,140,255,0.3)', 'rgba(100,180,255,0.35)', 'rgba(60,140,255,0.0)'], lw: 1.5 },
+    { dy:  14, amp: 20, freq: 0.0042, speed: 0.33, phase: 3.5, colors: ['rgba(200,60,255,0.3)', 'rgba(240,100,255,0.35)', 'rgba(200,60,255,0.0)'], lw: 1.5 },
+
+    // Wide soft glow ribbons (very transparent, thick)
+    { dy: -5,  amp: 30, freq: 0.002,  speed: 0.20, phase: 0.3, colors: ['rgba(255,80,60,0.08)', 'rgba(255,200,50,0.12)', 'rgba(50,255,150,0.12)', 'rgba(60,150,255,0.12)', 'rgba(180,60,255,0.08)'], lw: 20, blur: 15 },
+    { dy:  5,  amp: 30, freq: 0.0022, speed: 0.22, phase: 1.8, colors: ['rgba(180,60,255,0.08)', 'rgba(60,150,255,0.12)', 'rgba(50,255,150,0.12)', 'rgba(255,200,50,0.12)', 'rgba(255,80,60,0.08)'], lw: 20, blur: 15 },
   ];
 
   let t = 0;
 
-  function drawWave(w, centerY) {
+  function drawRibbon(r, centerY) {
     const cw = canvas.width;
-    const baseY = centerY + w.dy;
-
-    ctx.beginPath();
+    const baseY = centerY + r.dy;
+    const points = [];
 
     for (let x = 0; x <= cw; x += 2) {
       const frac = x / cw;
 
-      // Ultra-smooth edge fade: raised cosine window (no hard edges ever)
-      // Starts from 0, smoothly rises, stays full in center, smoothly falls to 0
-      const fadeIn = frac < 0.15 ? 0.5 * (1 - Math.cos(Math.PI * frac / 0.15)) : 1;
-      const fadeOut = frac > 0.85 ? 0.5 * (1 - Math.cos(Math.PI * (1 - frac) / 0.15)) : 1;
+      // Smooth fade: raised cosine — 12% in, 12% out, full in between
+      const fadeZone = 0.12;
+      const fadeIn = frac < fadeZone ? 0.5 * (1 - Math.cos(Math.PI * frac / fadeZone)) : 1;
+      const fadeOut = frac > (1 - fadeZone) ? 0.5 * (1 - Math.cos(Math.PI * (1 - frac) / fadeZone)) : 1;
       const envelope = fadeIn * fadeOut;
 
-      const wave1 = Math.sin(x * w.freq + t * w.speed * 60);
-      const wave2 = Math.sin(x * w.freq * 1.7 + t * w.speed * 40 + 2.0) * 0.3;
-      const waveY = (wave1 + wave2) * w.amp * envelope;
+      // Multi-sine for organic shapes (like real sound waves)
+      const s1 = Math.sin(x * r.freq + t * r.speed + r.phase);
+      const s2 = Math.sin(x * r.freq * 2.1 + t * r.speed * 0.7 + r.phase + 1.0) * 0.35;
+      const s3 = Math.sin(x * r.freq * 0.5 + t * r.speed * 1.3 + r.phase + 2.5) * 0.2;
+      const waveY = (s1 + s2 + s3) * r.amp * envelope;
 
-      const y = baseY + waveY;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      points.push({ x, y: baseY + waveY, envelope });
     }
 
-    const [r, g, b] = w.color;
-    // Gentle breathing effect
-    const breathe = 0.75 + 0.25 * Math.sin(t * 0.8 + w.dy * 0.05);
-    const alpha = w.alpha * breathe;
+    // Draw the ribbon with gradient along its path
+    if (r.blur) {
+      ctx.save();
+      ctx.filter = `blur(${r.blur}px)`;
+    }
 
-    // Draw with glow
-    ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
-    ctx.lineWidth = w.lw;
-    ctx.shadowColor = `rgba(${r},${g},${b},${alpha * 0.5})`;
-    ctx.shadowBlur = w.lw * 6;
+    // Create gradient across the width
+    const grad = ctx.createLinearGradient(0, 0, cw, 0);
+    if (r.colors.length === 3) {
+      grad.addColorStop(0, r.colors[2]);    // transparent edge
+      grad.addColorStop(0.15, r.colors[0]); // color start
+      grad.addColorStop(0.5, r.colors[1]);  // peak color
+      grad.addColorStop(0.85, r.colors[0]); // color end
+      grad.addColorStop(1, r.colors[2]);    // transparent edge
+    } else {
+      // Multi-color rainbow gradient
+      r.colors.forEach((c, i) => grad.addColorStop(i / (r.colors.length - 1), c));
+    }
+
+    ctx.beginPath();
+    points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = r.lw;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    if (!r.blur) {
+      ctx.shadowColor = r.colors[1] || r.colors[0];
+      ctx.shadowBlur = r.lw * 3;
+    }
+
     ctx.stroke();
     ctx.shadowBlur = 0;
+
+    if (r.blur) ctx.restore();
   }
 
   function animate() {
@@ -1680,20 +1702,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const ch = canvas.height;
     ctx.clearRect(0, 0, cw, ch);
 
-    // Soft ambient glow at center
-    const centerX = cw / 2;
-    const centerY = ch * 0.42; // where the logo sits
+    const centerY = ch * 0.43; // Logo vertical center
 
-    const grd = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, cw * 0.4);
-    const pulse = 0.6 + 0.4 * Math.sin(t * 0.4);
-    grd.addColorStop(0, `rgba(212,178,85,${0.04 * pulse})`);
-    grd.addColorStop(0.4, `rgba(122,90,170,${0.02 * pulse})`);
-    grd.addColorStop(1, 'transparent');
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, cw, ch);
-
-    // Draw all waves centered on logo
-    waves.forEach(w => drawWave(w, centerY));
+    // Draw all ribbons
+    ribbons.forEach(r => drawRibbon(r, centerY));
 
     requestAnimationFrame(animate);
   }
