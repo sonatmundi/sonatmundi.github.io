@@ -218,25 +218,7 @@
     pointer-events: none;
   }
 
-  .hero-text-overlay {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    pointer-events: none;
-  }
-
-  .hero-brand-name {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: clamp(36px, 5.5vw, 64px);
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    color: var(--white);
-    text-transform: uppercase;
-    text-shadow:
-      0 0 40px rgba(0,0,0,0.8),
-      0 0 80px rgba(0,0,0,0.5),
-      0 2px 4px rgba(0,0,0,0.9);
-  }
+  /* Text is drawn on canvas now */
 
   .hero-divider {
     width: 1px;
@@ -1077,9 +1059,6 @@
   <p class="hero-eyebrow">United Colours of Sound</p>
   <div class="hero-logo-area">
     <canvas id="heroWavesCanvas"></canvas>
-    <div class="hero-text-overlay">
-      <div class="hero-brand-name">Sonat Mundi</div>
-    </div>
   </div>
   <div class="hero-divider"></div>
   <p class="hero-tagline">Omnia Resonant</p>
@@ -1611,7 +1590,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ── HERO: Rainbow Ring + Thin Vibrating Sound Waves ──
+// ── HERO: Exact replica of sonat_mundi-logo1.png (circle + eq + text) ──
 (function() {
   const canvas = document.getElementById('heroWavesCanvas');
   if (!canvas) return;
@@ -1626,132 +1605,236 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   resize();
   window.addEventListener('resize', resize);
 
-  const ringRadius = Math.min(cw, ch) * 0.38;
   let t = 0;
 
-  // 12 thin parallel sound wave lines
-  // Color gradient: left pink/magenta → cyan/blue → green → right yellow/orange
-  const NUM_WAVES = 12;
-  const waveSpacing = 5; // pixels between parallel waves
+  // ── RAINBOW RING ──
+  // Logo has: bottom-left magenta → bottom gold/yellow → right green → top cyan → left purple
+  // Rotation offset so gold is at bottom (~6 o'clock)
+  function drawRing(cx, cy, radius) {
+    const ringW = 3.5;
 
-  function hslToRgba(h, s, l, a) {
-    const c = (1 - Math.abs(2*l - 1)) * s;
-    const x = c * (1 - Math.abs((h/60)%2 - 1));
-    const m = l - c/2;
-    let r,g,b;
-    if(h<60){r=c;g=x;b=0}
-    else if(h<120){r=x;g=c;b=0}
-    else if(h<180){r=0;g=c;b=x}
-    else if(h<240){r=0;g=x;b=c}
-    else if(h<300){r=x;g=0;b=c}
-    else{r=c;g=0;b=x}
-    return `rgba(${Math.round((r+m)*255)},${Math.round((g+m)*255)},${Math.round((b+m)*255)},${a})`;
-  }
+    // Outer subtle dark ring (the logo has a faint outer border)
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius + 3, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(100,100,120,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
-  function drawRainbowRing(cx, cy, radius) {
-    const ringWidth = 4;
-    for (let a = 0; a < Math.PI * 2; a += 0.01) {
-      const hue = (a / (Math.PI * 2)) * 360;
-      const x = cx + Math.cos(a) * radius;
-      const y = cy + Math.sin(a) * radius;
+    // Main rainbow ring — draw with conic gradient simulation
+    const steps = 360;
+    for (let i = 0; i < steps; i++) {
+      const a1 = (i / steps) * Math.PI * 2 - Math.PI * 0.5; // start from top
+      const a2 = ((i + 1.5) / steps) * Math.PI * 2 - Math.PI * 0.5;
+
+      // Hue mapping to match logo: top=cyan(180), right=green(120), bottom=gold(45), left=magenta(300)
+      // Logo color wheel (clockwise from top): cyan → green → gold → orange → red → magenta → purple → blue → cyan
+      const hue = ((i / steps) * 360 + 180) % 360;
 
       ctx.beginPath();
-      ctx.arc(x, y, ringWidth / 2, 0, Math.PI * 2);
-      ctx.fillStyle = hslToRgba(hue, 0.9, 0.55, 0.9);
-      ctx.fill();
+      ctx.arc(cx, cy, radius, a1, a2);
+      ctx.strokeStyle = `hsla(${hue}, 90%, 58%, 0.95)`;
+      ctx.lineWidth = ringW;
+      ctx.stroke();
     }
 
-    // Glow layer
+    // Glow on the ring
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-    ctx.lineWidth = ringWidth + 8;
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = ringW + 10;
+    ctx.stroke();
+
+    // Inner subtle ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius - 5, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(150,150,170,0.08)';
+    ctx.lineWidth = 0.5;
     ctx.stroke();
   }
 
-  function drawSoundWaves(cx, cy) {
-    const totalHeight = (NUM_WAVES - 1) * waveSpacing;
-    const startY = cy - totalHeight / 2;
+  // ── DYNAMIC EQUALIZER BARS ──
+  // Logo has: ~60-80 thin vertical bars, centered, taller in middle (mountain shape)
+  // Colors: purple/blue at outer edges → pink/magenta at center
+  // Bars extend both UP and DOWN from center line
+  function drawEqualizer(cx, cy, radius) {
+    const numBars = 70;
+    const barZoneWidth = radius * 1.5; // bars span ~75% of circle diameter
+    const startX = cx - barZoneWidth / 2;
+    const barWidth = 1.8;
+    const barGap = (barZoneWidth - numBars * barWidth) / (numBars - 1);
 
-    for (let i = 0; i < NUM_WAVES; i++) {
-      const baseY = startY + i * waveSpacing;
-      const phaseOffset = i * 0.4;
+    for (let i = 0; i < numBars; i++) {
+      const x = startX + i * (barWidth + barGap);
+
+      // Distance from center (0=center, 1=edge)
+      const centerFrac = Math.abs((i / (numBars - 1)) - 0.5) * 2;
+
+      // Mountain envelope: tall in center, short at edges
+      // Using cosine for smooth shape
+      const envelope = Math.cos(centerFrac * Math.PI * 0.5);
+      const envelopeSq = envelope * envelope; // sharper peak
+
+      // Base height from envelope
+      const maxH = radius * 0.7;
+      const baseH = maxH * envelopeSq;
+
+      // Dynamic animation: each bar oscillates at its own frequency
+      const freq1 = 1.5 + i * 0.08;
+      const freq2 = 2.2 + i * 0.12;
+      const freq3 = 0.7 + i * 0.05;
+      const dynamicMult =
+        0.5 +
+        0.2 * Math.sin(t * freq1 + i * 0.3) +
+        0.15 * Math.sin(t * freq2 + i * 0.7) +
+        0.1 * Math.sin(t * freq3 + i * 1.1) +
+        0.05 * Math.sin(t * 4.0 + i * 0.15); // high-freq shimmer
+
+      const barH = Math.max(2, baseH * dynamicMult);
+
+      // Clip to circle
+      const dx = x - cx;
+      const maxDy = Math.sqrt(Math.max(0, (radius - 8) * (radius - 8) - dx * dx));
+      const clippedH = Math.min(barH, maxDy * 0.9);
+
+      if (clippedH < 1) continue;
+
+      // Color: edges=blue/purple, center=pink/magenta
+      // Matches the logo's bar coloring
+      const hue = 240 + (1 - centerFrac) * 80; // 240 (blue) → 320 (magenta)
+      const sat = 70 + (1 - centerFrac) * 20;
+      const lit = 45 + dynamicMult * 20;
+      const alpha = 0.5 + 0.3 * (1 - centerFrac);
+
+      // Draw bar (both up and down from center)
+      const grad = ctx.createLinearGradient(x, cy - clippedH, x, cy + clippedH);
+      grad.addColorStop(0, `hsla(${hue}, ${sat}%, ${lit + 15}%, ${alpha * 0.3})`);
+      grad.addColorStop(0.15, `hsla(${hue}, ${sat}%, ${lit}%, ${alpha * 0.7})`);
+      grad.addColorStop(0.5, `hsla(${hue}, ${sat}%, ${lit + 10}%, ${alpha})`);
+      grad.addColorStop(0.85, `hsla(${hue}, ${sat}%, ${lit}%, ${alpha * 0.7})`);
+      grad.addColorStop(1, `hsla(${hue}, ${sat}%, ${lit + 15}%, ${alpha * 0.3})`);
+
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, cy - clippedH, barWidth, clippedH * 2);
+    }
+  }
+
+  // ── "SONAT MUNDI" TEXT ──
+  // Logo font: bold sans-serif, wide spacing, white/cream with slight gold warmth
+  function drawText(cx, cy) {
+    const fontSize = Math.min(cw * 0.055, ch * 0.13, 52);
+
+    // Shadow/glow behind text for readability
+    ctx.save();
+    ctx.font = `700 ${fontSize}px 'Josefin Sans', 'Arial Black', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.letterSpacing = '0.2em';
+
+    // Dark shadow for contrast
+    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillText('SONAT  MUNDI', cx, cy);
+
+    // Main text — warm white/cream like the logo
+    ctx.shadowColor = 'rgba(0,0,0,0.7)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 1;
+    ctx.fillStyle = '#f5f0e0';
+    ctx.fillText('SONAT  MUNDI', cx, cy);
+
+    // Subtle bright highlight
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.fillStyle = 'rgba(255,252,240,0.15)';
+    ctx.fillText('SONAT  MUNDI', cx, cy - 1);
+
+    ctx.restore();
+  }
+
+  // ── FLOWING SOUND WAVES (outside the circle, across viewport) ──
+  function drawFlowingWaves(cx, cy) {
+    const NUM = 10;
+    const spacing = 6;
+    const totalH = (NUM - 1) * spacing;
+    const baseY = cy - totalH / 2;
+
+    for (let i = 0; i < NUM; i++) {
+      const y0 = baseY + i * spacing;
+      const phase = i * 0.45;
 
       ctx.beginPath();
-
-      for (let x = 0; x < cw; x += 1) {
+      for (let x = 0; x < cw; x += 2) {
         const frac = x / cw;
 
-        // Smooth edge fade (raised cosine, 10% in/out)
-        const fade = 0.10;
-        const fadeIn = frac < fade ? 0.5 * (1 - Math.cos(Math.PI * frac / fade)) : 1;
-        const fadeOut = frac > (1-fade) ? 0.5 * (1 - Math.cos(Math.PI * (1-frac) / fade)) : 1;
-        const envelope = fadeIn * fadeOut;
+        // Smooth fade at edges
+        const fd = 0.08;
+        const fadeIn = frac < fd ? 0.5 * (1 - Math.cos(Math.PI * frac / fd)) : 1;
+        const fadeOut = frac > (1 - fd) ? 0.5 * (1 - Math.cos(Math.PI * (1 - frac) / fd)) : 1;
+        const env = fadeIn * fadeOut;
 
-        // Multi-frequency vibration (like real audio waveform)
-        const f1 = Math.sin(x * 0.015 + t * 2.0 + phaseOffset);
-        const f2 = Math.sin(x * 0.025 + t * 1.5 + phaseOffset * 1.3) * 0.5;
-        const f3 = Math.sin(x * 0.008 + t * 0.8 + phaseOffset * 0.7) * 0.7;
-        const f4 = Math.sin(x * 0.04 + t * 3.0 + phaseOffset * 1.8) * 0.2;
+        const s1 = Math.sin(x * 0.012 + t * 1.8 + phase);
+        const s2 = Math.sin(x * 0.022 + t * 1.2 + phase * 1.4) * 0.4;
+        const s3 = Math.sin(x * 0.006 + t * 0.7 + phase * 0.6) * 0.6;
 
-        // Amplitude: bigger in center, smaller at edges, also oscillates
-        const centerDist = Math.abs(frac - 0.5) * 2; // 0 at center, 1 at edges
-        const ampBase = 8 + 14 * (1 - centerDist * centerDist); // bigger in center
-        const ampBreathe = 1 + 0.3 * Math.sin(t * 0.6 + i * 0.5);
+        const amp = (6 + 10 * (1 - Math.abs(frac - 0.5) * 2)) * env;
+        const wY = (s1 + s2 + s3) * amp;
 
-        const waveY = (f1 + f2 + f3 + f4) * ampBase * ampBreathe * envelope;
-        const y = baseY + waveY;
-
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (x === 0) ctx.moveTo(x, y0 + wY);
+        else ctx.lineTo(x, y0 + wY);
       }
 
-      // Color gradient: pink → cyan → green → yellow/orange across width
       const grad = ctx.createLinearGradient(0, 0, cw, 0);
-      const alpha = 0.4 + 0.15 * Math.sin(t * 0.5 + i * 0.3);
-      grad.addColorStop(0, `rgba(255,60,180,0)`);        // transparent edge
-      grad.addColorStop(0.08, `rgba(255,60,180,${alpha})`); // magenta
-      grad.addColorStop(0.25, `rgba(200,50,255,${alpha})`); // purple
-      grad.addColorStop(0.40, `rgba(60,180,255,${alpha})`); // cyan
-      grad.addColorStop(0.55, `rgba(50,220,150,${alpha})`); // green
-      grad.addColorStop(0.70, `rgba(180,255,50,${alpha})`); // lime
-      grad.addColorStop(0.85, `rgba(255,180,40,${alpha})`); // orange
-      grad.addColorStop(0.92, `rgba(255,100,50,${alpha})`); // red-orange
-      grad.addColorStop(1, `rgba(255,100,50,0)`);          // transparent edge
+      const a = 0.35 + 0.1 * Math.sin(t * 0.4 + i * 0.3);
+      grad.addColorStop(0, 'rgba(255,60,180,0)');
+      grad.addColorStop(0.06, `rgba(255,60,180,${a})`);
+      grad.addColorStop(0.20, `rgba(180,40,255,${a})`);
+      grad.addColorStop(0.35, `rgba(60,180,255,${a})`);
+      grad.addColorStop(0.50, `rgba(40,220,160,${a})`);
+      grad.addColorStop(0.65, `rgba(140,255,60,${a})`);
+      grad.addColorStop(0.80, `rgba(255,200,40,${a})`);
+      grad.addColorStop(0.94, `rgba(255,120,40,${a})`);
+      grad.addColorStop(1, 'rgba(255,120,40,0)');
 
       ctx.strokeStyle = grad;
-      ctx.lineWidth = 1.2;
-      ctx.lineCap = 'round';
-
-      // Subtle glow
-      ctx.shadowColor = `hsla(${(i/NUM_WAVES)*360}, 80%, 60%, 0.3)`;
-      ctx.shadowBlur = 3;
+      ctx.lineWidth = 1.0;
+      ctx.shadowColor = `hsla(${(i / NUM) * 300 + 280}, 80%, 60%, 0.2)`;
+      ctx.shadowBlur = 2;
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
   }
 
+  // ── MAIN ANIMATION LOOP ──
   function animate() {
     t += 0.016;
     ctx.clearRect(0, 0, cw, ch);
 
     const cx = cw / 2;
     const cy = ch / 2;
-    const radius = Math.min(cw * 0.22, ch * 0.38);
+    const radius = Math.min(cw * 0.20, ch * 0.40, 180);
 
-    // Draw sound waves FIRST (behind everything)
-    drawSoundWaves(cx, cy);
+    // 1. Flowing waves across full width (behind everything)
+    drawFlowingWaves(cx, cy);
 
-    // Clear the circle interior so waves don't show inside
+    // 2. Dark circle fill (so bars show on dark bg, waves hidden inside)
     ctx.save();
     ctx.beginPath();
-    ctx.arc(cx, cy, radius - 6, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(8,8,12,0.92)';
+    ctx.arc(cx, cy, radius - 4, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(8,8,14,0.95)';
     ctx.fill();
     ctx.restore();
 
-    // Draw rainbow ring on top
-    drawRainbowRing(cx, cy, radius);
+    // 3. Equalizer bars inside circle
+    drawEqualizer(cx, cy, radius);
+
+    // 4. Rainbow ring border
+    drawRing(cx, cy, radius);
+
+    // 5. "SONAT MUNDI" text on top of everything
+    drawText(cx, cy);
 
     requestAnimationFrame(animate);
   }
