@@ -1611,7 +1611,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   // Logo has: bottom-left magenta → bottom gold/yellow → right green → top cyan → left purple
   // Rotation offset so gold is at bottom (~6 o'clock)
   function drawRing(cx, cy, radius) {
-    const ringW = 3.5;
+    const ringW = 7;
 
     // Outer subtle dark ring (the logo has a faint outer border)
     ctx.beginPath();
@@ -1721,11 +1721,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   // ── "SONAT MUNDI" TEXT ──
   // Logo font: bold sans-serif, wide spacing, white/cream with slight gold warmth
   function drawText(cx, cy) {
-    const fontSize = Math.min(cw * 0.055, ch * 0.13, 52);
+    const fontSize = Math.min(cw * 0.082, ch * 0.19, 78);
 
     // Shadow/glow behind text for readability
     ctx.save();
-    ctx.font = `700 ${fontSize}px 'Josefin Sans', 'Arial Black', sans-serif`;
+    ctx.font = `900 ${fontSize}px 'Josefin Sans', 'Arial Black', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.letterSpacing = '0.2em';
