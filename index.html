@@ -3,21 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sonat Mundi — Omnia Resonant</title>
-<meta name="description" content="Sonat Mundi — United Colours of Sound. Immersive soundscapes inspired by world music, human emotions, healing frequencies and the poetry of everyday life.">
+<title>Sonat Mundi — United Colours of Sound</title>
+<meta name="description" content="Sonat Mundi — United Colours of Sound. Immersive soundscapes inspired by world music, human emotions, healing frequencies, deep sleep and the poetry of everyday life. Listen on Spotify, Apple Music, YouTube and all platforms.">
+<meta name="keywords" content="Sonat Mundi, United Colours of Sound, world music, healing frequencies, sleep music, study music, meditation music, solfeggio frequencies, ambient music">
+<meta property="og:title" content="Sonat Mundi — United Colours of Sound">
+<meta property="og:description" content="Ancient Sounds. Modern Soul. Immersive soundscapes from 195 nations, every emotion, every frequency.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sonatmundi.com">
+<link rel="canonical" href="https://sonatmundi.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #050508;
-    --deep: #090912;
-    --gold: #c9a84c;
-    --gold-dim: #8a6a20;
+    --black: #08080c;
+    --deep: #0e0e18;
+    --surface: #141420;
+    --gold: #d4b255;
+    --gold-dim: #b8943c;
     --gold-pale: #f0dca0;
-    --white: #f5f0e8;
-    --muted: #7a7060;
-    --teal: #2a8a7a;
-    --purple: #5a3a8a;
+    --white: #f0ece4;
+    --text: #c8c0b4;
+    --muted: #9a9088;
+    --teal: #3aaa92;
+    --purple: #7a5aaa;
+    --rose: #aa5a7a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,118 +41,136 @@
     overflow-x: hidden;
   }
 
-  /* ── ANIMATED BACKGROUND ── */
-  .bg-canvas {
+  /* ── PARTICLE BACKGROUND ── */
+  #particles-canvas {
     position: fixed;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
     pointer-events: none;
   }
 
-  .wave {
-    position: absolute;
-    width: 200%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  /* ── SCROLL REVEAL ── */
+  .reveal {
     opacity: 0;
-    animation: wave-drift 12s ease-in-out infinite;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .wave:nth-child(1) { top: 20%; animation-delay: 0s; animation-duration: 14s; }
-  .wave:nth-child(2) { top: 40%; animation-delay: 3s; animation-duration: 18s; opacity: 0; }
-  .wave:nth-child(3) { top: 60%; animation-delay: 6s; animation-duration: 16s; }
-  .wave:nth-child(4) { top: 75%; animation-delay: 9s; animation-duration: 20s; }
-
-  @keyframes wave-drift {
-    0% { transform: translateX(-50%) scaleY(1); opacity: 0; }
-    20% { opacity: 0.4; }
-    50% { transform: translateX(0%) scaleY(3); opacity: 0.2; }
-    80% { opacity: 0.4; }
-    100% { transform: translateX(-50%) scaleY(1); opacity: 0; }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    animation: orb-pulse 20s ease-in-out infinite;
-  }
-  .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(90,58,138,0.15), transparent); top: -200px; right: -200px; }
-  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(42,138,122,0.1), transparent); bottom: 20%; left: -100px; animation-delay: 7s; }
-  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(201,168,76,0.08), transparent); top: 50%; right: 10%; animation-delay: 14s; }
-
-  @keyframes orb-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1; }
-  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
 
   /* ── NAV ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 12px 48px;
+    z-index: 1000;
+    padding: 0 48px;
+    height: 78px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to bottom, rgba(5,5,8,0.92), transparent);
-    backdrop-filter: blur(10px);
+    background: rgba(5,5,8,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    transition: all 0.4s;
+  }
+
+  nav.scrolled {
+    height: 60px;
+    background: rgba(5,5,8,0.92);
+    border-bottom-color: rgba(201,168,76,0.15);
   }
 
   .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     text-decoration: none;
   }
 
   .nav-logo-img {
-    height: 56px;
+    height: 54px;
     width: auto;
     object-fit: contain;
     mix-blend-mode: screen;
-    border-radius: 0;
-    background: transparent;
+    transition: height 0.4s;
   }
 
-  .nav-brand-text {
-    display: flex;
-    flex-direction: column;
-  }
+  nav.scrolled .nav-logo-img { height: 42px; }
+
+  .nav-brand-text { display: flex; flex-direction: column; }
 
   .nav-brand-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 22px;
+    font-weight: 500;
     letter-spacing: 0.3em;
     color: var(--gold);
     line-height: 1;
   }
 
   .nav-tagline {
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--text);
     text-transform: uppercase;
-    margin-top: 3px;
+    margin-top: 5px;
+    font-weight: 300;
   }
 
   .nav-links {
     display: flex;
-    gap: 40px;
+    gap: 36px;
     list-style: none;
   }
 
   .nav-links a {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--text);
     text-decoration: none;
     text-transform: uppercase;
     transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
   }
 
   .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* Mobile menu */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .nav-toggle span {
+    width: 24px; height: 1px;
+    background: var(--gold);
+    transition: all 0.3s;
+  }
 
   /* ── HERO ── */
   .hero {
@@ -159,187 +186,281 @@
   }
 
   .hero-eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.5em;
-    color: var(--gold-dim);
+    font-size: 14px;
+    letter-spacing: 0.6em;
+    color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 32px;
-    animation: fade-up 1.2s ease forwards;
+    margin-bottom: 40px;
+    font-weight: 300;
+    animation: fade-up 1s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-logo-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fade-up 1s ease 0.15s forwards;
     opacity: 0;
   }
 
   .hero-logo-img {
-    width: min(780px, 92vw);
+    width: min(720px, 88vw);
     height: auto;
     object-fit: contain;
-    animation: fade-up 1.2s ease 0.1s forwards;
-    opacity: 0;
     mix-blend-mode: screen;
+    filter: drop-shadow(0 0 60px rgba(212,178,85,0.2));
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Horizontal light waves behind logo */
+  .hero-glow-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .glow-wave {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 50%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(212,178,85,0) 5%,
+      rgba(212,178,85,0.08) 20%,
+      rgba(212,178,85,0.25) 40%,
+      rgba(212,178,85,0.35) 50%,
+      rgba(212,178,85,0.25) 60%,
+      rgba(212,178,85,0.08) 80%,
+      rgba(212,178,85,0) 95%,
+      transparent 100%
+    );
+    filter: blur(1px);
+    animation: wave-flow 8s ease-in-out infinite;
+  }
+
+  .glow-wave:nth-child(1) { top: 25%; height: 1px; opacity: 0.6; animation-delay: 0s; animation-duration: 10s; }
+  .glow-wave:nth-child(2) { top: 35%; height: 2px; opacity: 0.8; animation-delay: 1.5s; animation-duration: 8s; }
+  .glow-wave:nth-child(3) { top: 45%; height: 3px; opacity: 1; animation-delay: 0.5s; animation-duration: 7s;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(212,178,85,0) 5%,
+      rgba(212,178,85,0.12) 20%,
+      rgba(212,178,85,0.4) 40%,
+      rgba(212,178,85,0.5) 50%,
+      rgba(212,178,85,0.4) 60%,
+      rgba(212,178,85,0.12) 80%,
+      rgba(212,178,85,0) 95%,
+      transparent 100%
+    );
+    filter: blur(2px);
+  }
+  .glow-wave:nth-child(4) { top: 50%; height: 2px; opacity: 0.7; animation-delay: 2s; animation-duration: 9s; }
+  .glow-wave:nth-child(5) { top: 55%; height: 3px; opacity: 0.9; animation-delay: 1s; animation-duration: 7.5s;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(90,58,138,0) 5%,
+      rgba(90,58,138,0.08) 20%,
+      rgba(122,90,170,0.2) 40%,
+      rgba(122,90,170,0.3) 50%,
+      rgba(122,90,170,0.2) 60%,
+      rgba(90,58,138,0.08) 80%,
+      rgba(90,58,138,0) 95%,
+      transparent 100%
+    );
+    filter: blur(2px);
+  }
+  .glow-wave:nth-child(6) { top: 65%; height: 2px; opacity: 0.6; animation-delay: 3s; animation-duration: 11s; }
+  .glow-wave:nth-child(7) { top: 75%; height: 1px; opacity: 0.5; animation-delay: 0.8s; animation-duration: 9.5s;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(42,138,122,0) 5%,
+      rgba(58,170,146,0.08) 20%,
+      rgba(58,170,146,0.2) 40%,
+      rgba(58,170,146,0.25) 50%,
+      rgba(58,170,146,0.2) 60%,
+      rgba(58,170,146,0.08) 80%,
+      rgba(42,138,122,0) 95%,
+      transparent 100%
+    );
+    filter: blur(1.5px);
+  }
+
+  /* Soft ambient glow behind logo */
+  .hero-ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(ellipse at center,
+      rgba(212,178,85,0.08) 0%,
+      rgba(212,178,85,0.04) 30%,
+      rgba(90,58,138,0.03) 50%,
+      transparent 70%
+    );
+    z-index: 0;
+    pointer-events: none;
+    animation: ambient-pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes wave-flow {
+    0% { transform: scaleX(0.85) translateX(-3%); opacity: 0.4; }
+    25% { transform: scaleX(1) translateX(0%); opacity: 0.8; }
+    50% { transform: scaleX(1.05) translateX(2%); opacity: 1; }
+    75% { transform: scaleX(1) translateX(0%); opacity: 0.8; }
+    100% { transform: scaleX(0.85) translateX(-3%); opacity: 0.4; }
+  }
+
+  @keyframes ambient-pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
   }
 
   .hero-divider {
     width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, var(--gold-dim), transparent);
-    margin: 32px auto;
-    animation: fade-up 1.2s ease 0.4s forwards;
+    height: 56px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 36px auto;
+    animation: fade-up 1s ease 0.3s forwards;
     opacity: 0;
   }
 
   .hero-tagline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(18px, 2vw, 26px);
-    font-weight: 300;
+    font-size: clamp(24px, 2.8vw, 36px);
+    font-weight: 400;
     font-style: italic;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    animation: fade-up 1.2s ease 0.6s forwards;
+    color: var(--gold-pale);
+    letter-spacing: 0.2em;
+    animation: fade-up 1s ease 0.45s forwards;
     opacity: 0;
   }
 
   .hero-sub {
-    margin-top: 16px;
-    font-size: 11px;
-    letter-spacing: 0.35em;
-    color: var(--gold-dim);
+    margin-top: 14px;
+    font-size: 13px;
+    letter-spacing: 0.45em;
+    color: var(--text);
     text-transform: uppercase;
-    animation: fade-up 1.2s ease 0.8s forwards;
+    font-weight: 300;
+    animation: fade-up 1s ease 0.6s forwards;
     opacity: 0;
   }
 
   .hero-cta {
-    margin-top: 52px;
+    margin-top: 56px;
     display: flex;
     gap: 20px;
     justify-content: center;
-    animation: fade-up 1.2s ease 1s forwards;
+    flex-wrap: wrap;
+    animation: fade-up 1s ease 0.75s forwards;
     opacity: 0;
   }
 
-  .btn-primary {
-    padding: 14px 40px;
+  .btn {
+    padding: 15px 44px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gold {
     border: 1px solid var(--gold);
     color: var(--gold);
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    transition: all 0.4s;
     background: transparent;
-    cursor: pointer;
+  }
+  .btn-gold:hover {
+    background: var(--gold);
+    color: var(--black);
+    box-shadow: 0 0 30px rgba(201,168,76,0.3);
   }
 
-  .btn-primary:hover { background: var(--gold); color: var(--black); }
-
-  .btn-secondary {
-    padding: 14px 40px;
-    border: 1px solid var(--muted);
+  .btn-ghost {
+    border: 1px solid rgba(122,112,96,0.4);
     color: var(--muted);
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    transition: all 0.4s;
     background: transparent;
-    cursor: pointer;
+  }
+  .btn-ghost:hover {
+    border-color: var(--white);
+    color: var(--white);
   }
 
-  .btn-secondary:hover { border-color: var(--white); color: var(--white); }
-
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+  .hero-platforms {
+    margin-top: 48px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    animation: fade-up 1s ease 0.9s forwards;
+    opacity: 0;
   }
 
-  /* ── SCROLL INDICATOR ── */
+  .hero-platforms a {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-platforms a:hover { color: var(--gold); }
+  .hero-platforms .sep { color: rgba(200,192,180,0.3); }
+
   .scroll-hint {
     position: absolute;
-    bottom: 40px;
+    bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    animation: fade-up 1.2s ease 1.4s forwards;
+    animation: fade-up 1s ease 1.2s forwards;
     opacity: 0;
   }
 
   .scroll-hint span {
     font-size: 9px;
     letter-spacing: 0.4em;
-    color: var(--muted);
+    color: var(--text);
     text-transform: uppercase;
   }
 
   .scroll-line {
     width: 1px;
-    height: 40px;
+    height: 36px;
     background: linear-gradient(to bottom, var(--gold-dim), transparent);
     animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes scroll-pulse {
     0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
     50% { opacity: 1; transform: scaleY(1); }
-  }
-
-  /* ── BANNER ── */
-  .banner-section {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    background: #000;
-    overflow: hidden;
-  }
-
-  #smC { display: block; width: 100%; height: auto; }
-
-  .banner-over {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  .banner-title {
-    font-family: 'Arial Black', 'Arial', sans-serif;
-    font-size: clamp(32px, 8.5vw, 96px);
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    background: linear-gradient(90deg,
-      #ff0000 0%, #ff6600 14%, #ffcc00 28%, #33ff33 42%,
-      #00ccff 57%, #6633ff 71%, #ff33cc 85%, #ff0000 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter:
-      drop-shadow(0 0 12px rgba(255,100,100,0.9))
-      drop-shadow(0 0 24px rgba(100,255,100,0.7))
-      drop-shadow(3px 4px 0px rgba(0,0,0,1))
-      drop-shadow(6px 8px 16px rgba(0,0,0,0.9));
-    line-height: 1;
-  }
-
-  .banner-sub {
-    font-family: 'Arial Black', 'Arial', sans-serif;
-    font-size: clamp(8px, 1.2vw, 14px);
-    font-weight: 900;
-    letter-spacing: 0.3em;
-    background: linear-gradient(90deg,
-      #ff0000 0%, #ff9900 20%, #ffff00 38%,
-      #00ff88 55%, #00ccff 72%, #cc44ff 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 6px rgba(255,255,255,0.6)) drop-shadow(2px 3px 6px rgba(0,0,0,1));
-    margin-top: 10px;
-    text-transform: uppercase;
   }
 
   /* ── SECTION BASE ── */
@@ -350,42 +471,56 @@
   }
 
   .section-label {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.5em;
-    color: var(--gold-dim);
+    color: var(--gold);
     text-transform: uppercase;
     margin-bottom: 16px;
   }
 
   .section-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 5vw, 64px);
+    font-size: clamp(32px, 4.5vw, 60px);
     font-weight: 300;
-    line-height: 1.1;
+    line-height: 1.15;
     color: var(--white);
     margin-bottom: 24px;
   }
 
   .section-body {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 2;
-    color: var(--muted);
+    color: var(--text);
     max-width: 560px;
   }
 
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), rgba(212,178,85,0.2));
+    margin: 28px 0;
+  }
+
+  .center .gold-line,
+  .center .section-label { text-align: center; }
+  .center .gold-line { margin: 28px auto; }
+
   /* ── ABOUT ── */
-  .about {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
+  .about-section {
     max-width: 1200px;
     margin: 0 auto;
   }
 
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
   .about-visual {
     position: relative;
-    height: 400px;
+    height: 420px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -398,9 +533,22 @@
     animation: ring-rotate 20s linear infinite;
   }
 
-  .ring-1 { width: 300px; height: 300px; border-color: rgba(201,168,76,0.2); animation-duration: 25s; }
-  .ring-2 { width: 220px; height: 220px; border-color: rgba(90,58,138,0.3); animation-duration: 18s; animation-direction: reverse; }
-  .ring-3 { width: 140px; height: 140px; border-color: rgba(42,138,122,0.3); animation-duration: 12s; }
+  .ring-1 { width: 320px; height: 320px; border-color: rgba(201,168,76,0.15); animation-duration: 30s; }
+  .ring-2 { width: 230px; height: 230px; border-color: rgba(90,58,138,0.25); animation-duration: 20s; animation-direction: reverse; }
+  .ring-3 { width: 140px; height: 140px; border-color: rgba(42,138,122,0.25); animation-duration: 14s; }
+
+  .ring-dot {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .ring-1 .ring-dot { background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+  .ring-2 .ring-dot { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+  .ring-3 .ring-dot { background: var(--teal); box-shadow: 0 0 12px var(--teal); }
 
   @keyframes ring-rotate {
     from { transform: rotate(0deg); }
@@ -409,41 +557,77 @@
 
   .about-center {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 48px;
+    font-size: 52px;
     font-weight: 300;
     color: var(--gold);
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     font-style: italic;
-    text-align: center;
     z-index: 1;
+    text-shadow: 0 0 40px rgba(201,168,76,0.3);
+  }
+
+  .about-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+  }
+
+  .stat-item { text-align: left; }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--text);
+    text-transform: uppercase;
+    margin-top: 6px;
   }
 
   /* ── SERIES ── */
   .series-section {
-    background: var(--deep);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+    background: var(--surface);
+    border-top: 1px solid rgba(212,178,85,0.12);
+    border-bottom: 1px solid rgba(212,178,85,0.12);
   }
 
   .series-header {
     text-align: center;
-    max-width: 600px;
-    margin: 0 auto 80px;
+    max-width: 640px;
+    margin: 0 auto 72px;
   }
 
   .series-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-    max-width: 1200px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    max-width: 1400px;
     margin: 0 auto;
+    background: rgba(201,168,76,0.06);
+  }
+
+  a.series-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    min-width: 0;
+  }
+
+  a.series-card-link .series-card {
+    height: 100%;
   }
 
   .series-card {
-    padding: 60px 40px;
-    border: 1px solid rgba(201,168,76,0.08);
+    padding: 48px 32px;
+    background: var(--surface);
     cursor: pointer;
-    transition: all 0.5s;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
   }
@@ -456,58 +640,206 @@
     transition: opacity 0.5s;
   }
 
-  .series-card:nth-child(1)::before { background: linear-gradient(135deg, rgba(90,58,138,0.2), transparent); }
-  .series-card:nth-child(2)::before { background: linear-gradient(135deg, rgba(42,138,122,0.2), transparent); }
-  .series-card:nth-child(3)::before { background: linear-gradient(135deg, rgba(201,168,76,0.15), transparent); }
-  .series-card:nth-child(4)::before { background: linear-gradient(135deg, rgba(138,42,90,0.2), transparent); }
+  .series-card:nth-child(1)::before { background: linear-gradient(160deg, rgba(42,138,122,0.2), transparent 70%); }
+  .series-card:nth-child(2)::before { background: linear-gradient(160deg, rgba(138,58,90,0.2), transparent 70%); }
+  .series-card:nth-child(3)::before { background: linear-gradient(160deg, rgba(201,168,76,0.15), transparent 70%); }
+  .series-card:nth-child(4)::before { background: linear-gradient(160deg, rgba(90,58,138,0.2), transparent 70%); }
+  .series-card:nth-child(5)::before { background: linear-gradient(160deg, rgba(60,80,160,0.2), transparent 70%); }
 
   .series-card:hover::before { opacity: 1; }
-  .series-card:hover { border-color: rgba(201,168,76,0.3); }
+  .series-card:hover { transform: translateY(-4px); }
 
-  .series-icon { font-size: 32px; margin-bottom: 24px; display: block; }
+  .series-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
 
   .series-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 300;
+    font-size: 24px;
+    font-weight: 400;
     color: var(--white);
     margin-bottom: 12px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
-  .series-desc { font-size: 11px; line-height: 1.8; color: var(--muted); letter-spacing: 0.1em; }
+  .series-desc {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
 
-  .series-count {
-    margin-top: 32px;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--gold-dim);
+  .series-status {
+    margin-top: 28px;
+    display: inline-block;
+    padding: 6px 16px;
+    font-size: 9px;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
+    border-radius: 2px;
   }
 
-  /* ── YOUTUBE ── */
-  .youtube-section { max-width: 900px; margin: 0 auto; text-align: center; }
+  .status-live {
+    color: var(--teal);
+    border: 1px solid rgba(42,138,122,0.3);
+    background: rgba(42,138,122,0.08);
+  }
 
-  .video-placeholder {
+  .status-new {
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.08);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 rgba(201,168,76,0); }
+    50% { box-shadow: 0 0 12px rgba(201,168,76,0.15); }
+  }
+
+  /* ── LISTEN EVERYWHERE ── */
+  .listen-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .platform-card {
+    padding: 32px 20px;
+    border: 1px solid rgba(201,168,76,0.08);
+    background: rgba(10,10,20,0.5);
+    text-decoration: none;
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .platform-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.04);
+    transform: translateY(-3px);
+  }
+
+  .platform-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .platform-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--text);
+    transition: fill 0.3s;
+  }
+
+  .platform-card:hover .platform-icon svg { fill: var(--gold); }
+
+  .platform-name {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text);
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .platform-card:hover .platform-name { color: var(--white); }
+
+  .platform-note {
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+
+  /* ── FEATURED VIDEO ── */
+  .video-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .video-wrapper {
     margin-top: 48px;
+    position: relative;
     aspect-ratio: 16/9;
+    border: 1px solid rgba(201,168,76,0.12);
+    overflow: hidden;
     background: var(--deep);
-    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .video-thumb {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.08);
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+
+  .video-thumb:hover {
+    border-color: rgba(201,168,76,0.3);
+    transform: scale(1.02);
+  }
+
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: opacity 0.4s;
+  }
+
+  .video-thumb:hover img { opacity: 1; }
+
+  .video-thumb-overlay {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    text-decoration: none;
+    gap: 8px;
+    background: rgba(5,5,8,0.3);
+    transition: background 0.4s;
   }
 
-  .video-placeholder:hover { border-color: rgba(201,168,76,0.4); }
+  .video-thumb:hover .video-thumb-overlay { background: rgba(5,5,8,0.1); }
 
-  .play-icon {
-    width: 64px; height: 64px;
-    border: 1px solid var(--gold-dim);
+  .thumb-play {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.6);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -515,42 +847,123 @@
     transition: all 0.3s;
   }
 
-  .video-placeholder:hover .play-icon { background: var(--gold); border-color: var(--gold); }
-  .play-icon svg { fill: var(--gold); transition: fill 0.3s; }
-  .video-placeholder:hover .play-icon svg { fill: var(--black); }
+  .video-thumb:hover .thumb-play {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
 
-  .video-label { font-size: 11px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+  .thumb-play svg { fill: white; }
+  .video-thumb:hover .thumb-play svg { fill: var(--black); }
+
+  .thumb-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+    padding: 0 12px;
+    text-align: center;
+  }
 
   /* ── PHILOSOPHY ── */
-  .philosophy { text-align: center; max-width: 800px; margin: 0 auto; }
+  .philosophy-section {
+    background: var(--surface);
+    border-top: 1px solid rgba(212,178,85,0.12);
+    border-bottom: 1px solid rgba(212,178,85,0.12);
+  }
+
+  .philosophy {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
 
   .philosophy-quote {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(24px, 3vw, 40px);
+    font-size: clamp(22px, 2.8vw, 38px);
     font-weight: 300;
     font-style: italic;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--white);
     margin: 40px 0;
   }
 
-  .philosophy-quote em { color: var(--gold); font-style: normal; }
+  .philosophy-quote em {
+    color: var(--gold);
+    font-style: normal;
+  }
 
   .frequencies {
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: 16px;
     flex-wrap: wrap;
-    margin-top: 60px;
+    margin-top: 64px;
   }
 
   .freq-pill {
     padding: 8px 20px;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(212,178,85,0.25);
     font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--gold-dim);
+    letter-spacing: 0.25em;
+    color: var(--gold);
     text-transform: uppercase;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .freq-pill:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.1);
+  }
+
+  /* ── LICENSING ── */
+  .licensing-section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .licensing-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .license-types {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .license-card {
+    padding: 28px;
+    border: 1px solid rgba(201,168,76,0.1);
+    transition: all 0.3s;
+  }
+
+  .license-card:hover {
+    border-color: rgba(201,168,76,0.25);
+    background: rgba(201,168,76,0.03);
+  }
+
+  .license-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .license-desc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .license-cta {
+    margin-top: 36px;
   }
 
   /* ── FOOTER ── */
@@ -558,159 +971,271 @@
     position: relative;
     z-index: 1;
     padding: 80px 48px 40px;
-    border-top: 1px solid rgba(201,168,76,0.1);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
+    border-top: 1px solid rgba(201,168,76,0.08);
   }
 
-  .footer-brand .logo {
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+
+  .footer-brand .f-logo {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 300;
     color: var(--gold);
-    letter-spacing: 0.3em;
+    letter-spacing: 0.25em;
     margin-bottom: 8px;
   }
 
-  .footer-brand .tagline {
-    font-size: 10px;
+  .footer-brand .f-tagline {
+    font-size: 11px;
     letter-spacing: 0.3em;
-    color: var(--muted);
+    color: var(--text);
     text-transform: uppercase;
     font-style: italic;
   }
 
-  .footer-links h4 {
-    font-size: 9px;
-    letter-spacing: 0.5em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 20px;
+  .footer-brand .f-desc {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.8;
+    max-width: 280px;
   }
 
-  .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col h4 {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
 
-  .footer-links a {
-    font-size: 12px;
-    color: var(--muted);
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .footer-col a {
+    font-size: 13px;
+    color: var(--text);
     text-decoration: none;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     transition: color 0.3s;
   }
 
-  .footer-links a:hover { color: var(--gold); }
+  .footer-col a:hover { color: var(--gold); }
 
-  .footer-copy {
-    grid-column: 1 / -1;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.05);
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 56px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.04);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .footer-copy p { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); }
+  .footer-bottom p {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    opacity: 0.7;
+  }
 
-  .gold-line { width: 60px; height: 1px; background: var(--gold-dim); margin: 32px 0; }
-  .center .gold-line { margin: 32px auto; }
+  .footer-socials {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-socials a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+
+  .footer-socials a:hover { color: var(--gold); }
 
   /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .series-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
   @media (max-width: 900px) {
-    nav { padding: 10px 24px; }
+    nav { padding: 0 24px; }
     .nav-links { display: none; }
-    .nav-logo-img { height: 40px; }
+    .nav-toggle { display: flex; }
+    .nav-logo-img { height: 38px; }
     section { padding: 80px 24px; }
-    .about { grid-template-columns: 1fr; }
-    .about-visual { height: 250px; }
-    .series-grid { grid-template-columns: 1fr 1fr; }
-    footer { grid-template-columns: 1fr; }
-    .footer-copy { flex-direction: column; gap: 12px; text-align: center; }
+    .about { grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { height: 280px; }
+    .series-grid { grid-template-columns: repeat(2, 1fr); }
+    .platform-grid { grid-template-columns: repeat(2, 1fr); }
+    .video-grid { grid-template-columns: 1fr; }
+    .licensing-content { grid-template-columns: 1fr; gap: 32px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 600px) {
+    section { padding: 64px 20px; }
     .series-grid { grid-template-columns: 1fr; }
+    .platform-grid { grid-template-columns: 1fr 1fr; }
     .hero-cta { flex-direction: column; align-items: center; }
-    .hero-logo-img { width: 90vw; }
+    .hero-platforms { flex-direction: column; gap: 12px; }
+    .hero-platforms .sep { display: none; }
+    .about-stats { flex-direction: column; gap: 24px; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .video-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── SMOOTH LOADING ── */
+  .page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s, visibility 0.6s;
+  }
+
+  .page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .loader-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    animation: loader-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes loader-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
   }
 </style>
 </head>
 <body>
 
-<!-- Background -->
-<div class="bg-canvas">
-  <div class="wave"></div>
-  <div class="wave"></div>
-  <div class="wave"></div>
-  <div class="wave"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<!-- Page Loader -->
+<div class="page-loader" id="pageLoader">
+  <span class="loader-text">SONAT MUNDI</span>
 </div>
 
+<!-- Particle Background -->
+<canvas id="particles-canvas"></canvas>
+
 <!-- Nav -->
-<nav>
+<nav id="mainNav">
   <a href="#" class="nav-brand">
     <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="nav-logo-img">
     <div class="nav-brand-text">
       <span class="nav-brand-name">Sonat Mundi</span>
-      <span class="nav-tagline">Omnia Resonant</span>
+      <span class="nav-tagline">United Colours of Sound</span>
     </div>
   </a>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
     <li><a href="#series">Series</a></li>
     <li><a href="#listen">Listen</a></li>
-    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#watch">Watch</a></li>
+    <li><a href="#licensing">Licensing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
   <p class="hero-eyebrow">United Colours of Sound</p>
-  <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="hero-logo-img">
+  <div class="hero-logo-wrapper">
+    <div class="hero-ambient-glow"></div>
+    <div class="hero-glow-waves">
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+      <div class="glow-wave"></div>
+    </div>
+    <img src="sonat_mundi-logo_transparent.png" alt="Sonat Mundi" class="hero-logo-img">
+  </div>
   <div class="hero-divider"></div>
   <p class="hero-tagline">Omnia Resonant</p>
-  <p class="hero-sub">All things resonate</p>
+  <p class="hero-sub">All Things Resonate</p>
   <div class="hero-cta">
-    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="btn-primary">Listen on YouTube</a>
-    <a href="#series" class="btn-secondary">Explore Series</a>
+    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="btn btn-gold">Listen on YouTube</a>
+    <a href="#series" class="btn btn-ghost">Explore Series</a>
+  </div>
+  <div class="hero-platforms">
+    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a>
+    <span class="sep">|</span>
+    <a href="#listen">Spotify</a>
+    <span class="sep">|</span>
+    <a href="#listen">Apple Music</a>
+    <span class="sep">|</span>
+    <a href="#listen">Amazon Music</a>
+    <span class="sep">|</span>
+    <a href="#listen">Tidal</a>
   </div>
   <div class="scroll-hint">
-    <span>Scroll</span>
+    <span>Explore</span>
     <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- Banner -->
-<div class="banner-section">
-  <canvas id="smC"></canvas>
-  <div class="banner-over">
-    <div class="banner-title">SONAT MUNDI</div>
-    <div class="banner-sub">United Colours of Sound &nbsp;·&nbsp; Omnia Resonant &nbsp;·&nbsp; Ancient Sounds · Modern Soul</div>
-  </div>
-</div>
-
 <!-- About -->
 <section id="about">
-  <div class="about">
-    <div class="about-visual">
-      <div class="about-ring ring-1"></div>
-      <div class="about-ring ring-2"></div>
-      <div class="about-ring ring-3"></div>
-      <div class="about-center">∞</div>
-    </div>
-    <div class="about-text">
-      <p class="section-label">Who we are</p>
-      <h2 class="section-title">Ancient Sounds.<br>Modern Soul.</h2>
-      <div class="gold-line"></div>
-      <p class="section-body">
-        Sonat Mundi creates immersive soundscapes inspired by world music traditions, human emotions, healing frequencies and the poetry of everyday life.
-        <br><br>
-        Every sound we produce is a small universe — waiting for you to step inside. We travel through 195 nations, every emotion, every frequency, every moment of the human experience.
-      </p>
+  <div class="about-section">
+    <div class="about">
+      <div class="about-visual reveal">
+        <div class="about-ring ring-1"><div class="ring-dot"></div></div>
+        <div class="about-ring ring-2"><div class="ring-dot"></div></div>
+        <div class="about-ring ring-3"><div class="ring-dot"></div></div>
+        <div class="about-center">&infin;</div>
+      </div>
+      <div class="about-text">
+        <p class="section-label reveal">Who We Are</p>
+        <h2 class="section-title reveal reveal-delay-1">Ancient Sounds.<br>Modern Soul.</h2>
+        <div class="gold-line reveal reveal-delay-2"></div>
+        <p class="section-body reveal reveal-delay-3">
+          Sonat Mundi creates immersive soundscapes inspired by world music traditions, human emotions, healing frequencies, and the poetry of everyday life.
+          <br><br>
+          We travel through 195 nations, every emotion, every frequency, every moment of the human experience — crafting sonic universes that invite you to step inside and listen.
+        </p>
+        <div class="about-stats reveal reveal-delay-4">
+          <div class="stat-item">
+            <div class="stat-number">195</div>
+            <div class="stat-label">Nations</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">80+</div>
+            <div class="stat-label">Tracks</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">6</div>
+            <div class="stat-label">Albums</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -718,64 +1243,193 @@
 <!-- Series -->
 <section id="series" class="series-section">
   <div class="series-header center">
-    <p class="section-label">Our Universe</p>
-    <h2 class="section-title">Four Worlds.<br>Infinite Sound.</h2>
+    <p class="section-label reveal">Our Universe</p>
+    <h2 class="section-title reveal reveal-delay-1">Five Worlds.<br>Infinite Sound.</h2>
+    <div class="gold-line reveal reveal-delay-2"></div>
   </div>
   <div class="series-grid">
-    <div class="series-card">
-      <span class="series-icon">🌍</span>
-      <div class="series-name">Sounds of World</div>
-      <p class="series-desc">A sonic journey through 195 nations — every culture, every tradition, every instrument. Turkey · Japan · Persia · India · Africa · Bali · Nordic · Andes · Silk Road...</p>
-      <p class="series-count">Vol. 1 — Ancient Silk Road · Available Now</p>
-    </div>
-    <div class="series-card">
-      <span class="series-icon">🎭</span>
-      <div class="series-name">Sounds of Emotions</div>
-      <p class="series-desc">Music that feels what words cannot say. Joy · Melancholy · Serenity · Passion · Wonder · Nostalgia · Euphoria · Stillness · Longing · Liberation...</p>
-      <p class="series-count">Coming Soon</p>
-    </div>
-    <div class="series-card">
-      <span class="series-icon">🎯</span>
-      <div class="series-name">Sounds of Concepts</div>
-      <p class="series-desc">The perfect sonic backdrop for every moment of your life. Study · Sleep · Meditation · Yoga · Healing · Creativity · Driving · Dining · Morning Rituals...</p>
-      <p class="series-count">Vol. 1 — Study Music · Available Now</p>
-    </div>
-    <div class="series-card">
-      <span class="series-icon">✨</span>
-      <div class="series-name">Sounds of Frequencies</div>
-      <p class="series-desc">Ancient healing tones for modern souls. 174 Hz · 285 Hz · 432 Hz · 528 Hz · 639 Hz · 741 Hz · 852 Hz · 963 Hz · Solfeggio · Binaural · Schumann Resonance...</p>
-      <p class="series-count">Coming Soon</p>
-    </div>
-  </div>
-</section>
-
-<!-- Listen -->
-<section id="listen">
-  <div class="youtube-section">
-    <p class="section-label" style="text-align:center">Now Playing</p>
-    <h2 class="section-title" style="text-align:center">Listen & Journey</h2>
-    <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="video-placeholder">
-      <div class="play-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvUaegQrL-bSgB1IwjV4990v" target="_blank" class="series-card-link">
+      <div class="series-card reveal">
+        <span class="series-icon">&#127758;</span>
+        <div class="series-name">Sounds of World</div>
+        <p class="series-desc">A sonic journey through 195 nations. Every culture, every tradition, every instrument. Turkey, Japan, Persia, India, Africa, Silk Road and beyond.</p>
+        <span class="series-status status-live">Vol. 1 &amp; 2 Available</span>
       </div>
-      <p class="video-label">Watch on YouTube — @UnitedColoursofSound</p>
+    </a>
+    <a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvXGtW_B_sYFEAOz91CCBoKS" target="_blank" class="series-card-link">
+      <div class="series-card reveal reveal-delay-1">
+        <span class="series-icon">&#127917;</span>
+        <div class="series-name">Sounds of Moods</div>
+        <p class="series-desc">Music that feels what words cannot say. Joy, melancholy, serenity, passion, wonder, nostalgia, euphoria and stillness.</p>
+        <span class="series-status status-live">Vol. 1 Available</span>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvX9wvqnl3b5d1qexRG3s9Zg" target="_blank" class="series-card-link">
+      <div class="series-card reveal reveal-delay-2">
+        <span class="series-icon">&#127919;</span>
+        <div class="series-name">Sounds of Concepts</div>
+        <p class="series-desc">The perfect sonic backdrop for every moment. Study, meditation, yoga, creativity, morning rituals, deep work and flow states.</p>
+        <span class="series-status status-live">Vol. 1 Available</span>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvVYjQahdDJ1zvPaNd1ZC_OT" target="_blank" class="series-card-link">
+      <div class="series-card reveal reveal-delay-3">
+        <span class="series-icon">&#10024;</span>
+        <div class="series-name">Sounds of Frequencies</div>
+        <p class="series-desc">Ancient healing tones for modern souls. 174 Hz, 432 Hz, 528 Hz, 963 Hz, Solfeggio scales, delta waves and Schumann resonance.</p>
+        <span class="series-status status-live">Vol. 1 Available</span>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvWB-zuYabHpeA1I5SanQfEt" target="_blank" class="series-card-link">
+      <div class="series-card reveal reveal-delay-4">
+        <span class="series-icon">&#128164;</span>
+        <div class="series-name">Sounds of Sleep</div>
+        <p class="series-desc">8-hour immersive journeys designed for the deepest rest. Velvet silence, cosmic lullabies and gentle sonic blankets through the night.</p>
+        <span class="series-status status-new">New Series</span>
+      </div>
     </a>
   </div>
 </section>
 
+<!-- Listen Everywhere -->
+<section id="listen">
+  <div class="listen-section">
+    <p class="section-label reveal">Listen Everywhere</p>
+    <h2 class="section-title reveal reveal-delay-1">Find Us On Every Platform</h2>
+    <div class="gold-line reveal reveal-delay-2" style="margin: 28px auto;"></div>
+    <p class="section-body reveal reveal-delay-3" style="max-width:600px; margin: 0 auto; text-align:center;">
+      Sonat Mundi is available on all major streaming platforms. 6 albums, 80+ tracks — and growing every week.
+    </p>
+    <div class="platform-grid">
+      <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank" class="platform-card reveal">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <span class="platform-name">YouTube</span>
+      </a>
+      <a href="#" class="platform-card reveal reveal-delay-1" title="Coming soon on Spotify">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        </div>
+        <span class="platform-name">Spotify</span>
+      </a>
+      <a href="#" class="platform-card reveal reveal-delay-2" title="Coming soon on Apple Music">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043A5.022 5.022 0 0 0 19.32.205a10.496 10.496 0 0 0-1.745-.14C16.996.018 16.417 0 12.073 0c-4.344 0-4.923.018-5.502.066-.86.032-1.712.112-2.424.336A5.021 5.021 0 0 0 1.903.87C1.097 1.398.47 2.13.211 3.069a9.037 9.037 0 0 0-.21 2.163C-.03 5.824-.01 6.407 0 10.765v2.47c.01 4.357-.01 4.94.032 5.534.026.74.085 1.479.237 2.19.316 1.31 1.061 2.31 2.18 3.043.541.353 1.14.598 1.794.697.592.112 1.2.17 1.773.195.59.034 1.166.042 5.474.042s4.884-.008 5.474-.042c.86-.032 1.712-.112 2.424-.336a5.021 5.021 0 0 0 2.244-.868c.806-.528 1.433-1.26 1.693-2.198a9.04 9.04 0 0 0 .21-2.164c.032-.592.054-1.174.042-5.534v-2.47c-.01-4.357.01-4.94-.032-5.534zM16.95 17.61h-.005c0 .474-.342.892-.83.955-.144.02-.293.025-.442.025H8.327c-.149 0-.298-.005-.442-.024a.972.972 0 0 1-.83-.956V6.878c0-.474.342-.893.83-.956.144-.019.293-.024.442-.024h7.347c.149 0 .298.005.442.024a.972.972 0 0 1 .835.956V17.61zM12 4.396a.794.794 0 1 1 0-1.588.794.794 0 0 1 0 1.588zm4.868 1.195H7.132c-.292 0-.528-.251-.528-.562s.236-.563.528-.563h9.736c.292 0 .528.252.528.563s-.236.562-.528.562z"/></svg>
+        </div>
+        <span class="platform-name">Apple Music</span>
+      </a>
+      <a href="#" class="platform-card reveal reveal-delay-3" title="Coming soon on Amazon Music">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M13.958 10.09c0 1.232.029 2.256-.591 3.351-.502.891-1.301 1.438-2.186 1.438-1.214 0-1.922-.924-1.922-2.292 0-2.692 2.415-3.182 4.7-3.182v.685zm3.186 7.705a.66.66 0 0 1-.753.077c-1.06-.878-1.25-1.284-1.828-2.119-1.747 1.782-2.983 2.315-5.248 2.315-2.68 0-4.764-1.653-4.764-4.96 0-2.583 1.401-4.339 3.392-5.2 1.726-.753 4.138-.889 5.98-1.097v-.41c0-.753.058-1.642-.384-2.294-.384-.576-1.117-.814-1.765-.814-1.199 0-2.266.615-2.527 1.89a.535.535 0 0 1-.464.46l-2.6-.28a.453.453 0 0 1-.382-.536C6.32 1.985 9.213.779 11.828.779c1.34 0 3.089.357 4.143 1.37 1.339 1.263 1.213 2.946 1.213 4.782v4.329c0 1.301.541 1.872 1.05 2.573.18.253.22.555-.01.742-.575.48-1.598 1.373-2.16 1.872l-.003-.003-.917.652zM21.1 21.1a12.6 12.6 0 0 1-5.937 2.538C9.467 24.575 3.546 22.39.868 17.57c-.237-.43.06-.685.312-.514 3.065 1.922 6.577 3.08 10.353 3.08 2.585 0 5.54-.673 8.084-1.984.398-.203.735.26.383.566z"/></svg>
+        </div>
+        <span class="platform-name">Amazon Music</span>
+      </a>
+      <a href="#" class="platform-card reveal" title="Coming soon on Tidal">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996l4.004 4.004L8.008 8l4.004 4 4.004-4-4.004-4.004zM16.016 7.996l4.004 4.004L24.024 7.996 20.02 3.992z"/><path d="M12.012 12.004L8.008 16.008l4.004 4.004 4.004-4.004z"/></svg>
+        </div>
+        <span class="platform-name">Tidal</span>
+      </a>
+      <a href="#" class="platform-card reveal reveal-delay-1" title="Coming soon on Deezer">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M18.81 4.16v3.03H24V4.16h-5.19zM6.27 8.38v3.027h5.189V8.38H6.27zm12.54 0v3.027H24V8.38h-5.19zM6.27 12.594v3.027h5.189v-3.027H6.27zm6.271 0v3.027h5.19v-3.027h-5.19zm6.27 0v3.027H24v-3.027h-5.19zM0 16.81v3.028h5.19V16.81H0zm6.27 0v3.028h5.189V16.81H6.27zm6.271 0v3.028h5.19V16.81h-5.19zm6.27 0v3.028H24V16.81h-5.19z"/></svg>
+        </div>
+        <span class="platform-name">Deezer</span>
+      </a>
+      <a href="#" class="platform-card reveal reveal-delay-2" title="Coming soon on TikTok">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </div>
+        <span class="platform-name">TikTok</span>
+      </a>
+      <a href="https://www.instagram.com/sonat.mundi/" target="_blank" class="platform-card reveal reveal-delay-3" title="Follow us on Instagram">
+        <div class="platform-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </div>
+        <span class="platform-name">Instagram</span>
+      </a>
+    </div>
+    <p class="platform-note reveal">Streaming links will be updated as albums go live on each platform.</p>
+  </div>
+</section>
+
+<!-- Featured Videos -->
+<section id="watch" class="philosophy-section">
+  <div class="video-section">
+    <p class="section-label reveal" style="text-align:center">Featured</p>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center">Watch &amp; Journey</h2>
+    <div class="gold-line reveal reveal-delay-2" style="margin: 28px auto;"></div>
+    <div class="video-wrapper reveal reveal-delay-3">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/0SfvkXgnLhM?rel=0"
+        title="528 Hz Solfeggio Frequencies — Sacred Frequencies Vol.1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+    <div class="video-grid">
+      <a href="https://www.youtube.com/watch?v=3N4e-BVWv_k" target="_blank" class="video-thumb reveal">
+        <img src="https://img.youtube.com/vi/3N4e-BVWv_k/mqdefault.jpg" alt="8 Hour Sleep Music" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">8 Hour Deep Sleep</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=FqfQRXqjpZY" target="_blank" class="video-thumb reveal reveal-delay-1">
+        <img src="https://img.youtube.com/vi/FqfQRXqjpZY/mqdefault.jpg" alt="Silk Road World Music" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">Silk Road World Music</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=7u3AMLTKr_U" target="_blank" class="video-thumb reveal reveal-delay-2">
+        <img src="https://img.youtube.com/vi/7u3AMLTKr_U/mqdefault.jpg" alt="Ancient Civilizations" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">Ancient Civilizations</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=zP49iY99TuI" target="_blank" class="video-thumb reveal">
+        <img src="https://img.youtube.com/vi/zP49iY99TuI/mqdefault.jpg" alt="Sufi Ambient Music" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">Sufi Ambient</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=woc8YjxwHjg" target="_blank" class="video-thumb reveal reveal-delay-1">
+        <img src="https://img.youtube.com/vi/woc8YjxwHjg/mqdefault.jpg" alt="Deep Focus Study Music" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">Deep Focus Study</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=sJ8GxI0s6yU" target="_blank" class="video-thumb reveal reveal-delay-2">
+        <img src="https://img.youtube.com/vi/sJ8GxI0s6yU/mqdefault.jpg" alt="Emotional Healing Music" loading="lazy">
+        <div class="video-thumb-overlay">
+          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <span class="thumb-title">Emotional Healing</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- Philosophy -->
-<section id="philosophy" class="series-section">
+<section id="philosophy">
   <div class="philosophy center">
-    <p class="section-label">Our Philosophy</p>
-    <div class="gold-line"></div>
-    <p class="philosophy-quote">
+    <p class="section-label reveal">Our Philosophy</p>
+    <div class="gold-line reveal reveal-delay-1"></div>
+    <p class="philosophy-quote reveal reveal-delay-2">
       "Sound is not merely what the ear hears.<br>
       It is what the <em>soul</em> remembers."
     </p>
-    <p class="section-body" style="margin: 0 auto; text-align: center;">
+    <p class="section-body reveal reveal-delay-3" style="margin: 0 auto; text-align: center; max-width: 600px;">
       We believe that every frequency carries memory. Every melody holds a door. And every moment of stillness is an invitation to listen — not to music, but to the world itself.
     </p>
-    <div class="frequencies">
+    <div class="frequencies reveal reveal-delay-4">
       <span class="freq-pill">174 Hz</span>
       <span class="freq-pill">285 Hz</span>
       <span class="freq-pill">396 Hz</span>
@@ -789,125 +1443,270 @@
   </div>
 </section>
 
+<!-- Licensing -->
+<section id="licensing" class="philosophy-section">
+  <div class="licensing-section">
+    <div class="licensing-content">
+      <div>
+        <p class="section-label reveal">Music Licensing</p>
+        <h2 class="section-title reveal reveal-delay-1">Use Our Music<br>In Your Projects</h2>
+        <div class="gold-line reveal reveal-delay-2"></div>
+        <p class="section-body reveal reveal-delay-3">
+          Sonat Mundi music is available for licensing. Whether you're creating a film, podcast, meditation app, or commercial project — our sounds are ready to elevate your vision.
+        </p>
+        <div class="license-cta reveal reveal-delay-4">
+          <a href="mailto:info@sonatmundi.com?subject=Music%20Licensing%20Inquiry" class="btn btn-gold">Contact for Licensing</a>
+        </div>
+      </div>
+      <div class="license-types reveal reveal-delay-3">
+        <div class="license-card">
+          <div class="license-title">Film &amp; Video</div>
+          <div class="license-desc">Background music for documentaries, short films, YouTube videos and corporate presentations.</div>
+        </div>
+        <div class="license-card">
+          <div class="license-title">Apps &amp; Games</div>
+          <div class="license-desc">Ambient soundscapes for meditation apps, wellness platforms and interactive experiences.</div>
+        </div>
+        <div class="license-card">
+          <div class="license-title">Podcasts &amp; Media</div>
+          <div class="license-desc">Intro, outro and background music for podcasts, radio shows and streaming content.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer id="contact">
-  <div class="footer-brand">
-    <div class="logo">Sonat Mundi</div>
-    <div class="tagline">Omnia Resonant</div>
-    <div class="gold-line" style="margin-top:24px"></div>
-    <p style="font-size:11px; color:var(--muted); line-height:1.8;">
-      United Colours of Sound<br>
-      Ancient Sounds · Modern Soul
-    </p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="f-logo">Sonat Mundi</div>
+      <div class="f-tagline">Omnia Resonant</div>
+      <p class="f-desc">
+        United Colours of Sound.<br>
+        Ancient Sounds. Modern Soul.<br>
+        Every frequency tells a story.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Series</h4>
+      <ul>
+        <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvUaegQrL-bSgB1IwjV4990v" target="_blank">Sounds of World</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvXGtW_B_sYFEAOz91CCBoKS" target="_blank">Sounds of Moods</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvX9wvqnl3b5d1qexRG3s9Zg" target="_blank">Sounds of Concepts</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvVYjQahdDJ1zvPaNd1ZC_OT" target="_blank">Sounds of Frequencies</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvWB-zuYabHpeA1I5SanQfEt" target="_blank">Sounds of Sleep</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Listen</h4>
+      <ul>
+        <li><a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a></li>
+        <li><a href="#listen">Spotify</a></li>
+        <li><a href="#listen">Apple Music</a></li>
+        <li><a href="#listen">Amazon Music</a></li>
+        <li><a href="#listen">Tidal</a></li>
+        <li><a href="#listen">Deezer</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="mailto:info@sonatmundi.com">info@sonatmundi.com</a></li>
+        <li><a href="https://www.instagram.com/sonat.mundi/" target="_blank">Instagram</a></li>
+        <li><a href="https://tiktok.com/@sonatmundi" target="_blank">TikTok</a></li>
+        <li><a href="#licensing">Music Licensing</a></li>
+        <li><a href="https://sonatmundi.com">sonatmundi.com</a></li>
+      </ul>
+    </div>
   </div>
-  <div class="footer-links">
-    <h4>Series</h4>
-    <ul>
-      <li><a href="#">Sounds of World</a></li>
-      <li><a href="#">Sounds of Emotions</a></li>
-      <li><a href="#">Sounds of Concepts</a></li>
-      <li><a href="#">Sounds of Frequencies</a></li>
-    </ul>
-  </div>
-  <div class="footer-links">
-    <h4>Follow</h4>
-    <ul>
-      <li><a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a></li>
-      <li><a href="https://instagram.com/sonatmundi" target="_blank">Instagram</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#cda4a3aba28dbea2a3acb9a0b8a3a9a4e3aea2a0"><span class="__cf_email__" data-cfemail="462f2820290635292827322b3328222f6825292b">[email&#160;protected]</span></a></li>
-      <li><a href="https://sonatmundi.com">sonatmundi.com</a></li>
-    </ul>
-  </div>
-  <div class="footer-copy">
-    <p>© 2026 Sonat Mundi — United Colours of Sound</p>
-    <p>Omnia Resonant — All things resonate.</p>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Sonat Mundi &mdash; United Colours of Sound. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://www.youtube.com/@UnitedColoursofSound" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/sonat.mundi/" target="_blank">Instagram</a>
+      <a href="https://tiktok.com/@sonatmundi" target="_blank">TikTok</a>
+    </div>
   </div>
 </footer>
 
-<!-- Banner Script -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const cv = document.getElementById('smC');
-  const cx = cv.getContext('2d');
-  const W = 1400, H = 520;
-  cv.width = W; cv.height = H;
+<script>
+// ── PAGE LOADER ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('pageLoader').classList.add('hidden');
+  }, 600);
+});
 
-  const stars = Array.from({length:280}, () => ({
-    x: Math.random()*W, y: Math.random()*H,
-    r: Math.random()*1.1+0.2,
-    a: Math.random()*0.6+0.15,
-    tw: Math.random()*Math.PI*2
-  }));
+// ── PARTICLE SYSTEM ──
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles, mouse;
 
-  const waveParams = [
-    {col:'rgba(80,200,120,',  fy:0.9, px:0.0, amp:95,  spd:0.009},
-    {col:'rgba(60,160,255,',  fy:1.1, px:0.5, amp:85,  spd:0.007},
-    {col:'rgba(160,80,255,',  fy:1.3, px:1.0, amp:100, spd:0.006},
-    {col:'rgba(220,60,80,',   fy:0.8, px:1.5, amp:90,  spd:0.008},
-    {col:'rgba(255,140,40,',  fy:1.5, px:2.0, amp:80,  spd:0.010},
-    {col:'rgba(100,220,200,', fy:1.7, px:0.8, amp:75,  spd:0.005},
-    {col:'rgba(255,80,160,',  fy:2.0, px:1.2, amp:70,  spd:0.007},
-    {col:'rgba(200,200,80,',  fy:1.2, px:2.5, amp:65,  spd:0.006},
-    {col:'rgba(80,120,255,',  fy:2.2, px:0.3, amp:60,  spd:0.009},
-    {col:'rgba(180,60,220,',  fy:0.7, px:1.8, amp:55,  spd:0.008},
-    {col:'rgba(60,220,100,',  fy:2.5, px:0.6, amp:50,  spd:0.005},
-    {col:'rgba(255,200,60,',  fy:1.8, px:2.2, amp:45,  spd:0.007},
-  ];
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
 
-  const BARS = 28;
-  const barH = Array.from({length:BARS}, (_,i) => ({h:20+Math.sin(i*0.9)*50+Math.random()*40, t:0, v:0}));
-  function rndT(){ return 12+Math.random()*110; }
-  barH.forEach(b => b.t = rndT());
+  mouse = { x: w / 2, y: h / 2 };
 
-  let frame = 0;
-  function draw(){
-    frame++;
-    cx.clearRect(0,0,W,H);
-    cx.fillStyle = '#000';
-    cx.fillRect(0,0,W,H);
-
-    stars.forEach(s => {
-      s.tw += 0.012;
-      const a = s.a*(0.4+0.6*Math.abs(Math.sin(s.tw)));
-      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      cx.fillStyle = `rgba(255,255,255,${a})`; cx.fill();
-    });
-
-    const midX = W/2, midY = H/2;
-
-    for(let r=28; r<=300; r+=20){
-      cx.beginPath(); cx.arc(midX,midY,r,0,Math.PI*2);
-      cx.strokeStyle = `rgba(210,190,140,${Math.max(0.01, 0.10-r*0.00025)})`;
-      cx.lineWidth = 0.8; cx.stroke();
+  class Particle {
+    constructor() {
+      this.reset();
     }
+    reset() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 1.5 + 0.3;
+      this.alpha = Math.random() * 0.5 + 0.1;
+      this.baseAlpha = this.alpha;
+      const colors = [
+        [201, 168, 76],   // gold
+        [90, 58, 138],    // purple
+        [42, 138, 122],   // teal
+        [138, 58, 90],    // rose
+        [200, 200, 200],  // silver
+      ];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
 
-    const zoneW = 680;
-    waveParams.forEach((w,wi) => {
-      const phase = frame*w.spd + wi*0.4;
-      cx.beginPath();
-      for(let i=0; i<=400; i++){
-        const frac = i/400;
-        const t2 = frac*Math.PI*4;
-        const x = midX + (zoneW/2)*Math.sin(t2*0.5 + phase*0.4 + wi*0.3);
-        const y = midY + w.amp*Math.sin(t2*w.fy + w.px + phase);
-        i===0 ? cx.moveTo(x,y) : cx.lineTo(x,y);
+      // Gentle mouse repulsion
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const force = (150 - dist) / 150 * 0.02;
+        this.vx += dx / dist * force;
+        this.vy += dy / dist * force;
       }
-      cx.strokeStyle = w.col+(0.20+0.08*Math.sin(frame*0.015+wi))+')';
-      cx.lineWidth = 1.0; cx.stroke();
-    });
 
-    const BW=5, BG=4, totalW=BARS*(BW+BG);
-    if(frame%7===0) barH.forEach(b => b.t=rndT());
-    barH.forEach(b => { b.v += (b.t-b.h)*0.12; b.h += b.v; b.v *= 0.78; });
+      // Damping
+      this.vx *= 0.999;
+      this.vy *= 0.999;
 
-    [38, W-38-totalW].forEach(bx => {
-      barH.forEach((b,i) => {
-        const x = bx+i*(BW+BG), bh = Math.max(5,b.h), frac = bh/120;
-        cx.fillStyle = `rgba(${Math.floor(210+45*frac)},${Math.floor(180+75*frac)},${Math.floor(80+175*frac)},0.85)`;
-        cx.fillRect(x, midY-bh/2, BW, bh/2);
-        cx.fillStyle = `rgba(${Math.floor(210+45*frac)},${Math.floor(180+75*frac)},${Math.floor(80+175*frac)},0.6)`;
-        cx.fillRect(x, midY, BW, bh/2);
-      });
-      const grad = cx.createLinearGradient(bx,0,bx+totalW,0);
-      grad.addColorStop(0,'rgba(255,255,255,0)');
-      grad.addColorStop(0.3,'rgba(255,255,255,0.8)');
-      grad.ad
+      // Wrap
+      if (this.x < -10) this.x = w + 10;
+      if (this.x > w + 10) this.x = -10;
+      if (this.y < -10) this.y = h + 10;
+      if (this.y > h + 10) this.y = -10;
+
+      // Twinkle
+      this.alpha = this.baseAlpha + Math.sin(Date.now() * 0.001 + this.x * 0.01) * 0.15;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color[0]},${this.color[1]},${this.color[2]},${Math.max(0, this.alpha)})`;
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    resize();
+    const count = Math.min(Math.floor((w * h) / 8000), 200);
+    particles = Array.from({ length: count }, () => new Particle());
+  }
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = dx * dx + dy * dy;
+        if (dist < 12000) {
+          const alpha = (1 - dist / 12000) * 0.12;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(201,168,76,${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  init();
+  animate();
+})();
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('mainNav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  if (st > 80) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+  lastScroll = st;
+}, { passive: true });
+
+// ── MOBILE NAV TOGGLE ──
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.querySelector('.nav-links');
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.style.display === 'flex';
+  navLinks.style.display = isOpen ? 'none' : 'flex';
+  navLinks.style.position = 'fixed';
+  navLinks.style.top = '72px';
+  navLinks.style.left = '0';
+  navLinks.style.right = '0';
+  navLinks.style.flexDirection = 'column';
+  navLinks.style.alignItems = 'center';
+  navLinks.style.padding = '24px 0';
+  navLinks.style.gap = '24px';
+  navLinks.style.background = 'rgba(5,5,8,0.96)';
+  navLinks.style.backdropFilter = 'blur(20px)';
+  navLinks.style.borderBottom = '1px solid rgba(201,168,76,0.1)';
+  if (isOpen) navLinks.removeAttribute('style');
+});
+
+// Close mobile nav on link click
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    if (window.innerWidth <= 900) navLinks.removeAttribute('style');
+  });
+});
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
