@@ -378,5 +378,45 @@
     "totalTracks": 80,
     "totalAlbums": 6,
     "totalNations": 195
-  }
+  },
+  "platforms": {
+    "spotify": "https://open.spotify.com/artist/74no9Amxaj9asXgRCHyumi",
+    "appleMusic": "https://music.apple.com/us/artist/sonat-mundi/1888557917",
+    "amazonMusic": "https://music.amazon.com/artists/B0F2N2WV8P/sonat-mundi",
+    "tidal": "https://tidal.com/browse/artist/47893841",
+    "deezer": "https://www.deezer.com/artist/293877301",
+    "youtube": "https://www.youtube.com/@UnitedColoursofSound",
+    "instagram": "https://www.instagram.com/sonat.mundi/",
+    "tiktok": "https://tiktok.com/@sonatmundi"
+  },
+  "albums": [
+    {
+      "name": "Ancient Soul Journey Vol.1",
+      "spotify": "https://open.spotify.com/album/3W4zSHs1TwFMJtMqoJpE14",
+      "apple": "https://music.apple.com/us/album/1888706326"
+    },
+    {
+      "name": "Ancient Soul Journey Vol.2",
+      "spotify": "https://open.spotify.com/album/60Lun6BuobCtkQxRwYkLw8",
+      "apple": "https://music.apple.com/us/album/1888557917"
+    },
+    {
+      "name": "Sounds of Moods Vol.1",
+      "spotify": "https://open.spotify.com/album/3TOMkbTryUEhY0kYL4N3NP",
+      "apple": "https://music.apple.com/us/album/1888706239"
+    },
+    {
+      "name": "Sounds of Concepts Vol.1",
+      "spotify": "https://open.spotify.com/album/2YDzCppM7iq2nV4TAKLUKj",
+      "apple": "https://music.apple.com/us/album/1888589431"
+    },
+    {
+      "name": "Sounds of World Vol.1",
+      "spotify": "https://open.spotify.com/album/2LxwgZInGePar9XTsOzPfn"
+    },
+    {
+      "name": "Sounds of Frequencies Vol.1",
+      "spotify": "https://open.spotify.com/album/2ydTxWEuHsJYmVC1W43k5v"
+    }
+  ]
 }
