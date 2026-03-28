@@ -7,3 +7,4 @@ httplib2>=0.22.0
 instagrapi>=2.1.2
 Pillow>=10.0.0
 yt-dlp>=2024.1.0
+deep-translator>=1.11.0
