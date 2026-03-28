@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonat Mundi — Instagram Profesyonel Kurulum Rehberi</title>
+<style>
+  :root {
+    --bg: #08080c;
+    --bg-secondary: #0e0e14;
+    --bg-tertiary: #14141c;
+    --text: #c8c0b4;
+    --text-dim: #8a8478;
+    --gold: #d4b255;
+    --gold-dim: #a68a3a;
+    --heading: #f0ece4;
+    --border: #2a2a36;
+    --code-bg: #0c0c12;
+    --sidebar-w: 280px;
+    --success: #4caf50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 20px 0;
+  }
+  .sidebar-brand {
+    text-align: center;
+    padding: 10px 16px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .sidebar-brand h2 {
+    color: var(--gold);
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-brand small {
+    color: var(--text-dim);
+    font-size: 11px;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-list li a:hover,
+  .toc-list li a.active {
+    color: var(--gold);
+    border-left-color: var(--gold);
+    background: rgba(212,178,85,0.05);
+  }
+
+  /* ── Main Content ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    max-width: 900px;
+    padding: 40px 48px 80px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    text-align: center;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    color: var(--gold);
+    font-size: 28px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .page-header .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* ── Progress Checklist ── */
+  .checklist-panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 36px;
+  }
+  .checklist-panel h3 {
+    color: var(--gold);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .checklist-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text {
+    color: var(--text-dim);
+    font-size: 13px;
+    min-width: 48px;
+    text-align: right;
+  }
+  .checklist-items { list-style: none; }
+  .checklist-items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13.5px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .checklist-items li:hover { color: var(--heading); }
+  .checklist-items li.checked { color: var(--text-dim); text-decoration: line-through; }
+  .checklist-items li input[type="checkbox"] {
+    accent-color: var(--gold);
+    margin-top: 3px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .section-header:hover { background: var(--bg-tertiary); }
+  .section-header h2 {
+    color: var(--heading);
+    font-size: 17px;
+    flex: 1;
+  }
+  .section-header .toggle-icon {
+    color: var(--gold);
+    font-size: 18px;
+    transition: transform 0.3s;
+    font-weight: bold;
+    width: 20px;
+    text-align: center;
+  }
+  .section-header .toggle-icon.collapsed { transform: rotate(-90deg); }
+  .section-body {
+    padding: 20px 24px;
+    display: block;
+  }
+  .section-body.hidden { display: none; }
+
+  /* ── Typography inside sections ── */
+  .section-body h3 {
+    color: var(--gold);
+    font-size: 15px;
+    margin: 20px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-body h3:first-child { margin-top: 0; }
+  .section-body h4 {
+    color: var(--heading);
+    font-size: 14px;
+    margin: 16px 0 8px;
+  }
+  .section-body p { margin-bottom: 12px; }
+  .section-body strong { color: var(--heading); }
+  .section-body a { color: var(--gold); text-decoration: none; }
+  .section-body a:hover { text-decoration: underline; }
+  .section-body ul, .section-body ol {
+    margin: 8px 0 12px 24px;
+  }
+  .section-body li { margin-bottom: 4px; }
+  .section-body blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 10px 16px;
+    margin: 12px 0;
+    background: rgba(212,178,85,0.05);
+    color: var(--text-dim);
+    font-size: 13.5px;
+    border-radius: 0 4px 4px 0;
+  }
+  .section-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+  }
+
+  /* inline code */
+  code:not(.block-code) {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--gold);
+  }
+
+  /* ── Code blocks ── */
+  .code-wrapper {
+    position: relative;
+    margin: 10px 0 14px;
+  }
+  .code-wrapper pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #d0c8bc;
+  }
+  .code-wrapper pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .copy-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+  .copy-btn.copied { color: var(--success); border-color: var(--success); }
+
+  /* lang label */
+  .code-lang {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Tables ── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--bg-tertiary);
+    color: var(--gold);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--gold-dim);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover td { background: rgba(212,178,85,0.03); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 20px 60px; }
+    .mobile-menu-btn { display: flex; }
+  }
+  @media (min-width: 901px) {
+    .mobile-menu-btn { display: none; }
+  }
+
+  .mobile-menu-btn {
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 200;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    width: 40px; height: 40px;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar.open { display: block; width: 260px; }
+  }
+
+  /* ASCII art grid */
+  .ascii-grid pre {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--gold);
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+</style>
+</head>
+<body>
+
+<!-- Mobile menu button -->
+<button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h2>Sonat Mundi</h2>
+    <small>Instagram Kurulum Rehberi</small>
+  </div>
+  <ul class="toc-list" id="toc-list">
+    <li><a href="#section-1">1. Kullanici Adi</a></li>
+    <li><a href="#section-2">2. Profil Fotograflari</a></li>
+    <li><a href="#section-3">3. Isim Alani</a></li>
+    <li><a href="#section-4">4. Bio</a></li>
+    <li><a href="#section-5">5. Bio Linki</a></li>
+    <li><a href="#section-6">6. Kategori</a></li>
+    <li><a href="#section-7">7. Iletisim Butonlari</a></li>
+    <li><a href="#section-8">8. Story Highlights</a></li>
+    <li><a href="#section-9">9. Ilk 9 Post — Grid</a></li>
+    <li><a href="#section-10">10. Reels Stratejisi</a></li>
+    <li><a href="#section-11">11. Hashtag Setleri</a></li>
+    <li><a href="#section-12">12. Icerik Takvimi</a></li>
+    <li><a href="#section-13">13. Otomasyon Araclari</a></li>
+    <li><a href="#section-14">14. Hizli Kontrol Listesi</a></li>
+    <li><a href="#section-15">15. Gelecek Adimlar</a></li>
+  </ul>
+</nav>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Sonat Mundi</h1>
+    <p style="color:var(--gold);font-size:13px;letter-spacing:4px;margin-bottom:12px;">INSTAGRAM PROFESYONEL KURULUM REHBERI</p>
+    <p class="subtitle">
+      Bu rehber Sonat Mundi markasi icin Instagram profilini sifirdan profesyonel sekilde kurmak icindir.
+      Talimatlar Turkce, Instagram icerik metinleri (bio, caption, hashtag) Ingilizce yazilmistir.
+      Her sey kopyala-yapistir hazirdir.
+    </p>
+  </div>
+
+  <!-- Progress Checklist -->
+  <div class="checklist-panel" id="checklist-panel">
+    <h3>Ilerleme Kontrol Listesi</h3>
+    <div class="checklist-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-text" id="progress-text">0 / 17</span>
+    </div>
+    <ul class="checklist-items" id="checklist-items">
+      <li><input type="checkbox" data-key="cl-0"> Instagram Business hesabina gec</li>
+      <li><input type="checkbox" data-key="cl-1"> Facebook sayfasi olustur ve Instagram'a bagla</li>
+      <li><input type="checkbox" data-key="cl-2"> Kullanici adi: @sonat.mundi</li>
+      <li><input type="checkbox" data-key="cl-3"> Profil fotografi yukle</li>
+      <li><input type="checkbox" data-key="cl-4"> Isim alani: Sonat Mundi | World Music</li>
+      <li><input type="checkbox" data-key="cl-5"> Bio'yu yapistir</li>
+      <li><input type="checkbox" data-key="cl-6"> Kategori: Musician/Band</li>
+      <li><input type="checkbox" data-key="cl-7"> E-posta iletisim butonu ekle</li>
+      <li><input type="checkbox" data-key="cl-8"> Linktree olustur ve bio'ya ekle</li>
+      <li><input type="checkbox" data-key="cl-9"> Story Highlight kapaklarini tasarla (6 adet)</li>
+      <li><input type="checkbox" data-key="cl-10"> Ilk 9 postu sirayla paylas</li>
+      <li><input type="checkbox" data-key="cl-11"> YouTube kanalina Instagram linkini ekle</li>
+      <li><input type="checkbox" data-key="cl-12"> sonatmundi.com'a Instagram linkini ekle</li>
+      <li><input type="checkbox" data-key="cl-13"> YouTube description'larina Instagram linkini ekle</li>
+      <li><input type="checkbox" data-key="cl-14"> Instagram'i DistroKid'de bagla</li>
+      <li><input type="checkbox" data-key="cl-15"> Ilk Reel'i yukle</li>
+      <li><input type="checkbox" data-key="cl-16"> Gunluk story paylasimina basla</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 1 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" id="section-1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>1. Kullanici Adi (Username)</h2>
+    </div>
+    <div class="section-body">
+      <p><strong>Kullanici adi:</strong> <code>@sonat.mundi</code> (hesap acildi: <a href="https://www.instagram.com/sonat.mundi/" target="_blank">instagram.com/sonat.mundi</a>)</p>
+      <p>Not: Noktali versiyon kullaniliyor. Tum platformlarda bu sekilde referans verilmeli.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="section-2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>2. Profil Fotograflari</h2>
+    </div>
+    <div class="section-body">
+      <p><strong>Kullanilacak gorsel:</strong> <code>D:\Yedekler\UCS\profile_images\sonat_mundi_square_1024x1024.png</code></p>
+      <h3>Neden bu gorsel:</h3>
+      <ul>
+        <li>Instagram profil fotografi kare format gerektirir (1:1) &mdash; bu gorsel zaten 1024x1024</li>
+        <li>PNG formati seffaf arka plan destegi saglar, logo net gorunur</li>
+        <li>Diger platformlarla (Spotify, YouTube) gorsel tutarlilik saglar</li>
+        <li>Instagram profil fotografi 320x320 olarak goruntulenir ama yuksek cozunurluk yuklemek kaliteyi arttirir</li>
+      </ul>
+      <p><strong>Yukleme:</strong> Instagram &gt; Profili Duzenle &gt; Profil Fotografini Degistir &gt; Galeriden Sec</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="section-3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>3. Isim Alani (Name Field)</h2>
+    </div>
+    <div class="section-body">
+      <p>Instagram'da kalin yazi olarak gorunen isim alani. Bu alan aranabilir, bu yuzden anahtar kelime icermeli.</p>
+      <p><strong>Kopyala-yapistir:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Sonat Mundi | World Music</code></pre>
+      </div>
+      <p><strong>Neden:</strong> "World Music" anahtar kelimesi sayesinde bu turde arama yapan kisiler profili bulabilir. 30 karakter limiti var, bu tam uyuyor (27 karakter).</p>
+      <h3>Alternatifler:</h3>
+      <ul>
+        <li><code>Sonat Mundi | Healing Music</code> (sifa muzigi arayan kitle icin)</li>
+        <li><code>Sonat Mundi | Sleep &amp; Focus</code> (uyku/odaklanma arayan kitle icin)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="section-4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>4. Bio (150 Karakter Limiti)</h2>
+    </div>
+    <div class="section-body">
+      <p>Asagida 5 farkli bio secenegi var. Hepsi 150 karakter limitine uygun, SEO odakli, emoji stratejik kullanilmis.</p>
+
+      <h3>Secenek 1 — ONERILEN (En Dengeli)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Ancient Sounds. Modern Soul.
+World Music | Healing Frequencies | Deep Sleep
+80+ tracks on all platforms
+sonatmundi.com</code></pre>
+      </div>
+
+      <h3>Secenek 2 — Marka Odakli</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">United Colours of Sound
+World music from 195 nations
+Healing frequencies | Study | Sleep | Meditation
+New releases weekly</code></pre>
+      </div>
+
+      <h3>Secenek 3 — Rakam/Sosyal Kanit Odakli</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">80+ tracks | 6 albums | 195 nations of sound
+Healing frequencies | Deep sleep | Focus music
+Stream everywhere. Feel everything.</code></pre>
+      </div>
+
+      <h3>Secenek 4 — Minimal ve Cekici</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Omnia Resonant — All Things Resonate
+World music | 432Hz | 528Hz | Solfeggio
+Sleep | Study | Heal | Feel
+New music weekly</code></pre>
+      </div>
+
+      <h3>Secenek 5 — Aksiyon Odakli</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Your daily dose of ancient sound
+World music | Healing tones | Deep sleep
+80+ tracks on Spotify & Apple Music
+Listen now</code></pre>
+      </div>
+
+      <blockquote>ONEMLI: Instagram bio'da link satirini yazmayin &mdash; link ayri bir alana konur (asagidaki bolume bakin). Bio'da sadece metin yazar.</blockquote>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="section-5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>5. Bio Linki</h2>
+    </div>
+    <div class="section-body">
+      <h3>Secenek A — Linktr.ee (ONERILEN)</h3>
+      <p>Linktree olustur: <code>linktr.ee/sonatmundi</code></p>
+      <p>Linktree'ye eklenecek linkler (sirasiyla):</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Sira</th><th>Baslik</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Listen on Spotify</td><td>(Spotify artist link &mdash; DistroKid onaylaninca ekle)</td></tr>
+            <tr><td>2</td><td>Listen on Apple Music</td><td>(Apple Music link &mdash; DistroKid onaylaninca ekle)</td></tr>
+            <tr><td>3</td><td>Watch on YouTube</td><td><a href="https://youtube.com/@UnitedColoursofSound" target="_blank">youtube.com/@UnitedColoursofSound</a></td></tr>
+            <tr><td>4</td><td>8-Hour Deep Sleep Music</td><td><a href="https://youtu.be/3N4e-BVWv_k" target="_blank">youtu.be/3N4e-BVWv_k</a></td></tr>
+            <tr><td>5</td><td>Visit Our Website</td><td><a href="https://sonatmundi.com" target="_blank">sonatmundi.com</a></td></tr>
+            <tr><td>6</td><td>Contact Us</td><td><a href="mailto:info@sonat.mundi.com">info@sonat.mundi.com</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Secenek B — Dogrudan Website</h3>
+      <p>Eger Linktree istemiyorsan: <code>https://sonatmundi.com</code></p>
+      <p>(Ama once web sitesini guncellemen lazim &mdash; tum platform linkleri orada olmali)</p>
+      <p><strong>Ayarlama:</strong> Instagram &gt; Profili Duzenle &gt; Web Sitesi &gt; Linki yapistir</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="section-6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>6. Kategori (Business Category)</h2>
+    </div>
+    <div class="section-body">
+      <p>Instagram Business hesabina gecis yaptiktan sonra kategori sec:</p>
+      <p><strong>Birincil secim:</strong> <code>Musician/Band</code></p>
+      <p><strong>Alternatif:</strong> <code>Music Production</code> veya <code>Record Label</code></p>
+      <h3>Ayarlama yolu:</h3>
+      <ol>
+        <li>Instagram &gt; Profili Duzenle &gt; Kategori</li>
+        <li>"Musician" yaz, listeden "Musician/Band" sec</li>
+        <li>Kategoriyi profilde goster/gizle secenegi var &mdash; <strong>goster</strong> sec</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="section-7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>7. Iletisim Butonlari</h2>
+    </div>
+    <div class="section-body">
+      <p>Business hesabinda iletisim butonlarini aktiflestir:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Buton</th><th>Deger</th><th>Goster?</th></tr></thead>
+          <tbody>
+            <tr><td>E-posta</td><td>info@sonat.mundi.com</td><td style="color:var(--success)">EVET</td></tr>
+            <tr><td>Telefon</td><td>(ekleme &mdash; gizlilik)</td><td>HAYIR</td></tr>
+            <tr><td>Adres</td><td>(ekleme &mdash; fiziksel mekan yok)</td><td>HAYIR</td></tr>
+            <tr><td>WhatsApp</td><td>(opsiyonel, ileride eklenebilir)</td><td>HAYIR</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Ayarlama:</strong> Instagram &gt; Profili Duzenle &gt; Iletisim Secenekleri &gt; E-posta ekle</p>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section" id="section-8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>8. Story Highlights (One Cikan Hikayeler)</h2>
+    </div>
+    <div class="section-body">
+      <p>5 ana icerik sutununa + 1 marka tanitim highlight'i olustur. Her biri icin ayri kapak gorseli yap.</p>
+
+      <h3>Highlight Kapak Tasarimi Onerisi</h3>
+      <ul>
+        <li>Arka plan: Koyu mor/lacivert gradient (marka renkleri)</li>
+        <li>Ikon: Her pillar icin beyaz minimalist ikon</li>
+        <li>Font: Sans-serif, buyuk harf</li>
+        <li>Boyut: 1080x1920 (story boyutu), ama sadece ortadaki daire gorunecek</li>
+      </ul>
+
+      <h3>Highlight Listesi</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>#</th><th>Isim</th><th>Ikon Onerisi</th><th>Icerik</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>WORLD</strong></td><td>Dunya ikonu</td><td>Sounds of World serisi tanitim, Silk Road muzik snippetlari, ulke bazli muzik hikayeleri, album kapagi gorselleri</td></tr>
+            <tr><td>2</td><td><strong>MOODS</strong></td><td>Kalp ikonu</td><td>Sounds of Moods serisi, duygu bazli muzik klipleri, "Bugun ne hissediyorsun?" anketleri</td></tr>
+            <tr><td>3</td><td><strong>FOCUS</strong></td><td>Beyin/hedef ikonu</td><td>Sounds of Concepts serisi, calisma muzigi, "Study with me" icerikleri, verimlilik ipuclari</td></tr>
+            <tr><td>4</td><td><strong>HEALING</strong></td><td>Dalga/frekans ikonu</td><td>Sounds of Frequencies serisi, 432Hz/528Hz tanitim, Solfeggio aciklama kartlari</td></tr>
+            <tr><td>5</td><td><strong>SLEEP</strong></td><td>Ay/yildiz ikonu</td><td>Sounds of Sleep serisi, 8 saatlik uyku muzigi tanitim, uyku ipuclari</td></tr>
+            <tr><td>6</td><td><strong>ABOUT</strong></td><td>Logo</td><td>Marka hikayesi, "Omnia Resonant" aciklamasi, ekip tanitimi, SSS</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <blockquote>NOT: Ilk basta bu Highlight'larin kapak gorsellerini Canva'da olustur (ucretsiz). "Instagram Highlight Cover" sablonu sec, marka renklerini uygula.</blockquote>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section" id="section-9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>9. Ilk 9 Post — Grid Plani</h2>
+    </div>
+    <div class="section-body">
+      <p>Ilk 9 post Instagram profilinde 3x3 grid olarak gorunur. Bu ilk izlenim cok onemli. Asagidaki plan gorsel uyum saglar.</p>
+
+      <div class="code-wrapper ascii-grid">
+        <pre><code class="block-code">+-------------------+-------------------+-------------------+
+|     POST 1        |     POST 2        |     POST 3        |
+|   Marka Tanitim   |  Album: Silk Road |  Album: Study     |
+|   (Logo + Motto)  |  (Album Kapagi)   |  (Album Kapagi)   |
++-------------------+-------------------+-------------------+
+|     POST 4        |     POST 5        |     POST 6        |
+|   Carousel:       |  Album: Moods     |  Album: Frequencies|
+|   "5 Series"      |  (Album Kapagi)   |  (Album Kapagi)   |
++-------------------+-------------------+-------------------+
+|     POST 7        |     POST 8        |     POST 9        |
+|  Album: ASJ Vol.1 |  Album: ASJ Vol.2 |  Reel: YouTube    |
+|  (Album Kapagi)   |  (Album Kapagi)   |  Tanitim Videosu  |
++-------------------+-------------------+-------------------+</code></pre>
+      </div>
+
+      <!-- POST 1 -->
+      <h3>POST 1 — Marka Tanitim (Karusel / Carousel)</h3>
+      <p><strong>Gorsel:</strong> Logo + koyu arka plan, her slayt bir bilgi</p>
+      <ul>
+        <li>Slayt 1: Logo + "Sonat Mundi"</li>
+        <li>Slayt 2: "United Colours of Sound"</li>
+        <li>Slayt 3: "Ancient Sounds. Modern Soul."</li>
+        <li>Slayt 4: "80+ Tracks | 6 Albums | 195 Nations"</li>
+        <li>Slayt 5: "Stream Everywhere" + platform logolari</li>
+      </ul>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Welcome to Sonat Mundi — United Colours of Sound.
+
+We create music that bridges ancient traditions with modern production. From the Silk Road to sacred frequencies, from deep sleep to deep focus — every sound tells a story.
+
+Omnia Resonant — All Things Resonate.
+
+80+ tracks now available on Spotify, Apple Music, YouTube, and 150+ platforms worldwide.
+
+Follow us for daily sounds that heal, inspire, and transform.
+
+#SonatMundi #WorldMusic #HealingMusic #AncientSounds #ModernSoul #UnitedColoursofSound #OmniaResonant #MusicForTheSoul #GlobalMusic #SacredFrequencies</code></pre>
+      </div>
+
+      <!-- POST 2 -->
+      <h3>POST 2 — Sounds of World Vol.1: Ancient Silk Road</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\world_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Sounds of World Vol.1 — Ancient Silk Road Authentic
+
+15 tracks traveling from Istanbul to Beijing. Persian setar, Chinese guzheng, Indian sitar, Arabic oud — authentic instruments, ancient melodies, modern production.
+
+Every nation has a sound. We're capturing all 195.
+
+Stream now on all platforms. Link in bio.
+
+.
+.
+.
+#SoundsOfWorld #SilkRoad #WorldMusic #AncientMusic #PersianMusic #ChineseMusic #IndianClassicalMusic #ArabicMusic #TurkishMusic #EthnicMusic #TraditionalMusic #GlobalSounds #CulturalMusic #SonatMundi #UnitedColoursofSound</code></pre>
+      </div>
+
+      <!-- POST 3 -->
+      <h3>POST 3 — Sounds of Concepts Vol.1: Study Music</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\study_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Sounds of Concepts Vol.1 — Deep Focus Study Music
+
+12 tracks designed to sharpen your concentration. Ambient textures, gentle piano, minimal beats — no lyrics, no distractions.
+
+Perfect for studying, coding, writing, or deep work sessions.
+
+1+ hour of pure focus. Stream now on all platforms.
+
+.
+.
+.
+#StudyMusic #FocusMusic #DeepFocus #ConcentrationMusic #AmbientStudy #StudyWithMe #ProductivityMusic #LoFiStudy #CodingMusic #WritingMusic #DeepWork #BackgroundMusic #SonatMundi #MusicForStudying #CalmMusic</code></pre>
+      </div>
+
+      <!-- POST 4 -->
+      <h3>POST 4 — Carousel: "5 Sounds Series"</h3>
+      <p><strong>Gorsel:</strong> 5 slaytlik karusel, her slayt bir seri tanitimi</p>
+      <ul>
+        <li>Slayt 1: "Discover Our 5 Sound Universes"</li>
+        <li>Slayt 2: "SOUNDS OF WORLD &mdash; 195 Nations, One Planet"</li>
+        <li>Slayt 3: "SOUNDS OF MOODS &mdash; Feel Everything"</li>
+        <li>Slayt 4: "SOUNDS OF CONCEPTS &mdash; Study. Focus. Create."</li>
+        <li>Slayt 5: "SOUNDS OF FREQUENCIES &mdash; 432Hz | 528Hz | Solfeggio"</li>
+        <li>Slayt 6: "SOUNDS OF SLEEP &mdash; 8 Hours of Deep Rest"</li>
+      </ul>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">One brand. Five universes of sound.
+
+Each series is a gateway to a different sonic world:
+
+1. SOUNDS OF WORLD — Ancient music from 195 nations
+2. SOUNDS OF MOODS — Music for every emotion
+3. SOUNDS OF CONCEPTS — Study, meditation, focus
+4. SOUNDS OF FREQUENCIES — Sacred healing tones
+5. SOUNDS OF SLEEP — 8-hour deep sleep journeys
+
+Which universe speaks to you? Tell us in the comments.
+
+Follow @sonat.mundi for daily sounds that move your soul.
+
+.
+.
+.
+#SonatMundi #WorldMusic #HealingFrequencies #SleepMusic #StudyMusic #MeditationMusic #AncientMusic #SacredFrequencies #432Hz #528Hz #DeepSleep #SonatMundiMusic #UnitedColoursofSound #MusicForHealing #MusicForSleep</code></pre>
+      </div>
+
+      <!-- POST 5 -->
+      <h3>POST 5 — Sounds of Moods Vol.1</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\moods_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Sounds of Moods Vol.1 — The Human Spectrum
+
+15 tracks for 15 emotions. Joy. Melancholy. Wonder. Serenity. Nostalgia.
+
+Music doesn't just accompany feelings — it creates them.
+
+Close your eyes. Press play. Feel everything.
+
+Stream now on Spotify, Apple Music & all platforms.
+
+.
+.
+.
+#EmotionalMusic #MoodMusic #FeelingMusic #Melancholy #Serenity #Joy #Nostalgia #AmbientMusic #CinematicMusic #MusicForTheSoul #HealingMusic #SonatMundi #InstrumentalMusic #RelaxingMusic #DeepListening</code></pre>
+      </div>
+
+      <!-- POST 6 -->
+      <h3>POST 6 — Sounds of Frequencies Vol.1</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\frequencies_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Sounds of Frequencies Vol.1 — Complete Sacred Frequencies & Healing Tones
+
+15 tracks featuring every sacred frequency:
+
+174 Hz — Pain Relief
+396 Hz — Liberation from Fear
+417 Hz — Facilitating Change
+432 Hz — Universal Harmony
+528 Hz — DNA Repair & Miracles
+639 Hz — Heart Connection
+741 Hz — Intuition Awakening
+852 Hz — Spiritual Order
+963 Hz — Divine Connection
+
+Plus Delta, Theta, and Alpha wave compositions.
+
+Tune your body. Tune your mind. Tune your soul.
+
+.
+.
+.
+#432Hz #528Hz #SolfeggioFrequencies #HealingFrequencies #SacredFrequencies #SoundHealing #FrequencyHealing #HealingTones #396Hz #741Hz #963Hz #SonatMundi #FrequencyMusic #VibrationalHealing #EnergyHealing</code></pre>
+      </div>
+
+      <!-- POST 7 -->
+      <h3>POST 7 — Ancient Soul Journey Vol.1</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\asj_vol1_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Ancient Soul Journey Vol.1 — Sufi Ambient & Persian Lounge
+
+8 tracks of mystical Sufi ambience.
+
+Ney, setar, daf, and oud meet modern ambient production. A sonic pilgrimage through centuries of Persian and Ottoman mysticism.
+
+Close your eyes. Let the journey begin.
+
+.
+.
+.
+#SufiMusic #PersianMusic #AmbientMusic #Ney #Setar #OttomanMusic #MysticalMusic #SufiAmbient #PersianLounge #AncientMusic #SpiritualMusic #SonatMundi #Whirling #MevlanaMusic #IslamicArt</code></pre>
+      </div>
+
+      <!-- POST 8 -->
+      <h3>POST 8 — Ancient Soul Journey Vol.2</h3>
+      <p><strong>Gorsel:</strong> <code>D:\Yedekler\UCS\album_covers_3000\civilizations_album_cover_3000x3000.jpg</code></p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Ancient Soul Journey Vol.2 — Echoes of Ancient Civilizations
+
+15 tracks from the greatest civilizations in history.
+
+Egypt. Mesopotamia. Greece. Rome. Persia. India. China. Maya.
+
+What did the ancients hear? We imagined it for you.
+
+1+ hour of cinematic ancient world music.
+
+.
+.
+.
+#AncientMusic #AncientCivilizations #EgyptianMusic #MesopotamiaMusic #GreekMusic #RomanMusic #CinematicMusic #EpicMusic #HistoricalMusic #AncientWorld #SonatMundi #MayaMusic #AncientSounds #WorldMusic #HistoryMusic</code></pre>
+      </div>
+
+      <!-- POST 9 -->
+      <h3>POST 9 — Video/Reel: YouTube Tanitim</h3>
+      <p><strong>Gorsel:</strong> YouTube kanalindaki en populer videonun 30-60 saniyelik kesiti (Reel olarak)</p>
+      <p><strong>Oneri:</strong> 528 Hz videosundan veya Sleep videosundan snippet</p>
+      <p><strong>Caption:</strong></p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">Full versions on our YouTube channel — up to 8 hours of uninterrupted music.
+
+This is just a taste. The full journey awaits.
+
+Subscribe to United Colours of Sound on YouTube for:
+- Full-length albums (1-8 hours)
+- Sacred frequency sessions
+- Deep sleep music
+- World music compilations
+
+Link in bio.
+
+.
+.
+.
+#YouTubeMusic #FullAlbum #LongPlayMusic #8HourSleep #SleepMusic #HealingMusic #SacredFrequencies #528Hz #DeepSleep #SonatMundi #MusicChannel #RelaxingMusic #AmbientMusic #StudyMusic #MeditationMusic</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="section" id="section-10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>10. Reels Stratejisi — YouTube Shorts'tan Donusum</h2>
+    </div>
+    <div class="section-body">
+      <h3>Mevcut Durum</h3>
+      <ul>
+        <li>9 YouTube Shorts yuklu, 9 tane daha yuklemeye hazir</li>
+        <li>Shorts formati: 1080x1920 (9:16), ~50 saniye &mdash; Instagram Reels ile birebir uyumlu</li>
+      </ul>
+
+      <h3>Donusum Adim Adim</h3>
+      <ol>
+        <li><strong>YouTube Shorts dosyalarini bul:</strong> <code>D:\Yedekler\UCS\Sounds\Shorts\</code></li>
+        <li><strong>Watermark eklemeye gerek yok</strong> &mdash; YouTube logosu otomatik olmuyor, dosyalar temiz</li>
+        <li><strong>Instagram'a yukle:</strong> Reels olarak yukle, kapak fotografini sec (en iyi kareyi sec)</li>
+        <li><strong>Onemli fark:</strong> Instagram Reels'de muzik ekleme secenegi var ama EKLEME &mdash; kendi orijinal sesin zaten videoda. "Original Audio" olarak kalsin.</li>
+        <li><strong>Caption'da YouTube'a yonlendir:</strong> "Full version on YouTube &mdash; link in bio"</li>
+      </ol>
+
+      <h3>Reels Paylasim Kurallari</h3>
+      <ul>
+        <li>Reels'de ilk 3 saniye kritik &mdash; izleyiciyi yakalayacak gorsel olmali</li>
+        <li>Hashtag'leri caption'a degil, ilk yoruma yaz (daha temiz gorunur)</li>
+        <li>Her Reel'e konum etiketi ekle: "Worldwide" veya "Earth"</li>
+        <li>Cover image olarak en iyi kareyi sec &mdash; grid'de guzel gorunsun</li>
+        <li>Reels'i ayni zamanda Stories'e de paylas</li>
+      </ul>
+
+      <h3>Haftalik Reels Plani</h3>
+      <ul>
+        <li>Pazartesi: Sounds of World snippet</li>
+        <li>Carsamba: Healing Frequencies snippet</li>
+        <li>Cuma: Sleep/Study snippet</li>
+        <li>Pazar: Moods/Emotional snippet</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 11 -->
+  <div class="section" id="section-11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>11. Hashtag Setleri</h2>
+    </div>
+    <div class="section-body">
+      <p>Her set 30 hashtag icerir (Instagram limiti). Ilgili icerik turune gore kopyala-yapistir.</p>
+
+      <h3>SET 1 — WORLD MUSIC (Sounds of World icerikleri icin)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">#WorldMusic #AncientMusic #SilkRoad #TraditionalMusic #EthnicMusic #GlobalMusic #CulturalMusic #FolkMusic #PersianMusic #ArabicMusic #TurkishMusic #IndianMusic #ChineseMusic #AfricanMusic #CelticMusic #TribalMusic #IndigenousMusic #AsianMusic #MiddleEasternMusic #MediterraneanMusic #WorldBeat #Ethnomusicology #RootsMusic #SonatMundi #UnitedColoursofSound #AncientSounds #MusicOfTheWorld #InstrumentalWorld #WorldFusion #TraditionalSounds</code></pre>
+      </div>
+
+      <h3>SET 2 — HEALING FREQUENCIES (Sounds of Frequencies icerikleri icin)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">#432Hz #528Hz #SolfeggioFrequencies #HealingFrequencies #SoundHealing #FrequencyHealing #SacredFrequencies #HealingTones #VibrationalHealing #EnergyHealing #396Hz #417Hz #639Hz #741Hz #852Hz #963Hz #174Hz #285Hz #ChakraHealing #ChakraMusic #ReikiMusic #SoundTherapy #HealingMusic #FrequencyMusic #SonatMundi #TuningFork #HertzHealing #DNARepair #CellularHealing #QuantumHealing</code></pre>
+      </div>
+
+      <h3>SET 3 — SLEEP &amp; RELAXATION (Sounds of Sleep icerikleri icin)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">#SleepMusic #DeepSleep #8HourSleep #SleepSounds #RelaxingMusic #BedtimeMusic #InsomniaRelief #SleepAid #NightMusic #DreamMusic #RestfulSleep #SleepMeditation #CalmMusic #PeacefulMusic #SlumberMusic #NightAmbience #DeepRest #SleepWell #GoodNight #SleepPlaylist #RelaxAndSleep #SonatMundi #AmbientSleep #SoftMusic #GentleMusic #SleepLofi #NatureSleep #RainSleep #SleepHygiene #SleepBetter</code></pre>
+      </div>
+
+      <h3>SET 4 — STUDY &amp; FOCUS (Sounds of Concepts icerikleri icin)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">#StudyMusic #FocusMusic #DeepFocus #ConcentrationMusic #StudyWithMe #ProductivityMusic #AmbientStudy #CodingMusic #WritingMusic #DeepWork #BackgroundMusic #LoFiStudy #WorkMusic #BrainMusic #MentalClarity #StudyPlaylist #ExamStudy #LibraryMusic #FocusFlow #FlowState #MindfulStudy #SonatMundi #StudyVibes #AcademicMusic #HomeworkMusic #ReadingMusic #ThinkingMusic #CreativeFlow #WorkFromHome #OfficeMusic</code></pre>
+      </div>
+
+      <h3>SET 5 — MOODS &amp; EMOTIONS (Sounds of Moods icerikleri icin)</h3>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">#EmotionalMusic #MoodMusic #MelancholyMusic #SadMusic #HappyMusic #JoyfulMusic #NostalgicMusic #SerenityMusic #PeacefulVibes #DeepFeeling #CinematicMusic #EpicMusic #InstrumentalMusic #PianoMusic #AmbientMusic #AtmosphericMusic #MusicForTheSoul #FeelTheMusic #SonatMundi #EmotionalAmbient #SoulfulMusic #HeartMusic #DramaticMusic #UpliftingMusic #CalmVibes #InnerPeace #MusicAndEmotions #SoundscapeMusic #DreamyMusic #EtherealMusic</code></pre>
+      </div>
+
+      <blockquote>IPUCU: Hashtag'leri caption'a degil, paylasimdan hemen sonra ilk yorum olarak ekle. Boylece caption temiz kalir, hashtag'ler yine calisir.</blockquote>
+    </div>
+  </div>
+
+  <!-- SECTION 12 -->
+  <div class="section" id="section-12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>12. Icerik Takvimi — Ilk 2 Hafta</h2>
+    </div>
+    <div class="section-body">
+      <h3>HAFTA 1: Lansmanlar</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Gun</th><th>Icerik Turu</th><th>Aciklama</th><th>Hashtag Seti</th></tr></thead>
+          <tbody>
+            <tr><td>Pazartesi</td><td>Carousel Post</td><td>POST 1: Marka tanitim karuseli</td><td>Set 1 + genel</td></tr>
+            <tr><td>Pazartesi</td><td>Story</td><td>"We're on Instagram!" duyurusu</td><td>&mdash;</td></tr>
+            <tr><td>Sali</td><td>Single Image</td><td>POST 2: Silk Road album kapagi</td><td>Set 1</td></tr>
+            <tr><td>Carsamba</td><td>Single Image</td><td>POST 3: Study Music album kapagi</td><td>Set 4</td></tr>
+            <tr><td>Persembe</td><td>Carousel Post</td><td>POST 4: "5 Sound Universes" karuseli</td><td>Karisik</td></tr>
+            <tr><td>Cuma</td><td>Single Image</td><td>POST 5: Moods album kapagi</td><td>Set 5</td></tr>
+            <tr><td>Cumartesi</td><td>Single Image</td><td>POST 6: Frequencies album kapagi</td><td>Set 2</td></tr>
+            <tr><td>Pazar</td><td>Single Image</td><td>POST 7: ASJ Vol.1 album kapagi</td><td>Set 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>HAFTA 2: Reels Baslangici + Devam</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Gun</th><th>Icerik Turu</th><th>Aciklama</th><th>Hashtag Seti</th></tr></thead>
+          <tbody>
+            <tr><td>Pazartesi</td><td>Single Image</td><td>POST 8: ASJ Vol.2 album kapagi</td><td>Set 1</td></tr>
+            <tr><td>Sali</td><td>Reel</td><td>POST 9: YouTube tanitim snippet (528Hz)</td><td>Set 2</td></tr>
+            <tr><td>Carsamba</td><td>Reel</td><td>Silk Road muzik snippet (30-50sn)</td><td>Set 1</td></tr>
+            <tr><td>Persembe</td><td>Carousel</td><td>"What is 528 Hz?" egitim karuseli</td><td>Set 2</td></tr>
+            <tr><td>Cuma</td><td>Reel</td><td>Study Music snippet</td><td>Set 4</td></tr>
+            <tr><td>Cumartesi</td><td>Single Image</td><td>"Weekend vibes" Moods gorseli + alinti</td><td>Set 5</td></tr>
+            <tr><td>Pazar</td><td>Reel</td><td>8-Hour Sleep Music tanitim snippet</td><td>Set 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Gunluk Story Plani (Her gun en az 1 story)</h3>
+      <ul>
+        <li><strong>Pazartesi:</strong> "New Week, New Sounds" &mdash; haftalik oneri</li>
+        <li><strong>Sali:</strong> Anket &mdash; "What should we play today? World / Healing / Sleep / Focus"</li>
+        <li><strong>Carsamba:</strong> Behind the scenes &mdash; muzik yapim sureci</li>
+        <li><strong>Persembe:</strong> Frekans bilgisi karti (ornegin "Did you know 528 Hz is called the Love Frequency?")</li>
+        <li><strong>Cuma:</strong> Spotify/Apple Music'te yeni cikan parca tanitimi</li>
+        <li><strong>Cumartesi:</strong> Kullanici etkilesimi &mdash; "Share your study setup" veya "Tag someone who needs sleep music"</li>
+        <li><strong>Pazar:</strong> YouTube video tanitimi &mdash; "Full 8-hour version on YouTube"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 13 -->
+  <div class="section" id="section-13">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>13. Instagram Otomasyon Araclari</h2>
+    </div>
+    <div class="section-body">
+      <h3>Python ile Instagram Otomasyon</h3>
+      <p>Asagidaki Python kutuphaneleri Instagram gonderimi otomatiklestirmek icin kullanilabilir:</p>
+
+      <h4>1. Instagrapi (ONERILEN)</h4>
+      <div class="code-wrapper">
+        <span class="code-lang">bash</span>
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">pip install instagrapi</code></pre>
+      </div>
+      <ul>
+        <li>En guncel ve aktif kutuphane</li>
+        <li>Post, Reel, Story, Carousel yukleme destegi</li>
+        <li>Hashtag, konum, mention ekleme</li>
+        <li>DM gonderme</li>
+        <li>Resmi API kullanmaz (unofficial) &mdash; dikkatli kullan, hesap bani riski var</li>
+      </ul>
+      <p>Ornek kullanim:</p>
+      <div class="code-wrapper">
+        <span class="code-lang">python</span>
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code class="block-code">from instagrapi import Client
+
+cl = Client()
+cl.login("sonatmundi", "SIFREN_BURAYA")
+
+# Tekli gorsel paylasma
+cl.photo_upload(
+    path="album_cover.jpg",
+    caption="Your caption here\n.\n.\n.\n#hashtags"
+)
+
+# Reel paylasma
+cl.clip_upload(
+    path="short_video.mp4",
+    caption="Reel caption here"
+)
+
+# Carousel paylasma
+cl.album_upload(
+    paths=["slide1.jpg", "slide2.jpg", "slide3.jpg"],
+    caption="Carousel caption"
+)</code></pre>
+      </div>
+
+      <h4>2. Meta Business Suite (RESMI, UCRETSIZ)</h4>
+      <ul>
+        <li>business.facebook.com uzerinden Instagram post zamanlama</li>
+        <li>Resmi yontem, ban riski yok</li>
+        <li>Reel zamanlama destegi var</li>
+        <li>En guvenli secenek</li>
+      </ul>
+
+      <h4>3. Later / Buffer / Hootsuite</h4>
+      <ul>
+        <li>Ucretli ama profesyonel cozumler</li>
+        <li>Gorsel onizleme, grid planlama, analitik</li>
+        <li>Later'in ucretsiz plani ayda 12 post zamanlama destegi veriyor</li>
+      </ul>
+
+      <h3>Oneri</h3>
+      <p><strong>Baslangic icin Meta Business Suite kullan</strong> (ucretsiz + resmi + ban riski yok). Ileri seviye otomasyon istersen <code>instagrapi</code> ile Python script yaz &mdash; ama bunu dikkatli kullan, Instagram unofficial API kullanimini sevmez.</p>
+
+      <blockquote>NOT: Mevcut YouTube upload scripti (<code>upload_youtube.py</code>) ile benzer bir yapi Instagram icin de kurulabilir. Istersen bir <code>upload_instagram.py</code> scripti olusturabilirim.</blockquote>
+    </div>
+  </div>
+
+  <!-- SECTION 14 -->
+  <div class="section" id="section-14">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>14. Hizli Kontrol Listesi</h2>
+    </div>
+    <div class="section-body">
+      <p>Asagidaki her adimi sirayla yap:</p>
+      <ul>
+        <li>Instagram Business hesabina gec (Ayarlar &gt; Hesap &gt; Profesyonel Hesaba Gec &gt; Isletme)</li>
+        <li>Facebook sayfasi olustur ve Instagram'a bagla (Meta Business Suite icin gerekli)</li>
+        <li>Kullanici adi: <code>@sonat.mundi</code></li>
+        <li>Profil fotografi yukle: <code>sonat_mundi_square_1024x1024.png</code></li>
+        <li>Isim alani: <code>Sonat Mundi | World Music</code></li>
+        <li>Bio'yu yapistir (Secenek 1 onerilen)</li>
+        <li>Kategori: Musician/Band</li>
+        <li>E-posta iletisim butonu: info@sonat.mundi.com</li>
+        <li>Linktree olustur ve bio'ya ekle</li>
+        <li>Story Highlight kapaklarini Canva'da tasarla (6 adet)</li>
+        <li>Ilk 9 postu sirayla paylas (1 hafta icinde)</li>
+        <li>YouTube kanalina Instagram linkini ekle</li>
+        <li>sonatmundi.com'a Instagram linkini ekle</li>
+        <li>YouTube video description'larina Instagram linkini ekle</li>
+        <li>Instagram'i DistroKid'de sosyal medya olarak bagla</li>
+        <li>Ilk Reel'i yukle (YouTube Shorts'tan)</li>
+        <li>Gunluk story paylasimina basla</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 15 -->
+  <div class="section" id="section-15">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="toggle-icon">&#9660;</span>
+      <h2>15. Gelecek Adimlar (Ilk 2 haftadan sonra)</h2>
+    </div>
+    <div class="section-body">
+      <ol>
+        <li><strong>Instagram Shopping</strong> &mdash; Muzik NFT veya merch satisi icin (ileride)</li>
+        <li><strong>Collab Posts</strong> &mdash; Benzer muzik hesaplariyla ortak paylasim</li>
+        <li><strong>Instagram Live</strong> &mdash; Canli muzik/frekans session'lari</li>
+        <li><strong>User Generated Content</strong> &mdash; Takipcilerin muzikle ne yaptigini paylasma</li>
+        <li><strong>Instagram Ads</strong> &mdash; En iyi performans gosteren Reel'i reklam olarak calistir ($5-10/gun)</li>
+        <li><strong>Cross-promotion</strong> &mdash; TikTok'a ayni Reels'leri yukle</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:40px 0 20px;border-top:1px solid var(--border);margin-top:32px;">
+    <p style="color:var(--text-dim);font-size:12px;">Bu rehber Sonat Mundi markasi icin ozel olarak hazirlanmistir.</p>
+    <p style="color:var(--text-dim);font-size:12px;">Tum Instagram icerik metinleri (bio, caption, hashtag) Ingilizce'dir cunku uluslararasi bir muzik markasidir.</p>
+    <p style="color:var(--gold-dim);font-size:11px;margin-top:8px;">SONAT MUNDI &mdash; Omnia Resonant</p>
+  </div>
+
+</div>
+
+<script>
+// ── Toggle Sections ──
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle-icon');
+  body.classList.toggle('hidden');
+  icon.classList.toggle('collapsed');
+}
+
+// ── Copy Code ──
+function copyCode(btn) {
+  const pre = btn.parentElement.querySelector('pre code');
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Kopyalandi!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Kopyala';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// ── Checklist with localStorage ──
+(function() {
+  const items = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+  const fill = document.getElementById('progress-fill');
+  const text = document.getElementById('progress-text');
+  const total = items.length;
+
+  function updateProgress() {
+    const checked = document.querySelectorAll('#checklist-items input:checked').length;
+    const pct = Math.round((checked / total) * 100);
+    fill.style.width = pct + '%';
+    text.textContent = checked + ' / ' + total;
+  }
+
+  function loadState() {
+    items.forEach(cb => {
+      const key = cb.getAttribute('data-key');
+      if (localStorage.getItem('sm-ig-' + key) === '1') {
+        cb.checked = true;
+        cb.parentElement.classList.add('checked');
+      }
+    });
+    updateProgress();
+  }
+
+  items.forEach(cb => {
+    cb.addEventListener('change', function() {
+      const key = this.getAttribute('data-key');
+      localStorage.setItem('sm-ig-' + key, this.checked ? '1' : '0');
+      this.parentElement.classList.toggle('checked', this.checked);
+      updateProgress();
+    });
+
+    // Click on the li text toggles too
+    cb.parentElement.addEventListener('click', function(e) {
+      if (e.target !== cb) {
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+
+  loadState();
+})();
+
+// ── Sidebar active state on scroll ──
+(function() {
+  const sections = document.querySelectorAll('.section');
+  const links = document.querySelectorAll('.toc-list a');
+
+  function onScroll() {
+    let current = '';
+    sections.forEach(s => {
+      const top = s.getBoundingClientRect().top;
+      if (top < 120) current = s.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
