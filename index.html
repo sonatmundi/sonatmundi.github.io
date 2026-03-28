@@ -812,6 +812,106 @@
     box-shadow: 0 0 20px rgba(201,168,76,0.1);
   }
 
+  /* ── SHORTS GRID ── */
+  .shorts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .short-thumb {
+    position: relative;
+    aspect-ratio: 9/16;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(201,168,76,0.1);
+    transition: all 0.3s;
+    display: block;
+    text-decoration: none;
+  }
+
+  .short-thumb:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.15);
+  }
+
+  .short-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .short-thumb-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .short-thumb-title {
+    font-size: 12px;
+    color: var(--white);
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+  }
+
+  .short-thumb .thumb-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .short-thumb:hover .thumb-play { opacity: 1; }
+
+  .short-thumb .thumb-play svg { fill: var(--black); }
+
+  /* ── SECTION SUBTITLE ── */
+  .section-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+  }
+
+  /* ── VIDEO DURATION BADGE ── */
+  .video-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.8);
+    color: var(--white);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── LAST UPDATED ── */
+  .update-badge {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 32px;
+    opacity: 0.6;
+  }
+
   /* ── LICENSING ── */
   .licensing-section {
     max-width: 900px;
@@ -991,6 +1091,7 @@
     .footer-inner { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
     .video-grid { grid-template-columns: 1fr; }
+    .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   }
 
   /* ── SMOOTH LOADING ── */
@@ -1107,18 +1208,26 @@
           <br><br>
           We travel through 195 nations, every emotion, every frequency, every moment of the human experience — crafting sonic universes that invite you to step inside and listen.
         </p>
-        <div class="about-stats reveal reveal-delay-4">
+        <div class="about-stats reveal reveal-delay-4" id="aboutStats">
           <div class="stat-item">
-            <div class="stat-number">195</div>
+            <div class="stat-number" id="statNations">195</div>
             <div class="stat-label">Nations</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">80+</div>
+            <div class="stat-number" id="statTracks">80+</div>
             <div class="stat-label">Tracks</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">6</div>
+            <div class="stat-number" id="statAlbums">6</div>
             <div class="stat-label">Albums</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="statSubs">—</div>
+            <div class="stat-label">Subscribers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="statViews">—</div>
+            <div class="stat-label">Views</div>
           </div>
         </div>
       </div>
@@ -1246,7 +1355,7 @@
     <p class="section-label reveal" style="text-align:center">Featured</p>
     <h2 class="section-title reveal reveal-delay-1" style="text-align:center">Watch &amp; Journey</h2>
     <div class="gold-line reveal reveal-delay-2" style="margin: 28px auto;"></div>
-    <div class="video-wrapper reveal reveal-delay-3">
+    <div class="video-wrapper reveal reveal-delay-3" id="featuredVideo">
       <iframe
         src="https://www.youtube-nocookie.com/embed/0SfvkXgnLhM?rel=0"
         title="528 Hz Solfeggio Frequencies — Sacred Frequencies Vol.1"
@@ -1256,49 +1365,13 @@
         loading="lazy">
       </iframe>
     </div>
-    <div class="video-grid">
-      <a href="https://www.youtube.com/watch?v=3N4e-BVWv_k" target="_blank" class="video-thumb reveal">
-        <img src="https://img.youtube.com/vi/3N4e-BVWv_k/mqdefault.jpg" alt="8 Hour Sleep Music" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">8 Hour Deep Sleep</span>
-        </div>
-      </a>
-      <a href="https://www.youtube.com/watch?v=FqfQRXqjpZY" target="_blank" class="video-thumb reveal reveal-delay-1">
-        <img src="https://img.youtube.com/vi/FqfQRXqjpZY/mqdefault.jpg" alt="Silk Road World Music" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">Silk Road World Music</span>
-        </div>
-      </a>
-      <a href="https://www.youtube.com/watch?v=7u3AMLTKr_U" target="_blank" class="video-thumb reveal reveal-delay-2">
-        <img src="https://img.youtube.com/vi/7u3AMLTKr_U/mqdefault.jpg" alt="Ancient Civilizations" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">Ancient Civilizations</span>
-        </div>
-      </a>
-      <a href="https://www.youtube.com/watch?v=zP49iY99TuI" target="_blank" class="video-thumb reveal">
-        <img src="https://img.youtube.com/vi/zP49iY99TuI/mqdefault.jpg" alt="Sufi Ambient Music" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">Sufi Ambient</span>
-        </div>
-      </a>
-      <a href="https://www.youtube.com/watch?v=woc8YjxwHjg" target="_blank" class="video-thumb reveal reveal-delay-1">
-        <img src="https://img.youtube.com/vi/woc8YjxwHjg/mqdefault.jpg" alt="Deep Focus Study Music" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">Deep Focus Study</span>
-        </div>
-      </a>
-      <a href="https://www.youtube.com/watch?v=sJ8GxI0s6yU" target="_blank" class="video-thumb reveal reveal-delay-2">
-        <img src="https://img.youtube.com/vi/sJ8GxI0s6yU/mqdefault.jpg" alt="Emotional Healing Music" loading="lazy">
-        <div class="video-thumb-overlay">
-          <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <span class="thumb-title">Emotional Healing</span>
-        </div>
-      </a>
+    <div class="video-grid" id="videoGrid">
+      <!-- Dynamically populated from data/channel.json -->
+    </div>
+    <h3 class="section-subtitle reveal" style="text-align:center; margin-top:64px; color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:400;">Shorts</h3>
+    <div class="gold-line reveal" style="margin: 16px auto 32px;"></div>
+    <div class="shorts-grid" id="shortsGrid">
+      <!-- Dynamically populated from data/channel.json -->
     </div>
   </div>
 </section>
@@ -1912,6 +1985,107 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   }
 
   animate();
+})();
+
+// ── DYNAMIC CONTENT LOADER ──
+(async function() {
+  try {
+    const resp = await fetch('data/channel.json');
+    if (!resp.ok) return;
+    const data = await resp.json();
+
+    // Update stats
+    const fmt = n => n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n.toString();
+    const statSubs = document.getElementById('statSubs');
+    const statViews = document.getElementById('statViews');
+    const statTracks = document.getElementById('statTracks');
+    const statAlbums = document.getElementById('statAlbums');
+    if (statSubs) statSubs.textContent = fmt(data.channel.subscriberCount);
+    if (statViews) statViews.textContent = fmt(data.channel.viewCount);
+    if (data.stats) {
+      if (statTracks) statTracks.textContent = data.stats.totalTracks + '+';
+      if (statAlbums) statAlbums.textContent = data.stats.totalAlbums;
+    }
+
+    // Update platform info text
+    const platformNote = document.querySelector('.platform-note');
+    if (platformNote && data.channel.videoCount) {
+      platformNote.textContent = `Sonat Mundi is available on all major streaming platforms. ${data.stats.totalAlbums} albums, ${data.stats.totalTracks}+ tracks — and growing every week.`;
+    }
+
+    // Featured video = most viewed long-form
+    const videos = data.videos || [];
+    if (videos.length > 0) {
+      const featured = [...videos].sort((a,b) => b.viewCount - a.viewCount)[0];
+      const featuredEl = document.getElementById('featuredVideo');
+      if (featuredEl) {
+        const iframe = featuredEl.querySelector('iframe');
+        if (iframe) {
+          iframe.src = `https://www.youtube-nocookie.com/embed/${featured.id}?rel=0`;
+          iframe.title = featured.title;
+        }
+      }
+
+      // Video grid (all long-form except featured)
+      const grid = document.getElementById('videoGrid');
+      if (grid) {
+        const others = videos.filter(v => v.id !== featured.id);
+        grid.innerHTML = others.map((v, i) => {
+          const delay = i % 3;
+          const delayClass = delay > 0 ? ` reveal-delay-${delay}` : '';
+          const shortTitle = v.title.split('|')[0].split('—')[0].trim();
+          return `<a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" class="video-thumb reveal${delayClass}">
+            <img src="${v.thumbnail}" alt="${shortTitle}" loading="lazy">
+            <div class="video-thumb-overlay">
+              <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
+              <span class="thumb-title">${shortTitle}</span>
+            </div>
+            <span class="video-duration">${v.durationFormatted}</span>
+          </a>`;
+        }).join('');
+
+        // Re-observe for scroll reveal
+        grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      }
+    }
+
+    // Shorts grid
+    const shorts = data.shorts || [];
+    if (shorts.length > 0) {
+      const shortsGrid = document.getElementById('shortsGrid');
+      if (shortsGrid) {
+        shortsGrid.innerHTML = shorts.map((v, i) => {
+          const delay = i % 4;
+          const delayClass = delay > 0 ? ` reveal-delay-${delay}` : '';
+          const shortTitle = v.title.replace(/#\w+/g, '').replace(/\s+/g,' ').trim();
+          return `<a href="https://www.youtube.com/shorts/${v.id}" target="_blank" class="short-thumb reveal${delayClass}">
+            <img src="${v.thumbnail}" alt="${shortTitle}" loading="lazy">
+            <div class="short-thumb-overlay">
+              <span class="short-thumb-title">${shortTitle}</span>
+            </div>
+            <div class="thumb-play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
+          </a>`;
+        }).join('');
+
+        shortsGrid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      }
+    }
+
+    // Last updated badge
+    if (data.updated) {
+      const watchSection = document.getElementById('watch');
+      if (watchSection) {
+        const badge = document.createElement('p');
+        badge.className = 'update-badge';
+        const d = new Date(data.updated);
+        badge.textContent = `Auto-updated ${d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'})}`;
+        watchSection.querySelector('.video-section').appendChild(badge);
+      }
+    }
+
+  } catch(e) {
+    console.log('Dynamic content load skipped:', e.message);
+  }
 })();
 </script>
 </body>
