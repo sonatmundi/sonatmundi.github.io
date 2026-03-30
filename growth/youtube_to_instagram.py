@@ -28,7 +28,6 @@ import logging
 import argparse
 import subprocess
 import tempfile
-import pickle
 import glob as globmod
 import textwrap
 from pathlib import Path
@@ -495,30 +494,12 @@ def get_ig_client():
 
 def get_youtube_service():
     """Return authenticated YouTube Data API service."""
-    from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
 
-    creds = None
-    # Try analysis token first (broader scope)
-    for token_path in [YT_ANALYSIS_TOKEN, YT_TOKEN_PATH]:
-        if token_path.exists():
-            try:
-                with open(token_path, "rb") as f:
-                    creds = pickle.load(f)
-                if creds and creds.valid:
-                    break
-                if creds and creds.expired and creds.refresh_token:
-                    creds.refresh(Request())
-                    break
-            except Exception as e:
-                log.warning("Token %s failed: %s", token_path, e)
-                creds = None
-
-    if not creds or not creds.valid:
-        # Fall back to existing auth module
-        sys.path.insert(0, str(SCRIPT_DIR))
-        from auth import get_credentials
-        creds = get_credentials()
+    # Use unified auth module (supports both CI JSON tokens and local files)
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from auth import get_credentials
+    creds = get_credentials()
 
     return build("youtube", "v3", credentials=creds)
 
