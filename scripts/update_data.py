@@ -5,7 +5,6 @@ import json
 import os
 import sys
 import base64
-import pickle
 import re
 from datetime import datetime, timezone
 
@@ -13,12 +12,14 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.readonly",
-    "https://www.googleapis.com/auth/youtube",
+    "https://www.googleapis.com/auth/youtube.force-ssl",
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+    "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
 ]
 
 CHANNEL_ID = "UCVFOpInPEdxJQF_FmnoKSMQ"
@@ -35,28 +36,27 @@ PLAYLISTS = {
 
 def get_credentials():
     """Get YouTube API credentials from env (GitHub Actions) or local file."""
-    # GitHub Actions: credentials from secrets
+    # GitHub Actions: credentials from base64-encoded JSON secret
     token_b64 = os.environ.get("YOUTUBE_TOKEN")
     if token_b64:
-        token_data = base64.b64decode(token_b64)
-        creds = pickle.loads(token_data)
+        token_json = base64.b64decode(token_b64).decode("utf-8")
+        token_data = json.loads(token_json)
+        creds = Credentials.from_authorized_user_info(token_data, SCOPES)
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         return creds
 
-    # Local: use token file
+    # Local: use token.json files
     token_paths = [
-        "D:/Yedekler/UCS/Sounds/yt_token_analysis.pickle",
-        "D:/Yedekler/UCS/Sounds/Sounds of Concepts Vol.1 Study Music/yt_token.pickle",
+        os.path.join(os.path.dirname(__file__), "..", "config", "token.json"),
+        os.path.join(os.path.dirname(__file__), "..", "token.json"),
     ]
     for path in token_paths:
+        path = os.path.normpath(path)
         if os.path.exists(path):
-            with open(path, "rb") as f:
-                creds = pickle.load(f)
+            creds = Credentials.from_authorized_user_file(path, SCOPES)
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
-                with open(path, "wb") as f:
-                    pickle.dump(creds, f)
             return creds
 
     raise RuntimeError("No YouTube credentials found")
