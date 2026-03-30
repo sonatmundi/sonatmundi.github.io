@@ -461,6 +461,42 @@
     text-shadow: 0 0 40px rgba(201,168,76,0.3);
   }
 
+  .brand-meaning {
+    margin-bottom: 32px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(90,58,138,0.06) 100%);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+  }
+
+  .meaning-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  .meaning-latin {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .meaning-arrow {
+    color: rgba(255,255,255,0.25);
+    flex-shrink: 0;
+  }
+
+  .meaning-translation {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.02em;
+  }
+
   .about-stats {
     display: flex;
     gap: 48px;
@@ -1088,6 +1124,10 @@
     .hero-platforms { flex-direction: column; gap: 12px; }
     .hero-platforms .sep { display: none; }
     .about-stats { flex-direction: column; gap: 24px; }
+    .meaning-item { flex-direction: column; gap: 4px; }
+    .meaning-arrow { display: none; }
+    .meaning-latin { font-size: 18px; }
+    .brand-meaning { padding: 20px 24px; }
     .footer-inner { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
     .video-grid { grid-template-columns: 1fr; }
@@ -1203,8 +1243,25 @@
         <p class="section-label reveal">Who We Are</p>
         <h2 class="section-title reveal reveal-delay-1">Ancient Sounds.<br>Modern Soul.</h2>
         <div class="gold-line reveal reveal-delay-2"></div>
+        <div class="brand-meaning reveal reveal-delay-3">
+          <div class="meaning-item">
+            <span class="meaning-latin">Sonat Mundi</span>
+            <span class="meaning-arrow">&mdash;</span>
+            <span class="meaning-translation" data-i18n="sonat-mundi">The Sound of the World</span>
+          </div>
+          <div class="meaning-item">
+            <span class="meaning-latin">United Colours of Sound</span>
+            <span class="meaning-arrow">&mdash;</span>
+            <span class="meaning-translation" data-i18n="united-colours">Every culture, tradition and emotion unified through music</span>
+          </div>
+          <div class="meaning-item">
+            <span class="meaning-latin">Omnia Resonant</span>
+            <span class="meaning-arrow">&mdash;</span>
+            <span class="meaning-translation" data-i18n="omnia-resonant">All Things Resonate</span>
+          </div>
+        </div>
         <p class="section-body reveal reveal-delay-3">
-          Where ancient wisdom meets modern frequencies. Sonat Mundi is a timeless sonic universe that speaks to every sense, every emotion, every corner of the world.
+          Where ancient wisdom meets modern frequencies. A timeless sonic universe that speaks to every sense, every emotion, every corner of the world.
           <br><br>
           Close your eyes. Feel the vibration. Let the sound transform you.
           <br><br>
@@ -2087,6 +2144,106 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
   } catch(e) {
     console.log('Dynamic content load skipped:', e.message);
+  }
+})();
+
+// ── BRAND NAME AUTO-TRANSLATION ──
+(function() {
+  const translations = {
+    'tr': {
+      'sonat-mundi': 'Dunyanin Sesi',
+      'united-colours': 'Her kultur, gelenek ve duygu muzikle bulusur',
+      'omnia-resonant': 'Her Sey Yankilanir'
+    },
+    'es': {
+      'sonat-mundi': 'El Sonido del Mundo',
+      'united-colours': 'Cada cultura, tradicion y emocion unidas por la musica',
+      'omnia-resonant': 'Todo Resuena'
+    },
+    'pt': {
+      'sonat-mundi': 'O Som do Mundo',
+      'united-colours': 'Cada cultura, tradicao e emocao unidas pela musica',
+      'omnia-resonant': 'Tudo Ressoa'
+    },
+    'de': {
+      'sonat-mundi': 'Der Klang der Welt',
+      'united-colours': 'Jede Kultur, Tradition und Emotion vereint durch Musik',
+      'omnia-resonant': 'Alles Schwingt'
+    },
+    'fr': {
+      'sonat-mundi': 'Le Son du Monde',
+      'united-colours': 'Chaque culture, tradition et emotion unies par la musique',
+      'omnia-resonant': 'Tout Resonne'
+    },
+    'it': {
+      'sonat-mundi': 'Il Suono del Mondo',
+      'united-colours': 'Ogni cultura, tradizione ed emozione unite dalla musica',
+      'omnia-resonant': 'Tutto Risuona'
+    },
+    'ja': {
+      'sonat-mundi': '\u4e16\u754c\u306e\u97f3',
+      'united-colours': '\u3059\u3079\u3066\u306e\u6587\u5316\u3001\u4f1d\u7d71\u3001\u611f\u60c5\u304c\u97f3\u697d\u3067\u3072\u3068\u3064\u306b',
+      'omnia-resonant': '\u4e07\u7269\u304c\u97ff\u304d\u5408\u3046'
+    },
+    'ko': {
+      'sonat-mundi': '\uc138\uc0c1\uc758 \uc18c\ub9ac',
+      'united-colours': '\ubaa8\ub4e0 \ubb38\ud654, \uc804\ud1b5, \uac10\uc815\uc774 \uc74c\uc545\uc73c\ub85c \ud558\ub098\ub85c',
+      'omnia-resonant': '\ubaa8\ub4e0 \uac83\uc774 \uc6b8\ub824 \ud37c\uc9c4\ub2e4'
+    },
+    'zh': {
+      'sonat-mundi': '\u4e16\u754c\u4e4b\u58f0',
+      'united-colours': '\u6bcf\u79cd\u6587\u5316\u3001\u4f20\u7edf\u548c\u60c5\u611f\u901a\u8fc7\u97f3\u4e50\u878d\u4e3a\u4e00\u4f53',
+      'omnia-resonant': '\u4e07\u7269\u7686\u6709\u56de\u54cd'
+    },
+    'hi': {
+      'sonat-mundi': '\u0926\u0941\u0928\u093f\u092f\u093e \u0915\u0940 \u0927\u094d\u0935\u0928\u093f',
+      'united-colours': '\u0939\u0930 \u0938\u0902\u0938\u094d\u0915\u0943\u0924\u093f, \u092a\u0930\u0902\u092a\u0930\u093e \u0914\u0930 \u092d\u093e\u0935\u0928\u093e \u0938\u0902\u0917\u0940\u0924 \u0938\u0947 \u090f\u0915 \u0939\u094b\u0924\u0940 \u0939\u0948',
+      'omnia-resonant': '\u0938\u092c \u0915\u0941\u091b \u0917\u0942\u0902\u091c\u0924\u093e \u0939\u0948'
+    },
+    'ar': {
+      'sonat-mundi': '\u0635\u0648\u062a \u0627\u0644\u0639\u0627\u0644\u0645',
+      'united-colours': '\u0643\u0644 \u062b\u0642\u0627\u0641\u0629 \u0648\u062a\u0642\u0644\u064a\u062f \u0648\u0639\u0627\u0637\u0641\u0629 \u062a\u062a\u0648\u062d\u062f \u0639\u0628\u0631 \u0627\u0644\u0645\u0648\u0633\u064a\u0642\u0649',
+      'omnia-resonant': '\u0643\u0644 \u0634\u064a\u0621 \u064a\u062a\u0631\u062f\u062f'
+    },
+    'ru': {
+      'sonat-mundi': '\u0417\u0432\u0443\u043a \u041c\u0438\u0440\u0430',
+      'united-colours': '\u041a\u0430\u0436\u0434\u0430\u044f \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u0430, \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u044f \u0438 \u044d\u043c\u043e\u0446\u0438\u044f, \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u0451\u043d\u043d\u044b\u0435 \u043c\u0443\u0437\u044b\u043a\u043e\u0439',
+      'omnia-resonant': '\u0412\u0441\u0451 \u0417\u0432\u0443\u0447\u0438\u0442'
+    },
+    'id': {
+      'sonat-mundi': 'Suara Dunia',
+      'united-colours': 'Setiap budaya, tradisi, dan emosi dipersatukan melalui musik',
+      'omnia-resonant': 'Segalanya Bergema'
+    },
+    'th': {
+      'sonat-mundi': '\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e41\u0e2b\u0e48\u0e07\u0e42\u0e25\u0e01',
+      'united-colours': '\u0e17\u0e38\u0e01\u0e27\u0e31\u0e12\u0e19\u0e18\u0e23\u0e23\u0e21 \u0e1b\u0e23\u0e30\u0e40\u0e1e\u0e13\u0e35 \u0e41\u0e25\u0e30\u0e2d\u0e32\u0e23\u0e21\u0e13\u0e4c\u0e23\u0e27\u0e21\u0e40\u0e1b\u0e47\u0e19\u0e2b\u0e19\u0e36\u0e48\u0e07\u0e1c\u0e48\u0e32\u0e19\u0e14\u0e19\u0e15\u0e23\u0e35',
+      'omnia-resonant': '\u0e17\u0e38\u0e01\u0e2a\u0e34\u0e48\u0e07\u0e01\u0e49\u0e2d\u0e07\u0e01\u0e31\u0e07\u0e27\u0e32\u0e19'
+    },
+    'vi': {
+      'sonat-mundi': 'Am Thanh Cua The Gioi',
+      'united-colours': 'Moi nen van hoa, truyen thong va cam xuc hoa quyen qua am nhac',
+      'omnia-resonant': 'Van Vat Deu Cong Huong'
+    },
+    'pl': {
+      'sonat-mundi': 'Dzwiek Swiata',
+      'united-colours': 'Kazda kultura, tradycja i emocja zjednoczone przez muzyke',
+      'omnia-resonant': 'Wszystko Rezonuje'
+    },
+    'nl': {
+      'sonat-mundi': 'Het Geluid van de Wereld',
+      'united-colours': 'Elke cultuur, traditie en emotie verenigd door muziek',
+      'omnia-resonant': 'Alles Resoneert'
+    }
+  };
+
+  const lang = (navigator.language || 'en').split('-')[0].toLowerCase();
+  const t = translations[lang];
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    });
   }
 })();
 </script>
