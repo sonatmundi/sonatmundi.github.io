@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sonat Mundi — United Colours of Sound</title>
-<meta name="description" content="Sonat Mundi — United Colours of Sound. Immersive soundscapes inspired by world music, human emotions, healing frequencies, deep sleep and the poetry of everyday life. Listen on Spotify, Apple Music, YouTube and all platforms.">
-<meta name="keywords" content="Sonat Mundi, United Colours of Sound, world music, healing frequencies, sleep music, study music, meditation music, solfeggio frequencies, ambient music">
+<meta name="description" content="Sonat Mundi — United Colours of Sound. World music, chakra healing, sacred frequencies, deep sleep, space ambient, ADHD focus and meditation music. 90+ tracks on Spotify, Apple Music, YouTube and 150+ platforms.">
+<meta name="keywords" content="Sonat Mundi, United Colours of Sound, world music, healing frequencies, sleep music, study music, meditation music, solfeggio frequencies, ambient music, chakra healing, space ambient, brown noise, ADHD music, Schumann resonance">
 <meta property="og:title" content="Sonat Mundi — United Colours of Sound">
 <meta property="og:description" content="Ancient Sounds. Modern Soul. Immersive soundscapes from 195 nations, every emotion, every frequency.">
 <meta property="og:type" content="website">
@@ -536,7 +536,7 @@
 
   .series-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     max-width: 1400px;
     margin: 0 auto;
@@ -576,6 +576,8 @@
   .series-card:nth-child(3)::before { background: linear-gradient(160deg, rgba(201,168,76,0.15), transparent 70%); }
   .series-card:nth-child(4)::before { background: linear-gradient(160deg, rgba(90,58,138,0.2), transparent 70%); }
   .series-card:nth-child(5)::before { background: linear-gradient(160deg, rgba(60,80,160,0.2), transparent 70%); }
+  .series-card:nth-child(6)::before { background: linear-gradient(160deg, rgba(168,85,247,0.2), transparent 70%); }
+  .series-card:nth-child(7)::before { background: linear-gradient(160deg, rgba(30,60,120,0.2), transparent 70%); }
 
   .series-card:hover::before { opacity: 1; }
   .series-card:hover { transform: translateY(-4px); }
@@ -948,6 +950,71 @@
     opacity: 0.6;
   }
 
+  /* ── PRACTICE (sendensana) ── */
+  .practice-section {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .practice-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .practice-card {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px;
+    padding: 36px 24px;
+    transition: all 0.4s;
+  }
+
+  .practice-card:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: rgba(201,168,76,0.2);
+    transform: translateY(-4px);
+  }
+
+  .practice-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .practice-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .practice-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .btn-practice {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 16px 48px;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+
+  .btn-practice:hover {
+    background: var(--teal);
+    color: var(--black);
+  }
+
   /* ── LICENSING ── */
   .licensing-section {
     max-width: 900px;
@@ -1113,6 +1180,7 @@
     .platform-grid { grid-template-columns: repeat(2, 1fr); }
     .video-grid { grid-template-columns: 1fr; }
     .licensing-content { grid-template-columns: 1fr; gap: 32px; }
+    .practice-content { grid-template-columns: 1fr; }
     .footer-inner { grid-template-columns: 1fr 1fr; }
   }
 
@@ -1191,6 +1259,7 @@
     <li><a href="#series">Series</a></li>
     <li><a href="#listen">Listen</a></li>
     <li><a href="#watch">Watch</a></li>
+    <li><a href="#practice">Practice</a></li>
     <li><a href="#licensing">Licensing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -1265,7 +1334,7 @@
           <br><br>
           Close your eyes. Feel the vibration. Let the sound transform you.
           <br><br>
-          We journey through 195 nations — Turkey, Japan, Persia, India, Bali, Arabia, Africa, Celtic, Nordic, Tibet, the Andes, the Silk Road and beyond. We explore every human emotion — joy, melancholy, serenity, passion, wonder, nostalgia, euphoria, stillness. We craft music for every purpose — study, sleep, meditation, yoga, healing. And we harness the power of sacred frequencies — 432 Hz, 528 Hz, 639 Hz, 963 Hz, Solfeggio.
+          We journey through 195 nations — Turkey, Japan, Persia, India, Arabia, Africa, Celtic, Nordic, Tibet, the Silk Road and beyond. We explore every human emotion and craft music for every purpose — study, sleep, meditation, yoga, healing, ADHD focus. We harness the power of sacred frequencies — 432 Hz, 528 Hz, 639 Hz, 963 Hz, Solfeggio, Schumann Resonance. And we fuse each of the 7 chakras with its natural element for deep healing.
         </p>
         <div class="about-stats reveal reveal-delay-4" id="aboutStats">
           <div class="stat-item">
@@ -1273,11 +1342,11 @@
             <div class="stat-label">Nations</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="statTracks">80+</div>
+            <div class="stat-number" id="statTracks">90+</div>
             <div class="stat-label">Tracks</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="statAlbums">6</div>
+            <div class="stat-number" id="statAlbums">8</div>
             <div class="stat-label">Albums</div>
           </div>
           <div class="stat-item">
@@ -1298,7 +1367,7 @@
 <section id="series" class="series-section">
   <div class="series-header center">
     <p class="section-label reveal">Our Universe</p>
-    <h2 class="section-title reveal reveal-delay-1">Five Worlds.<br>Infinite Sound.</h2>
+    <h2 class="section-title reveal reveal-delay-1">Seven Worlds.<br>Infinite Sound.</h2>
     <div class="gold-line reveal reveal-delay-2"></div>
   </div>
   <div class="series-grid">
@@ -1338,8 +1407,24 @@
       <div class="series-card reveal reveal-delay-4">
         <span class="series-icon">&#128164;</span>
         <div class="series-name">Sounds of Sleep</div>
-        <p class="series-desc">8-hour immersive journeys designed for the deepest rest. Velvet silence, cosmic lullabies and gentle sonic blankets through the night.</p>
+        <p class="series-desc">8-hour immersive journeys designed for the deepest rest. Brown noise, rain, ocean sounds, delta waves and insomnia relief through the night.</p>
+        <span class="series-status status-live">3 Videos</span>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/@sonatmundi" target="_blank" class="series-card-link">
+      <div class="series-card reveal reveal-delay-5">
+        <span class="series-icon">&#128302;</span>
+        <div class="series-name">Sounds of Chakras</div>
+        <p class="series-desc">Root to Crown — each of the 7 chakras fused with its natural element. 396-963 Hz healing frequencies meet earth, water, fire and cosmic silence.</p>
         <span class="series-status status-new">New Series</span>
+      </div>
+    </a>
+    <a href="https://www.youtube.com/@sonatmundi" target="_blank" class="series-card-link">
+      <div class="series-card reveal">
+        <span class="series-icon">&#128640;</span>
+        <div class="series-name">Sounds of Space</div>
+        <p class="series-desc">Dark ambient voyages through the cosmos. Cinematic soundscapes, deep space drones and interstellar frequencies for the ultimate cosmic journey.</p>
+        <span class="series-status status-live">Vol. 1 Available</span>
       </div>
     </a>
   </div>
@@ -1352,7 +1437,7 @@
     <h2 class="section-title reveal reveal-delay-1">Find Us On Every Platform</h2>
     <div class="gold-line reveal reveal-delay-2" style="margin: 28px auto;"></div>
     <p class="section-body reveal reveal-delay-3" style="max-width:600px; margin: 0 auto; text-align:center;">
-      Sonat Mundi is available on all major streaming platforms. 6 albums, 80+ tracks — and growing every week.
+      Sonat Mundi is available on all major streaming platforms. 8 albums, 90+ tracks — and growing every week.
     </p>
     <div class="platform-grid">
       <a href="https://www.youtube.com/@sonatmundi" target="_blank" class="platform-card reveal">
@@ -1461,6 +1546,36 @@
   </div>
 </section>
 
+<!-- Practice with sendensana -->
+<section id="practice" class="philosophy-section">
+  <div class="practice-section">
+    <p class="section-label reveal">Practice</p>
+    <h2 class="section-title reveal reveal-delay-1">Listen. Then Practice.</h2>
+    <div class="gold-line reveal reveal-delay-2" style="margin: 28px auto;"></div>
+    <p class="section-body reveal reveal-delay-3" style="max-width:600px; margin: 0 auto;">
+      Music is just the beginning. Take your experience deeper with interactive meditation, breathing exercises, solfeggio frequencies and concentration tools on our sister platform.
+    </p>
+    <div class="practice-content">
+      <div class="practice-card reveal">
+        <div class="practice-icon">&#128712;</div>
+        <div class="practice-title">Guided Meditation</div>
+        <p class="practice-desc">Interactive meditation sessions with nature sounds and ambient music. From 5-minute mindfulness to deep contemplation.</p>
+      </div>
+      <div class="practice-card reveal reveal-delay-1">
+        <div class="practice-icon">&#127756;</div>
+        <div class="practice-title">Solfeggio Frequencies</div>
+        <p class="practice-desc">Experience each healing frequency interactively. 174 Hz to 963 Hz — feel the vibration, follow the visualization.</p>
+      </div>
+      <div class="practice-card reveal reveal-delay-2">
+        <div class="practice-icon">&#129504;</div>
+        <div class="practice-title">Focus & Breathing</div>
+        <p class="practice-desc">Concentration tools, breathing exercises and relaxation techniques. Train your mind while the music heals.</p>
+      </div>
+    </div>
+    <a href="https://sendensana.com" target="_blank" class="btn-practice reveal reveal-delay-3">Explore sendensana.com</a>
+  </div>
+</section>
+
 <!-- Licensing -->
 <section id="licensing" class="philosophy-section">
   <div class="licensing-section">
@@ -1514,6 +1629,8 @@
         <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvX9wvqnl3b5d1qexRG3s9Zg" target="_blank">Sounds of Concepts</a></li>
         <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvVYjQahdDJ1zvPaNd1ZC_OT" target="_blank">Sounds of Frequencies</a></li>
         <li><a href="https://www.youtube.com/playlist?list=PLFwHyBcRUIvWB-zuYabHpeA1I5SanQfEt" target="_blank">Sounds of Sleep</a></li>
+        <li><a href="https://www.youtube.com/@sonatmundi" target="_blank">Sounds of Chakras</a></li>
+        <li><a href="https://www.youtube.com/@sonatmundi" target="_blank">Sounds of Space</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -1534,6 +1651,7 @@
         <li><a href="https://www.instagram.com/sonat.mundi/" target="_blank">Instagram</a></li>
         <li><a href="https://tiktok.com/@sonatmundi" target="_blank">TikTok</a></li>
         <li><a href="#licensing">Music Licensing</a></li>
+        <li><a href="https://sendensana.com" target="_blank">sendensana.com</a></li>
         <li><a href="https://sonatmundi.com">sonatmundi.com</a></li>
       </ul>
     </div>
